@@ -1,4 +1,4 @@
-﻿namespace WebApp.DataTransferObjects.Interfaces
+﻿namespace WebApp.Core.Interfaces
 {
     public interface ISoftDelete
     {

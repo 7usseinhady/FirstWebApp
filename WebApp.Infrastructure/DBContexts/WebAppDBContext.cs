@@ -4,13 +4,19 @@ using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Entities.Auth;
 using WebApp.SharedKernel.Consts;
 using WebApp.Core.Consts;
+using Microsoft.AspNetCore.Http;
+using WebApp.SharedKernel.Extensions;
+using WebApp.Core.Interfaces;
 
 namespace WebApp.Infrastructure.DBContexts
 {
     public class WebAppDBContext : IdentityDbContext<User>
     {
-        public WebAppDBContext(DbContextOptions<WebAppDBContext> options) : base(options)
-        { }
+        private readonly IHttpContextAccessor _accessor;
+        public WebAppDBContext(DbContextOptions<WebAppDBContext> options, IHttpContextAccessor accessor) : base(options)
+        {
+            _accessor = accessor;
+        }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -95,6 +101,33 @@ namespace WebApp.Infrastructure.DBContexts
 
             #endregion
 
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+        {
+            DateTime dateUtcNow = DateTime.UtcNow;
+            string userId = _accessor!.HttpContext == null ? "" : _accessor!.HttpContext!.User.GetUserId();
+
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e =>
+                (e.Entity is IUserInsert || e.Entity is IUserUpdate) &&
+                (e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted));
+
+            foreach (var entityEntry in entries)
+            {
+                if (entityEntry.State == EntityState.Added && entityEntry.Entity is IUserInsert)
+                {
+                    ((IUserInsert)entityEntry.Entity).UserInsertId = userId;
+                    ((IUserInsert)entityEntry.Entity).UserInsertDate = dateUtcNow;
+                }
+                else if (entityEntry.State == EntityState.Modified && entityEntry.Entity is IUserUpdate)
+                {
+                    ((IUserUpdate)entityEntry.Entity).UserUpdateId = userId;
+                    ((IUserUpdate)entityEntry.Entity).UserUpdateDate = dateUtcNow;
+                }
+            }
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
     }
 

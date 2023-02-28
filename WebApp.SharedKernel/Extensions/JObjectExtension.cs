@@ -2,7 +2,7 @@
 
 namespace WebApp.SharedKernel.Extentions
 {
-    public static class JObjectExtention
+    public static class JObjectExtension
     {
         public static TReturnType GetValueType<TReturnType>(this JObject result, string jTokenKey) where TReturnType : IEquatable<TReturnType>
         {
