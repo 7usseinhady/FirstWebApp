@@ -10,6 +10,8 @@ namespace WebApp.Core.Interfaces
         public IUserRoleRepository userRoles { get; }
 
         IDbContextTransaction Transaction();
+
         int Complete();
+        Task<int> CompleteAsync();
     }
 }

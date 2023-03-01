@@ -103,18 +103,28 @@ namespace WebApp.Infrastructure.DBContexts
 
         }
 
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            PreSaveChanges();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
         {
+            PreSaveChanges();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        private void PreSaveChanges()
+        {
+            string userId = _accessor!.HttpContext == null ? string.Empty : _accessor!.HttpContext!.User.GetUserId();
             DateTime dateUtcNow = DateTime.UtcNow;
-            string userId = _accessor!.HttpContext == null ? "" : _accessor!.HttpContext!.User.GetUserId();
-
-            var entries = ChangeTracker
-                .Entries()
-                .Where(e =>
+            
+            var lEntityEntries = ChangeTracker.Entries().Where(e =>
                 (e.Entity is IUserInsert || e.Entity is IUserUpdate) &&
-                (e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted));
+                (e.State == EntityState.Added || e.State == EntityState.Modified));
 
-            foreach (var entityEntry in entries)
+            foreach (var entityEntry in lEntityEntries)
             {
                 if (entityEntry.State == EntityState.Added && entityEntry.Entity is IUserInsert)
                 {
@@ -127,7 +137,6 @@ namespace WebApp.Infrastructure.DBContexts
                     ((IUserUpdate)entityEntry.Entity).UserUpdateDate = dateUtcNow;
                 }
             }
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
     }
 
