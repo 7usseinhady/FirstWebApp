@@ -1,7 +1,7 @@
 ﻿
 namespace WebApp.SharedKernel.Consts
 {
-    public static class Role
+    public static class MainRoles
     {
         //basics roles
         public const string Admin = nameof(Admin);

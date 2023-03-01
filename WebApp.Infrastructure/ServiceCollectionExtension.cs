@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WebApp.Core.Entities.Auth;
+using WebApp.Core.Interfaces;
 using WebApp.Infrastructure.DBContexts;
+using WebApp.Infrastructure.Repositories;
 using WebApp.Infrastructure.TokenProviders;
 using WebApp.SharedKernel.Consts;
 
@@ -40,6 +42,8 @@ namespace WebApp.Infrastructure
               .AddDefaultTokenProviders()
               .AddTokenProvider<EmailConfirmationTokenProvider<User>>(Res.EmailConfirmation);
             #endregion
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

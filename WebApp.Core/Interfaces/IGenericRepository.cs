@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApp.Core.Bases;
 
 namespace WebApp.Core.Interfaces
 {

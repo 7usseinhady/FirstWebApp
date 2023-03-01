@@ -132,7 +132,7 @@ namespace WebApp.Core.Services.Auth
                 return _holderOfDTO;
             }
 
-            if (adminRegisterRequestDTO.RoleName == Role.User)
+            if (adminRegisterRequestDTO.RoleName == SharedKernel.Consts.MainRoles.User)
             {
                 if (user.IsBasedEmail)
                     return await sendEmailConfirmationCodeAsync(user, httpContext);
@@ -148,14 +148,14 @@ namespace WebApp.Core.Services.Auth
 
         public async Task<HolderOfDTO> RegisterUserAsync(UserRegisterRequestDTO userRegisterRequestDTO, HttpContext? httpContext)
         {
-            if (!await _roleManager.RoleExistsAsync(Role.User))
+            if (!await _roleManager.RoleExistsAsync(SharedKernel.Consts.MainRoles.User))
             {
                 _holderOfDTO.Add(Res.state, false);
                 _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid Role"].Value);
                 return _holderOfDTO;
             }
             var user = _mapper.Map<AdminRegisterRequestDTO>(userRegisterRequestDTO);
-            user.RoleName = Role.User;
+            user.RoleName = SharedKernel.Consts.MainRoles.User;
             return await RegisterAdminAsync(user, httpContext);
         }
 

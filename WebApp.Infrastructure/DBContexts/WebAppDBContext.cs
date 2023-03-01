@@ -24,7 +24,9 @@ namespace WebApp.Infrastructure.DBContexts
             #region Identity
             builder.Entity<User>()
                 .ToTable("Users", SqlSchemas.auth);
-            builder.Entity<IdentityUserRole<string>>()
+            builder.Entity<Role>()
+                .ToTable("Roles", SqlSchemas.auth);
+            builder.Entity<UserRoles>()
                 .ToTable("UserRoles", SqlSchemas.auth);
             builder.Entity<IdentityUserClaim<string>>()
                 .ToTable("UserClaims", SqlSchemas.auth);
@@ -32,21 +34,19 @@ namespace WebApp.Infrastructure.DBContexts
                 .ToTable("UserLogins", SqlSchemas.auth);
             builder.Entity<IdentityUserToken<string>>()
                 .ToTable("UserTokens", SqlSchemas.auth);
-            builder.Entity<IdentityRole>()
-                .ToTable("Roles", SqlSchemas.auth);
             builder.Entity<IdentityRoleClaim<string>>()
                 .ToTable("RoleClaims", SqlSchemas.auth);
             #endregion
 
             #region SeedIdentityRoles
 
-            builder.Entity<IdentityRole>()
+            builder.Entity<Role>()
                 .HasData(
-            new IdentityRole<string>
+            new Role()
             {
                 Id = "d0b1b383-e64c-4f42-b732-7ffbe8f3666b",
-                Name = Role.Admin,
-                NormalizedName = Role.Admin.ToLower(),
+                Name = SharedKernel.Consts.MainRoles.Admin,
+                NormalizedName = SharedKernel.Consts.MainRoles.Admin.ToLower(),
                 ConcurrencyStamp = "f4912daa-a439-43ea-9c5d-dbd590789948"
             }
             );
@@ -117,7 +117,7 @@ namespace WebApp.Infrastructure.DBContexts
 
         private void PreSaveChanges()
         {
-            string userId = _accessor!.HttpContext == null ? string.Empty : _accessor!.HttpContext!.User.GetUserId();
+            string userId = _accessor?.HttpContext?.User?.GetUserId()!;
             DateTime dateUtcNow = DateTime.UtcNow;
             
             var lEntityEntries = ChangeTracker.Entries().Where(e =>

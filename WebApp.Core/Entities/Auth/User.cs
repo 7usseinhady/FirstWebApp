@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebApp.Core.Interfaces;
 
 namespace WebApp.Core.Entities.Auth
 {
-    public partial class User : IdentityUser, IInactive
+    public partial class User : IdentityUser, IUserInsert, IUserUpdate ,IInactive
     {
         public User()
         {
@@ -52,13 +53,24 @@ namespace WebApp.Core.Entities.Auth
 
         [MaxLength(10)]
         public string? LastLang { get; set; }
-        public string? UserInsertId { get; set; }
-        public DateTime? UserInsertDate { get; set; }
-        public string? UserUpdateId { get; set; }
-        public DateTime? UserUpdateDate { get; set; }
         public bool IsInactive { get; set; }
+
+        public string? UserInsertId { get; set; }
+
+        [ForeignKey(nameof(UserInsertId))]
+        public virtual User? UserInsert { get; set; }
+        public DateTime? UserInsertDate { get; set; }
+
+        public string? UserUpdateId { get; set; }
+
+        [ForeignKey(nameof(UserUpdateId))]
+        public virtual User? UserUpdate { get; set; }
+        public DateTime? UserUpdateDate { get; set; }
 
         public ICollection<UserRefreshToken> RefreshTokens { get; set; }
         public ICollection<UserValidationToken> ValidationTokens { get; set; }
+
+        
+        
     }
 }

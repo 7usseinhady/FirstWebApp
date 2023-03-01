@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using WebApp.Core.Helpers.AutoMapper;
+using WebApp.Core.Interfaces.Custom.Services.Auth;
+using WebApp.Core.Services.Auth;
+using WebApp.Core.Services;
 
 namespace WebApp.Core
 {
@@ -15,6 +18,12 @@ namespace WebApp.Core
             {
                 cfg.AddProfile(new MappingProfile(provider.GetService<SharedMapper>()));
             }).CreateMapper());
+            #endregion
+
+            #region Auth
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IUserService, UserService>();
             #endregion
         }
     }

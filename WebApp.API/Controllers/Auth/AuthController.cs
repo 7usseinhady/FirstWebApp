@@ -179,7 +179,7 @@ namespace WebApp.API.Controllers
             return State(await _authService.LogoutAsync(refreshToken, HttpContext));
         }
 
-        [Authorize(Roles = $"{Role.Admin}")]
+        [Authorize(Roles = $"{MainRoles.Admin}")]
         [HttpPost("addUserRole")]
         public async Task<IActionResult> AddUserRoleAsync([FromBody] UserRoleRequestDTO userRoleRequestDTO)
         {

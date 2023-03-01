@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.Core.Extensions;
 using WebApp.DataTransferObjects.DTOs.Auth.Response;
+using WebApp.Core.Entities.Auth;
 
 namespace WebApp.Core.Services
 {
@@ -75,7 +76,7 @@ namespace WebApp.Core.Services
             List<bool> lIndicator = new List<bool>();
             try
             {
-                var identityRole = new IdentityRole() { Id = Guid.NewGuid().ToString(), Name = roleName, NormalizedName = roleName.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() };
+                var identityRole = new Role() { Id = Guid.NewGuid().ToString(), Name = roleName, NormalizedName = roleName.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() };
                 await _unitOfWork.roles.AddAsync(identityRole);
                 lIndicator.Add(_unitOfWork.Complete() > 0);
             }

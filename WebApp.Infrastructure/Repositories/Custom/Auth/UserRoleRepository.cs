@@ -2,16 +2,17 @@
 using WebApp.Infrastructure.DBContexts;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Interfaces.Custom.Repositories.Auth;
+using WebApp.Core.Entities.Auth;
 
 namespace WebApp.Infrastructure.Repositories.Custom.Auth
 {
-    public class UserRoleRepository : GenericRepository<IdentityUserRole<string>>, IUserRoleRepository
+    public class UserRoleRepository : GenericRepository<UserRoles>, IUserRoleRepository
     {
         public UserRoleRepository(WebAppDBContext dbContext) : base(dbContext)
         {
         }
 
-        public async Task<IQueryable<IdentityUserRole<string>>> BuildUserRoleQuery(UserRoleFilter userRoleFilter)
+        public async Task<IQueryable<UserRoles>> BuildUserRoleQuery(UserRoleFilter userRoleFilter)
         {
             try
             {

@@ -7,7 +7,7 @@ namespace WebApp.SharedKernel.Extensions
     {
         public static string GetUserId(this ClaimsPrincipal principal)
         {
-            return principal.FindFirstValue(Res.uid);
+            return principal?.FindFirstValue(Res.uid)!;
         }
     }
 }
