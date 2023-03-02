@@ -9,6 +9,7 @@ namespace WebApp.Core.Entities.Auth
     {
         [NotMapped]
         public int? UserCount { get; set; }
+
         public string? UserInsertId { get; set; }
 
         [ForeignKey(nameof(UserInsertId))]

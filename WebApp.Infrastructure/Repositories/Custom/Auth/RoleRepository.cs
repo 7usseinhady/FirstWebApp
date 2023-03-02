@@ -1,9 +1,7 @@
 ﻿using WebApp.DataTransferObjects.Filters.Auth;
-using Microsoft.AspNetCore.Identity;
 using WebApp.Infrastructure.DBContexts;
 using WebApp.Core.Interfaces.Custom.Repositories.Auth;
 using WebApp.Core.Entities.Auth;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Infrastructure.Repositories.Custom.Auth
 {
@@ -21,28 +19,44 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
             {
                 var query = Query();
 
-                var userRoleQuery = from role in query
-                                    join userRole in _dbContext.UserRoles
-                                    on role.Id equals userRole.RoleId
-                                    select new { role, userRole };
+                var userRoleGroupQuery = from userRole in _dbContext.UserRoles
+                                         group userRole by userRole.RoleId into userRoleGroup
+                                         select new {
+                                             roleId = userRoleGroup.Key,
+                                             userCount = userRoleGroup.Select(x => x.UserId).Count()
+                                         };
+
+
+                query = from role in query
+                        join userRoleCount in userRoleGroupQuery
+                        on role.Id equals userRoleCount.roleId into roleGrouping
+                        from userRoleCount in roleGrouping.DefaultIfEmpty()
+                        select new Role()
+                        {
+                            Id = role.Id,
+                            Name= role.Name,
+                            ConcurrencyStamp= role.ConcurrencyStamp,
+                            NormalizedName= role.NormalizedName,
+                            //
+                            UserCount = userRoleCount.userCount,
+                            //
+                            UserInsertId = role.UserInsertId,
+                            UserInsertDate= role.UserInsertDate,
+                            UserInsert = role.UserInsert,
+                            UserUpdateId= role.UserUpdateId,
+                            UserUpdateDate= role.UserUpdateDate,
+                            UserUpdate = role.UserUpdate
+                        };
 
                 // Where
                 if (roleFilter is not null)
                 {
                     if (!string.IsNullOrEmpty(roleFilter.Id))
-                        userRoleQuery = userRoleQuery.Where(x => x.role.Id == roleFilter.Id);
+                        query = query.Where(x => x.Id == roleFilter.Id);
 
                     if (!string.IsNullOrEmpty(roleFilter.Name))
-                        userRoleQuery = userRoleQuery.Where(x => x.role.Name!.Contains(roleFilter.Name));
+                        query = query.Where(x => x.Name!.Contains(roleFilter.Name));
                 }
-
-                //query = userRoleQuery.Select(x => new Role()
-                //{
-                //    Id = x.role.Id,
-                //    Name = x.role.Name,
-                //    UserCount= x.,
-
-                //});
 
                 return query;
             }

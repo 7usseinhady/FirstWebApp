@@ -5,7 +5,7 @@ using WebApp.DataTransferObjects.Interfaces;
 
 namespace WebApp.Core.Entities.Auth
 {
-    public partial class UserRoles : IdentityUserRole<string>, IUserInsert, IUserUpdate, IInactive
+    public partial class UserRole : IdentityUserRole<string>, IUserInsert, IUserUpdate
     {
         
         public string? UserInsertId { get; set; }
@@ -19,7 +19,5 @@ namespace WebApp.Core.Entities.Auth
         [ForeignKey(nameof(UserUpdateId))]
         public virtual User? UserUpdate { get; set; }
         public DateTime? UserUpdateDate { get; set; }
-
-        public bool IsInactive { get; set; }
     }
 }

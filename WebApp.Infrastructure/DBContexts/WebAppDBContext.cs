@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Entities.Auth;
-using WebApp.SharedKernel.Consts;
 using WebApp.Core.Consts;
 using Microsoft.AspNetCore.Http;
 using WebApp.SharedKernel.Extensions;
@@ -10,7 +9,7 @@ using WebApp.Core.Interfaces;
 
 namespace WebApp.Infrastructure.DBContexts
 {
-    public class WebAppDBContext : IdentityDbContext<User>
+    public class WebAppDBContext : IdentityDbContext<User, Role, string, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
         private readonly IHttpContextAccessor _accessor;
         public WebAppDBContext(DbContextOptions<WebAppDBContext> options, IHttpContextAccessor accessor) : base(options)
@@ -26,15 +25,15 @@ namespace WebApp.Infrastructure.DBContexts
                 .ToTable("Users", SqlSchemas.auth);
             builder.Entity<Role>()
                 .ToTable("Roles", SqlSchemas.auth);
-            builder.Entity<UserRoles>()
+            builder.Entity<UserRole>()
                 .ToTable("UserRoles", SqlSchemas.auth);
-            builder.Entity<IdentityUserClaim<string>>()
+            builder.Entity<UserClaim>()
                 .ToTable("UserClaims", SqlSchemas.auth);
-            builder.Entity<IdentityUserLogin<string>>()
+            builder.Entity<UserLogin>()
                 .ToTable("UserLogins", SqlSchemas.auth);
-            builder.Entity<IdentityUserToken<string>>()
+            builder.Entity<UserToken>()
                 .ToTable("UserTokens", SqlSchemas.auth);
-            builder.Entity<IdentityRoleClaim<string>>()
+            builder.Entity<RoleClaim>()
                 .ToTable("RoleClaims", SqlSchemas.auth);
             #endregion
 
@@ -81,8 +80,8 @@ namespace WebApp.Infrastructure.DBContexts
                 .HasData(appUser);
 
             //set user role to admin
-            builder.Entity<IdentityUserRole<string>>()
-                .HasData(new IdentityUserRole<string>
+            builder.Entity<UserRole>()
+                .HasData(new UserRole
                 {
                     RoleId = ROLE_ID,
                     UserId = ADMIN_ID

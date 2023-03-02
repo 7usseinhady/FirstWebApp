@@ -25,7 +25,7 @@ namespace WebApp.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.Role", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -33,6 +33,9 @@ namespace WebApp.Infrastructure.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsInactive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -42,6 +45,18 @@ namespace WebApp.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<DateTime?>("UserInsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserInsertId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UserUpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserUpdateId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -49,12 +64,24 @@ namespace WebApp.Infrastructure.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.HasIndex("UserInsertId");
 
-                    b.UseTptMappingStrategy();
+                    b.HasIndex("UserUpdateId");
+
+                    b.ToTable("Roles", "auth");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "d0b1b383-e64c-4f42-b732-7ffbe8f3666b",
+                            ConcurrencyStamp = "f4912daa-a439-43ea-9c5d-dbd590789948",
+                            IsInactive = false,
+                            Name = "Admin",
+                            NormalizedName = "admin"
+                        });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,96 +104,6 @@ namespace WebApp.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RoleClaims", "auth");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserClaims", "auth");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserLogins", "auth");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.UseTptMappingStrategy();
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "618fdfd2-f08b-413d-876a-04fec17f9e3f",
-                            RoleId = "d0b1b383-e64c-4f42-b732-7ffbe8f3666b"
-                        });
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("UserTokens", "auth");
                 });
 
             modelBuilder.Entity("WebApp.Core.Entities.Auth.User", b =>
@@ -310,56 +247,68 @@ namespace WebApp.Infrastructure.Migrations
                             LastName = "Admin",
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAPI4PseCEuI5aNJ95q8TW8DNq36VsHP2JXE9e7BXHuR1TbvKLTDj/EK+NoXcszrpg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBnUS2FMdEGuJQHPfwgugTg2qfvTu7N3FahBU/jN/UhanGQCHOrtjtazXPJdL7OKqQ==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "727b8949-3274-4765-89ef-2c53d5df2946",
+                            SecurityStamp = "6ecba28d-f5d7-48ad-8bd3-5019d77c7c89",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
                 });
 
-            modelBuilder.Entity("WebApp.Core.Entities.Auth.Role", b =>
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.UserClaim", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsInactive")
-                        .HasColumnType("bit");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("UserInsertDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserInsertId")
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("UserUpdateDate")
-                        .HasColumnType("datetime2");
+                    b.HasKey("Id");
 
-                    b.Property<string>("UserUpdateId")
-                        .HasColumnType("nvarchar(450)");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("UserInsertId");
-
-                    b.HasIndex("UserUpdateId");
-
-                    b.ToTable("Roles", "auth");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "d0b1b383-e64c-4f42-b732-7ffbe8f3666b",
-                            ConcurrencyStamp = "f4912daa-a439-43ea-9c5d-dbd590789948",
-                            Name = "Admin",
-                            NormalizedName = "admin",
-                            IsInactive = false
-                        });
+                    b.ToTable("UserClaims", "auth");
                 });
 
-            modelBuilder.Entity("WebApp.Core.Entities.Auth.UserRoles", b =>
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.UserLogin", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<string>");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("IsInactive")
-                        .HasColumnType("bit");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLogins", "auth");
+                });
+
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.UserRole", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UserInsertDate")
                         .HasColumnType("datetime2");
@@ -372,61 +321,64 @@ namespace WebApp.Infrastructure.Migrations
 
                     b.Property<string>("UserUpdateId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
 
                     b.HasIndex("UserInsertId");
 
                     b.HasIndex("UserUpdateId");
 
                     b.ToTable("UserRoles", "auth");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "618fdfd2-f08b-413d-876a-04fec17f9e3f",
+                            RoleId = "d0b1b383-e64c-4f42-b732-7ffbe8f3666b"
+                        });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.UserToken", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("UserTokens", "auth");
+                });
+
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.Role", b =>
+                {
+                    b.HasOne("WebApp.Core.Entities.Auth.User", "UserInsert")
+                        .WithMany()
+                        .HasForeignKey("UserInsertId");
+
+                    b.HasOne("WebApp.Core.Entities.Auth.User", "UserUpdate")
+                        .WithMany()
+                        .HasForeignKey("UserUpdateId");
+
+                    b.Navigation("UserInsert");
+
+                    b.Navigation("UserUpdate");
+                });
+
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.RoleClaim", b =>
+                {
+                    b.HasOne("WebApp.Core.Entities.Auth.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("WebApp.Core.Entities.Auth.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("WebApp.Core.Entities.Auth.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("WebApp.Core.Entities.Auth.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("WebApp.Core.Entities.Auth.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -546,12 +498,36 @@ namespace WebApp.Infrastructure.Migrations
                     b.Navigation("ValidationTokens");
                 });
 
-            modelBuilder.Entity("WebApp.Core.Entities.Auth.Role", b =>
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.UserClaim", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithOne()
-                        .HasForeignKey("WebApp.Core.Entities.Auth.Role", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("WebApp.Core.Entities.Auth.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.UserLogin", b =>
+                {
+                    b.HasOne("WebApp.Core.Entities.Auth.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.UserRole", b =>
+                {
+                    b.HasOne("WebApp.Core.Entities.Auth.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WebApp.Core.Entities.Auth.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApp.Core.Entities.Auth.User", "UserInsert")
@@ -567,25 +543,13 @@ namespace WebApp.Infrastructure.Migrations
                     b.Navigation("UserUpdate");
                 });
 
-            modelBuilder.Entity("WebApp.Core.Entities.Auth.UserRoles", b =>
+            modelBuilder.Entity("WebApp.Core.Entities.Auth.UserToken", b =>
                 {
-                    b.HasOne("WebApp.Core.Entities.Auth.User", "UserInsert")
+                    b.HasOne("WebApp.Core.Entities.Auth.User", null)
                         .WithMany()
-                        .HasForeignKey("UserInsertId");
-
-                    b.HasOne("WebApp.Core.Entities.Auth.User", "UserUpdate")
-                        .WithMany()
-                        .HasForeignKey("UserUpdateId");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", null)
-                        .WithOne()
-                        .HasForeignKey("WebApp.Core.Entities.Auth.UserRoles", "UserId", "RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("UserInsert");
-
-                    b.Navigation("UserUpdate");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,8 +3,8 @@ using WebApp.Core.Entities.Auth;
 
 namespace WebApp.Core.Interfaces.Custom.Repositories.Auth
 {
-    public interface IUserRoleRepository : IGenericRepository<UserRoles>
+    public interface IUserRoleRepository : IGenericRepository<UserRole>
     {
-        Task<IQueryable<UserRoles>> BuildUserRoleQuery(UserRoleFilter userRoleFilter);
+        Task<IQueryable<UserRole>> BuildUserRoleQuery(UserRoleFilter userRoleFilter);
     }
 }

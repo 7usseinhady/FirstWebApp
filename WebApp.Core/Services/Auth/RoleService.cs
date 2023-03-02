@@ -76,8 +76,8 @@ namespace WebApp.Core.Services
             List<bool> lIndicator = new List<bool>();
             try
             {
-                var identityRole = new Role() { Id = Guid.NewGuid().ToString(), Name = roleName, NormalizedName = roleName.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() };
-                await _unitOfWork.roles.AddAsync(identityRole);
+                var role = new Role() { Id = Guid.NewGuid().ToString(), Name = roleName, NormalizedName = roleName.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() };
+                await _unitOfWork.roles.AddAsync(role);
                 lIndicator.Add(_unitOfWork.Complete() > 0);
             }
             catch (Exception ex)

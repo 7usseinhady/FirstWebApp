@@ -27,14 +27,14 @@ namespace WebApp.Core.Services.Auth
     public class AuthService : BaseService, IAuthService
     {
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<Role> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly Helpers.JWT _jwt;
         private readonly IServer _server;
         private readonly ISMSService _smsService;
         private readonly IFileUtils _fileUtils;
 
-        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDTO holderOfDTO, ICulture culture, RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IEmailSender emailSender, IOptions<Helpers.JWT> jwt, IServer server, ISMSService smsService, IFileUtils fileUtils) : base(unitOfWork, mapper, holderOfDTO, culture)
+        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDTO holderOfDTO, ICulture culture, RoleManager<Role> roleManager, UserManager<User> userManager, IEmailSender emailSender, IOptions<Helpers.JWT> jwt, IServer server, ISMSService smsService, IFileUtils fileUtils) : base(unitOfWork, mapper, holderOfDTO, culture)
         {
             _roleManager = roleManager;
             _userManager = userManager;

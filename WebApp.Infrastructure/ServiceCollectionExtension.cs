@@ -28,7 +28,7 @@ namespace WebApp.Infrastructure
             #endregion
 
             #region Add Identity
-            services.AddIdentity<User, IdentityRole>(option =>
+            services.AddIdentity<User, Role>(option =>
             {
                 //option.Password.RequiredLength = 7;
                 //option.Password.RequireDigit = false;

@@ -6,13 +6,13 @@ using WebApp.Core.Entities.Auth;
 
 namespace WebApp.Infrastructure.Repositories.Custom.Auth
 {
-    public class UserRoleRepository : GenericRepository<UserRoles>, IUserRoleRepository
+    public class UserRoleRepository : GenericRepository<UserRole>, IUserRoleRepository
     {
         public UserRoleRepository(WebAppDBContext dbContext) : base(dbContext)
         {
         }
 
-        public async Task<IQueryable<UserRoles>> BuildUserRoleQuery(UserRoleFilter userRoleFilter)
+        public async Task<IQueryable<UserRole>> BuildUserRoleQuery(UserRoleFilter userRoleFilter)
         {
             try
             {
