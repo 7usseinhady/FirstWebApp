@@ -128,6 +128,7 @@ builder.Services.LoadInfrastructureServices(conStr);
 #endregion
 
 #region API .Net Core IOC Container
+builder.Services.AddSingleton<AuthKeyBasedMiddleware>();
 #endregion
 
 #region for Base Api Connection SetUp
@@ -156,6 +157,8 @@ builder.Services.AddHttpClient(Res.GatewaySMSUri, c =>
 #region Add Cors
 builder.Services.AddCors();
 #endregion
+
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -217,6 +220,8 @@ var locOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>()
 app.UseRequestLocalization(locOptions.Value);
 
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+//app.UseMiddleware<AuthKeyBasedMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

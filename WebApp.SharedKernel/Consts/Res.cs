@@ -15,6 +15,7 @@ namespace WebApp.SharedKernel.Consts
         public const string page = nameof(page);
         public const string refreshToken = nameof(refreshToken);
         public const string filePath = nameof(filePath);
+        public const string SecretKey = nameof(SecretKey);
         public const string SendGridEmailConfiguration = nameof(SendGridEmailConfiguration);
         public const string MailKitEmailConfiguration = nameof(MailKitEmailConfiguration);
         public const string EmailConfirmation = nameof(EmailConfirmation);
