@@ -15,9 +15,9 @@ namespace WebApp.SharedKernel.Helpers
         {
             _environment = environment;
         }
-        public async Task<byte[]> ToBytesAsync(IFormFile file)
+        public async Task<byte[]?> ToBytesAsync(IFormFile file)
         {
-            byte[] data = null;
+            byte[]? data = null;
             if (file is not null && file.Length > 0)
             {
                 var stream = file.OpenReadStream();
@@ -29,13 +29,13 @@ namespace WebApp.SharedKernel.Helpers
             else
                 return null;
         }
-        public async Task<byte[]> ToBytesAsync(string base64String)
+        public async Task<byte[]?> ToBytesAsync(string base64String)
         {
             if(!string.IsNullOrEmpty(base64String))
                 return Convert.FromBase64String(base64String);
             return null;
         }
-        public async Task<IFormFile> ToIFormFileAsync(byte[] byteArray, string fileName)
+        public async Task<IFormFile?> ToIFormFileAsync(byte[] byteArray, string fileName)
         {
             if (byteArray is not null && byteArray.Length > 0)
             {
@@ -44,7 +44,7 @@ namespace WebApp.SharedKernel.Helpers
             }
             return null;
         }
-        public async Task<string> ToBase64StringAsync(byte[] byteArray)
+        public async Task<string?> ToBase64StringAsync(byte[] byteArray)
         {
             if (byteArray is not null && byteArray.Length > 0)
             {
@@ -52,14 +52,8 @@ namespace WebApp.SharedKernel.Helpers
             }
             return null;
         }
-        public async Task<string> ToBase64StringAsync(IFormFile file)
-        {
-            return await ToBase64StringAsync(await ToBytesAsync(file));
-        }
-        public async Task<IFormFile> ToIFormFileAsync(string base64String, string fileName)
-        {
-            return await ToIFormFileAsync(await ToBytesAsync(base64String), fileName);
-        }
+        public async Task<string> ToBase64StringAsync(IFormFile file) => await ToBase64StringAsync(await ToBytesAsync(file));
+        public async Task<IFormFile> ToIFormFileAsync(string base64String, string fileName) => await ToIFormFileAsync(await ToBytesAsync(base64String), fileName);
 
         public async Task<Dictionary<string, object>> UploadImageAsync(FileDTO fileDTO)
         {
@@ -71,7 +65,7 @@ namespace WebApp.SharedKernel.Helpers
                 {
                     string FileName = fileDTO.File.FileName;
 
-                    using (var image = SixLabors.ImageSharp.Image.Load(fileDTO.File.OpenReadStream()))
+                    using (var image = Image.Load(fileDTO.File.OpenReadStream()))
                     {
 
                         string newSize = ImageResize(image, 1200, 1200);
@@ -91,7 +85,7 @@ namespace WebApp.SharedKernel.Helpers
                                 string fileName = $"{fileDTO.Id}{extention}";
                                 string path = Path.Combine(fileDTO.FilePath, fileName);
                                 var filePath = Path.Combine(_environment.ContentRootPath, dir, fileName);
-                                DeleteFilesNameInPathAsync(fileDTO.FilePath, fileDTO.Id);
+                                await DeleteFilesNameInPathAsync(fileDTO.FilePath, fileDTO.Id!);
                                 image.Save(filePath);
                                 holder.Add(Res.filePath, path);
                                 lIndicator.Add(true);
@@ -137,7 +131,7 @@ namespace WebApp.SharedKernel.Helpers
                             string path = Path.Combine(fileDTO.FilePath, fileName);
                             var filePath = Path.Combine(_environment.ContentRootPath, dir, fileName);
                             using var fileStream = new FileStream(filePath, FileMode.Create);
-                            DeleteFilesNameInPathAsync(fileDTO.FilePath, fileDTO.Id);
+                            await DeleteFilesNameInPathAsync(fileDTO.FilePath, fileDTO.Id!);
                             await fileDTO.File.CopyToAsync(fileStream);
                             holder.Add(Res.filePath, path);
                             lIndicator.Add(true);
@@ -208,23 +202,19 @@ namespace WebApp.SharedKernel.Helpers
             switch (fileType)
             {
                 case FileTypes.Image:
-                    return FileTypes.ImageExtensions;
-                    break;
+                    return FileTypes.ImageExtensions.ToList();
 
                 case FileTypes.Document:
-                    return FileTypes.DocumentExtensions;
-                    break;
+                    return FileTypes.DocumentExtensions.ToList();
 
                 case FileTypes.ReportDocument:
-                    return FileTypes.ReportDocumentExtensions;
-                    break;
+                    return FileTypes.ReportDocumentExtensions.ToList();
 
                 default:
                     return new List<string>();
-                    break;
             }
         }
-        private string ImageResize(SixLabors.ImageSharp.Image img, int MaxWidth, int MaxHeight)
+        private string ImageResize(Image img, int MaxWidth, int MaxHeight)
         {
             if (img.Width > MaxWidth || img.Height > MaxHeight)
             {
