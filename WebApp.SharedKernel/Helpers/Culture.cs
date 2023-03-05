@@ -2,19 +2,21 @@
 using WebApp.SharedKernel.Resources;
 using Microsoft.Extensions.Localization;
 using System.Globalization;
+using System.Collections.Immutable;
 
 namespace WebApp.SharedKernel.Helpers
 {
     public partial class Culture
     {
-        public static readonly string[] _supportedCultures;
+        private static readonly ImmutableArray<string> _supportedCultures;
         static Culture()
         {
-            _supportedCultures = new [] { 
+            _supportedCultures = new ImmutableArray<string>() {
                   "ar-EG"
                 , "en"
             };
         }
+
         public static int CurrentIndex()
         {
             return getIndexOfCulture(Thread.CurrentThread.CurrentCulture.Name);
