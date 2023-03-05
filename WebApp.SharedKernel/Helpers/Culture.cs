@@ -11,10 +11,7 @@ namespace WebApp.SharedKernel.Helpers
         private static readonly ImmutableArray<string> _supportedCultures;
         static Culture()
         {
-            _supportedCultures = new ImmutableArray<string>() {
-                  "ar-EG"
-                , "en"
-            };
+            _supportedCultures = ImmutableArray.Create("ar-EG", "en");
         }
 
         public static int CurrentIndex()
