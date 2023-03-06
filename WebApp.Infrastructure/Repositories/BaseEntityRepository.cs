@@ -8,10 +8,8 @@ namespace WebApp.Infrastructure.Repositories
         where TEntity : BaseEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        private readonly DbContext _context;
         public BaseEntityRepository(DbContext context) : base(context)
         {
-            _context = context;
         }
 
         public void Detach(TKey id)

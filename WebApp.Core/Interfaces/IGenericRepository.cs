@@ -18,8 +18,8 @@ namespace WebApp.Core.Interfaces
         TEntity Update(TEntity entity);
         IEnumerable<TEntity> UpdateRange(IEnumerable<TEntity> entities);
 
-        void Delete(object id);
-        void DeleteRange(IEnumerable<object> ids);
+        void DeleteById(object id);
+        void DeleteRangeByIds(IEnumerable<object> ids);
 
         void Delete(TEntity entity);
         void DeleteRange(IEnumerable<TEntity> entities);

@@ -2,7 +2,7 @@
 using WebApp.DataTransferObjects.Filters.Auth;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
-using WebApp.DataTransferObjects.Helpers;
+using WebApp.DataTransferObject.Dtos;
 
 namespace WebApp.API.Controllers
 {

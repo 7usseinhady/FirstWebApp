@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.DataTransferObjects.Dtos.Auth.Request;
 using WebApp.DataTransferObjects.Dtos.Auth.Response;
-using WebApp.DataTransferObjects.Helpers;
+using WebApp.DataTransferObject.Dtos;
 
 namespace WebApp.API.Controllers
 {

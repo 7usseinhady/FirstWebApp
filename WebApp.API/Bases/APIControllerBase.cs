@@ -1,6 +1,6 @@
 ﻿using WebApp.SharedKernel.Consts;
 using Microsoft.AspNetCore.Mvc;
-using WebApp.DataTransferObjects.Helpers;
+using WebApp.DataTransferObject.Dtos;
 
 namespace WebApp.API.Bases
 {

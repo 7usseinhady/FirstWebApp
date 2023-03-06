@@ -3,6 +3,7 @@ using WebApp.Infrastructure.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Core.Interfaces.Custom.Repositories.Auth;
 using WebApp.Core.Entities.Auth;
+using System.Runtime.ExceptionServices;
 
 namespace WebApp.Infrastructure.Repositories.Custom.Auth
 {
@@ -38,7 +39,7 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
                             query = query.Distinct();
                         }
                         else
-                            return null;
+                            return null!;
                     }
 
                     if (!string.IsNullOrEmpty(userFilter.Id))
@@ -48,16 +49,16 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
                         query = query.Where(x => (x.FirstName + " " + x.LastName).Contains(userFilter.FullName));
 
                     if (!string.IsNullOrEmpty(userFilter.Username))
-                        query = query.Where(x => x.UserName.Contains(userFilter.Username));
+                        query = query.Where(x => x.UserName!.Contains(userFilter.Username));
 
                     if (!string.IsNullOrEmpty(userFilter.Email))
-                        query = query.Where(x => x.Email.Contains(userFilter.Email));
+                        query = query.Where(x => x.Email!.Contains(userFilter.Email));
 
                     if (!string.IsNullOrEmpty(userFilter.PhoneNumber))
-                        query = query.Where(x => x.LocalPhoneNumber.Contains(userFilter.PhoneNumber));
+                        query = query.Where(x => x.LocalPhoneNumber!.Contains(userFilter.PhoneNumber));
 
                     if (!string.IsNullOrEmpty(userFilter.SecondPhoneNumber))
-                        query = query.Where(x => x.SecondLocalPhoneNumber.Contains(userFilter.SecondPhoneNumber));
+                        query = query.Where(x => x.SecondLocalPhoneNumber!.Contains(userFilter.SecondPhoneNumber));
 
                     if (!string.IsNullOrEmpty(userFilter.CommonKeyWord))
                         query = query.Where(x => x.FirstName.Contains(userFilter.CommonKeyWord) || x.LastName.Contains(userFilter.CommonKeyWord));
@@ -75,12 +76,12 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
                         query = query.Where(x => x.UserInsertDate <= userFilter.CreationDateTo.Value.Date);
 
                 }
-
                 return query;
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return null!;
             }
         }
 

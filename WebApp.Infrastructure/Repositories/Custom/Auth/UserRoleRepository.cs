@@ -3,6 +3,7 @@ using WebApp.Infrastructure.DBContexts;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Interfaces.Custom.Repositories.Auth;
 using WebApp.Core.Entities.Auth;
+using System.Runtime.ExceptionServices;
 
 namespace WebApp.Infrastructure.Repositories.Custom.Auth
 {
@@ -29,9 +30,10 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
                 }
                 return query;
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return null!;
             }
         }
     }

@@ -1,9 +1,8 @@
-﻿
-namespace WebApp.DataTransferObject.Helpers
+﻿namespace WebApp.DataTransferObject.Dtos
 {
     public class BaseTreeDto<TTree, TKey>
         where TTree : BaseTreeDto<TTree, TKey>
-        where TKey: IEquatable<TKey>
+        where TKey : IEquatable<TKey>
     {
         public virtual TKey Id { get; set; } = default!;
         public virtual TKey ParentId { get; set; } = default!;

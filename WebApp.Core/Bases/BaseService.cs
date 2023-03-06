@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using WebApp.Core.Interfaces;
-using WebApp.DataTransferObjects.Helpers;
-using WebApp.DataTransferObjects.Interfaces;
 using WebApp.SharedKernel.Consts;
 using WebApp.SharedKernel.Helpers;
 using WebApp.SharedKernel.Interfaces;
@@ -12,6 +10,8 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using WebApp.Core.Helpers;
 using System.Runtime.ExceptionServices;
+using WebApp.DataTransferObject.Dtos;
+using WebApp.DataTransferObject.Dtos.Response;
 
 namespace WebApp.Core.Bases
 {
@@ -131,9 +131,9 @@ namespace WebApp.Core.Bases
             }
         }
 
-        protected StoredProcedureReturn FireStoredProcedure(string storedProcedureName, List<SqlParameter>? sqlParameters)
+        protected StoredProcedureResponseDto FireStoredProcedure(string storedProcedureName, List<SqlParameter>? sqlParameters)
         {
-            var storedProcedureReturn = new StoredProcedureReturn();
+            var storedProcedureReturn = new StoredProcedureResponseDto();
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(_connectionStringConfiguration?.ConStr))

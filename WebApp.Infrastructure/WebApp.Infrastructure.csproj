@@ -10,8 +10,4 @@
     <ProjectReference Include="..\WebApp.Core\WebApp.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

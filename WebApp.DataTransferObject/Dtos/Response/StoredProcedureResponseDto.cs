@@ -1,10 +1,10 @@
 ﻿using System.Data;
 
-namespace WebApp.DataTransferObjects.Helpers
+namespace WebApp.DataTransferObject.Dtos.Response
 {
-    public class StoredProcedureReturn
+    public class StoredProcedureResponseDto
     {
-        public StoredProcedureReturn()
+        public StoredProcedureResponseDto()
         {
             dataTable = new DataTable();
             lParameters = new List<IDataParameter>();

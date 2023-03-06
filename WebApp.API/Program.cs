@@ -49,17 +49,17 @@ builder.Services.AddHangfire(c => c
 #endregion
 
 #region Email SetUp
-// MimeKit email configration
-var mimeKitEmailConfig = builder.Configuration
+// MailKit email configration
+var mailKitEmailConfig = builder.Configuration
                                 .GetSection(Res.MailKitEmailConfiguration)
                                 .Get<MailKitEmailConfiguration>();
-builder.Services.AddSingleton(mimeKitEmailConfig);
+builder.Services.AddSingleton(mailKitEmailConfig!);
 
 // SendGrid email configration
 var sendGridEmailConfig = builder.Configuration
                          .GetSection(Res.SendGridEmailConfiguration)
                          .Get<SendGridKeyConfiguration>();
-builder.Services.AddSingleton(sendGridEmailConfig);
+builder.Services.AddSingleton(sendGridEmailConfig!);
 
 // email confirmation
 builder.Services.Configure<EmailConfirmationTokenProviderOptions>(opt =>
@@ -71,13 +71,13 @@ builder.Services.Configure<EmailConfirmationTokenProviderOptions>(opt =>
 var twilioSMSConfiguration = builder.Configuration
                                 .GetSection(Res.TwilioSMSConfiguration)
                                 .Get<TwilioSMSConfiguration>();
-builder.Services.AddSingleton(twilioSMSConfiguration);
+builder.Services.AddSingleton(twilioSMSConfiguration!);
 
 // Gateway SMS configration
 var gateWaySMSConfiguration = builder.Configuration
                                 .GetSection(Res.GatewaySMSConfiguration)
                                 .Get<GatewaySMSConfiguration>();
-builder.Services.AddSingleton(gateWaySMSConfiguration);
+builder.Services.AddSingleton(gateWaySMSConfiguration!);
 #endregion
 
 #region JWT Auth
@@ -178,12 +178,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>
@@ -204,9 +198,9 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 var locOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
 app.UseRequestLocalization(locOptions!.Value);
 
-//app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+// app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
 
-//app.UseMiddleware<AuthKeyBasedMiddleware>();
+// app.UseMiddleware<AuthKeyBasedMiddleware>()
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -216,25 +210,6 @@ app.UseHangfireDashboard("/hangfire/dashboard", new DashboardOptions()
     DashboardTitle = "Hangfire Dashboard",
     Authorization = new[] { new HangFireAuthorizationFilter() }
 });
-
-//app.UseHangfireDashboard("/hangfire", new DashboardOptions()
-//{
-//    DashboardTitle = "Hangfire Dashboard",
-//    Authorization = new[] {
-//        new HangfireCustomBasicAuthenticationFilter() {
-//            User = builder.Configuration.GetSection("HangfireCredentials:UserName").Value,
-//            Pass = builder.Configuration.GetSection("HangfireCredentials:Password").Value
-//        }
-//    }
-//});
-
-// default path /hangfire
-//app.MapHangfireDashboard("/hangfire", new DashboardOptions()
-//{
-//    DashboardTitle = "Hangfire Dashboard",
-//    Authorization = new[] { new HangFireAuthorizationFilter() }
-//});
-
 app.MapControllers();
 
 app.Run();

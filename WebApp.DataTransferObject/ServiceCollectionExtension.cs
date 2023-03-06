@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using WebApp.DataTransferObjects.Helpers;
+using WebApp.DataTransferObject.Dtos;
 using WebApp.DataTransferObjects.Interfaces;
 
 namespace WebApp.DataTransferObject

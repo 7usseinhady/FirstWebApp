@@ -16,6 +16,7 @@ using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.Core.Extensions;
 using WebApp.DataTransferObjects.Dtos.Auth.Response;
 using WebApp.Core.Entities.Auth;
+using WebApp.DataTransferObject.Dtos;
 
 namespace WebApp.Core.Services
 {
@@ -95,7 +96,7 @@ namespace WebApp.Core.Services
             List<bool> lIndicator = new List<bool>();
             try
             {
-                _unitOfWork.roles.Delete(id);
+                _unitOfWork.roles.DeleteById(id);
                 lIndicator.Add(_unitOfWork.Complete() > 0);
             }
             catch (Exception ex)

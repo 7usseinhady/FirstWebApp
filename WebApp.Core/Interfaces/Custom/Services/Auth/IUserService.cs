@@ -1,7 +1,7 @@
 ﻿using WebApp.DataTransferObjects.Filters.Auth;
 using WebApp.SharedKernel.Dtos;
 using WebApp.DataTransferObjects.Dtos.Auth.Request;
-using WebApp.DataTransferObjects.Helpers;
+using WebApp.DataTransferObject.Dtos;
 
 namespace WebApp.Core.Interfaces.Custom.Services.Auth
 {

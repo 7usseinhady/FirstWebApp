@@ -20,9 +20,7 @@ using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.DataTransferObjects.Dtos.Auth.Request;
 using WebApp.SharedKernel.Helpers.Email;
 using WebApp.DataTransferObjects.Dtos.Auth.Response;
-using WebApp.DataTransferObjects.Helpers;
-using Microsoft.CodeAnalysis.Elfie.Diagnostics;
-using Microsoft.Extensions.Logging;
+using WebApp.DataTransferObject.Dtos;
 
 namespace WebApp.Core.Services.Auth
 {

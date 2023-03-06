@@ -14,7 +14,7 @@ namespace WebApp.Infrastructure.Repositories
         }
         private IEntityType GetEntityType()
         {
-            return _context.Model.FindEntityType(typeof(TEntity));
+            return _context?.Model?.FindEntityType(typeof(TEntity))!;
         }
         public string? GetSchema()
         {
@@ -65,20 +65,19 @@ namespace WebApp.Infrastructure.Repositories
             return entities;
         }
 
-        public void Delete(object id)
+        public void DeleteById(object id)
         {
             var element = DbSet().Find(id);
-            Delete(element);
+            Delete(element!);
         }
-        public void DeleteRange(IEnumerable<object> ids)
+
+        public void DeleteRangeByIds(IEnumerable<object> ids)
         {
             List<TEntity> lTEntity = new List<TEntity>();
             foreach (int id in ids)
-                lTEntity.Add(DbSet().Find(id));
+                lTEntity.Add(DbSet()?.Find(id)!);
             DeleteRange(lTEntity);
-
         }
-
         public void Delete(TEntity entity)
         {
             DbSet().Remove(entity);
@@ -109,6 +108,6 @@ namespace WebApp.Infrastructure.Repositories
             await DbSet().AddRangeAsync(entities);
             return entities;
         }
-
+        
     }
 }
