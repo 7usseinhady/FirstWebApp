@@ -8,18 +8,18 @@ namespace WebApp.DataTransferObjects.Dtos.Auth.Request
     {
 
         [Display(Name = "FirstName"), Required(ErrorMessage = "Required"), MaxLength(100)]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = default!;
 
         [Display(Name = "LastName"), Required(ErrorMessage = "Required"), MaxLength(100)]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = default!;
 
         [Display(Name = "UserName"), Required(ErrorMessage = "Required"), StringLength(50)]
-        public string Username { get; set; }
+        public string Username { get; set; } = default!;
 
         [Display(Name = "Email"), EmailAddress(ErrorMessage = "Invalid"), StringLength(128)]
-        public string? Email { get; set; }
+        public string? Email { get; set; } = default!;
 
-        public bool? IsFemale { get; set; }
+        public bool? IsFemale { get; set; } = default!;
 
         public string Code { get; set; } = "+966";
 
@@ -63,10 +63,10 @@ namespace WebApp.DataTransferObjects.Dtos.Auth.Request
 
 
         [Display(Name = "Password"), Required(ErrorMessage = "Required"), StringLength(256), RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[@$!%*?&#]).{6,}$", ErrorMessage = "PasswordRegularExpression")]
-        public string Password { get; set; }
+        public string Password { get; set; } = default!;
 
         [Display(Name = "ConfirmPassword"), Required(ErrorMessage = "Required"), StringLength(256), Compare("Password", ErrorMessage = "Not Match")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } = default!;
 
         [Display(Name = "Inactive")]
         public bool IsInactive { get; set; }

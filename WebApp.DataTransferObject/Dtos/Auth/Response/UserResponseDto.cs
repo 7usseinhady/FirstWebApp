@@ -7,7 +7,7 @@ namespace WebApp.DataTransferObjects.Dtos.Auth.Response
     public class UserResponseDto : UserRequestDto, IFilePathDto
     {
         [Display(Name = "UserName"), Required(ErrorMessage = "Required")]
-        public string UserName { get; set; }
+        public string UserName { get; set; } = default!;
 
         [Display(Name = "FullName")]
         public string? FullName { get; set; }

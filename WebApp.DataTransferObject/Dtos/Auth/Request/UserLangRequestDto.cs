@@ -2,7 +2,7 @@
 {
     public class UserLangRequestDto
     {
-        public string UserId { get; set; }
-        public string LastLang { get; set; }
+        public string UserId { get; set; } = default!;
+        public string LastLang { get; set; } = default!;
     }
 }

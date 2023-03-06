@@ -2,6 +2,6 @@
 {
     public class AdminRegisterRequestDto : UserRegisterRequestDto
     {
-        public string RoleName { get; set; }
+        public string RoleName { get; set; } = default!;
     }
 }

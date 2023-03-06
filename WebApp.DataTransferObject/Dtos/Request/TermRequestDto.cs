@@ -3,10 +3,10 @@
     public class TermRequestDto
     {
         public int Id { get; set; }
-        public string TermTitleAr { get; set; }
-        public string TermTitleEn { get; set; }
-        public string TermBodyAr { get; set; }
-        public string TermBodyEn { get; set; }
+        public string TermTitleAr { get; set; } = default!;
+        public string TermTitleEn { get; set; } = default!;
+        public string TermBodyAr { get; set; } = default!;
+        public string TermBodyEn { get; set; } = default!;
         
     }
 }

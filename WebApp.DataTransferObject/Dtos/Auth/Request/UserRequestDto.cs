@@ -6,17 +6,17 @@ namespace WebApp.DataTransferObjects.Dtos.Auth.Request
     public class UserRequestDto : IInactive
     {
         [Required]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         [Display(Name = "FirstName"), Required(ErrorMessage = "Required"), MaxLength(100)]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = default!;
 
         [Display(Name = "LastName"), Required(ErrorMessage = "Required")]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = default!;
 
 
         [Display(Name = "Email"), EmailAddress(ErrorMessage = "Invalid")]
-        public string? Email { get; set; }
+        public string? Email { get; set; } = default!;
 
         [Required, MaxLength(4)]
         public string Code { get; set; } = "+966";

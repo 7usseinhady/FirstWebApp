@@ -2,6 +2,6 @@
 {
     public class UserDeviceIdRequestDto : UserIdRequestDto
     {
-        public string DeviceId { get; set; }
+        public string DeviceId { get; set; } = default!;
     }
 }

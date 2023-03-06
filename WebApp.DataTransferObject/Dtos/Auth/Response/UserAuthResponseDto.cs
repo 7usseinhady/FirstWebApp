@@ -5,18 +5,18 @@ namespace WebApp.DataTransferObjects.Dtos.Auth.Response
 {
     public class UserAuthResponseDto : IFilePathDto
     {
-        public string Id { get; set; }
-        public string FullName { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public List<string> Roles { get; set; }
+        public string Id { get; set; } = default!;
+        public string FullName { get; set; } = default!;
+        public string Username { get; set; } = default!;
+        public string Email { get; set; } = default!;
+        public List<string> Roles { get; set; } = default!;
 
         public string? RefreshToken { get; set; }
 
         [JsonIgnore]
         public DateTime RefreshTokenExpiration { get; set; }
 
-        public string AccessToken { get; set; }
+        public string AccessToken { get; set; } = default!;
 
         public DateTime AccessTokenExpiration { get; set; }
 

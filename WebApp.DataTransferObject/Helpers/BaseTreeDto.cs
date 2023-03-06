@@ -5,14 +5,14 @@ namespace WebApp.DataTransferObject.Helpers
         where TTree : BaseTreeDto<TTree, TKey>
         where TKey: IEquatable<TKey>
     {
-        public virtual TKey Id { get; set; }
-        public virtual TKey ParentId { get; set; }
-        public virtual List<TTree> Children { get; set; }
+        public virtual TKey Id { get; set; } = default!;
+        public virtual TKey ParentId { get; set; } = default!;
+        public virtual List<TTree> Children { get; set; } = default!;
 
 
         public static async Task<List<TTree>> ToTreeAsync(List<TTree> lTreeDtos)
         {
-            var treeDictionary = new Dictionary<TKey?, TTree>();
+            var treeDictionary = new Dictionary<TKey, TTree>();
 
             lTreeDtos.ForEach(x => treeDictionary.Add(x.Id, x));
 
@@ -21,7 +21,7 @@ namespace WebApp.DataTransferObject.Helpers
                 if (item.ParentId != null)
                 {
                     TTree proposedParent;
-                    if (treeDictionary.TryGetValue(item.ParentId, out proposedParent))
+                    if (treeDictionary.TryGetValue(item.ParentId, out proposedParent!))
                     {
                         if (proposedParent.Children is null)
                             proposedParent.Children = new List<TTree>();
