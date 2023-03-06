@@ -13,8 +13,8 @@ namespace WebApp.Core.Entities.Auth
         [Key]
         public override long Id { get; set; }
 
-        [Required, MaxLength(400)]
-        public string RefreshToken { get; set; }
+        [Required, MaxLength(400)] 
+        public string RefreshToken { get; set; } = default!;
         
         public DateTime CreatedOn { get; set; }
 
