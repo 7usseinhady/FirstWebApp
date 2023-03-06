@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace WebApp.DataTransferObjects.DTOs
+namespace WebApp.DataTransferObjects.Dtos
 {
-    public class RateDTO
+    public class RateDto
     {
         [JsonIgnore]
         public object? Id { get; set; }

@@ -1,6 +1,6 @@
-﻿namespace WebApp.DataTransferObjects.DTOs.Auth.Request
+﻿namespace WebApp.DataTransferObjects.Dtos.Auth.Request
 {
-    public class AdminRegisterRequestDTO : UserRegisterRequestDTO
+    public class AdminRegisterRequestDto : UserRegisterRequestDto
     {
         public string RoleName { get; set; }
     }

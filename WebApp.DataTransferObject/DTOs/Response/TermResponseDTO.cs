@@ -1,8 +1,8 @@
-﻿using WebApp.DataTransferObject.DTOs.Request;
+﻿using WebApp.DataTransferObject.Dtos.Request;
 
-namespace WebApp.DataTransferObject.DTOs.Response
+namespace WebApp.DataTransferObject.Dtos.Response
 {
-    public class TermResponseDTO : TermRequestDTO
+    public class TermResponseDto : TermRequestDto
     {
         public string? TermTitle { get; set; }
         public string? TermBody { get; set; }

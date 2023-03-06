@@ -1,7 +1,7 @@
 ﻿
-namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.DTOs
+namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos
 {
-    public class CustomerORShippingDetailsDTO
+    public class CustomerORShippingDetailsDto
     {
         public string name { get; set; }
         public string email { get; set; }

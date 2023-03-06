@@ -1,8 +1,8 @@
 ﻿
 namespace WebApp.DataTransferObject.Helpers
 {
-    public class BaseTreeDTO<TTree, TKey>
-        where TTree : BaseTreeDTO<TTree, TKey>
+    public class BaseTreeDto<TTree, TKey>
+        where TTree : BaseTreeDto<TTree, TKey>
         where TKey: IEquatable<TKey>
     {
         public virtual TKey Id { get; set; }
@@ -10,11 +10,11 @@ namespace WebApp.DataTransferObject.Helpers
         public virtual List<TTree> Children { get; set; }
 
 
-        public static async Task<List<TTree>> ToTreeAsync(List<TTree> lTreeDTOs)
+        public static async Task<List<TTree>> ToTreeAsync(List<TTree> lTreeDtos)
         {
             var treeDictionary = new Dictionary<TKey?, TTree>();
 
-            lTreeDTOs.ForEach(x => treeDictionary.Add(x.Id, x));
+            lTreeDtos.ForEach(x => treeDictionary.Add(x.Id, x));
 
             foreach (var item in treeDictionary.Values)
             {

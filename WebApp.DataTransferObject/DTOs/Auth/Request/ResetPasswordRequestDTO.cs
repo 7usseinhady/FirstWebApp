@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.DataTransferObjects.DTOs.Auth.Request
+namespace WebApp.DataTransferObjects.Dtos.Auth.Request
 {
-    public class ResetPasswordRequestDTO
+    public class ResetPasswordRequestDto
     {
         [Required]
         public string personalKey { get; set; }

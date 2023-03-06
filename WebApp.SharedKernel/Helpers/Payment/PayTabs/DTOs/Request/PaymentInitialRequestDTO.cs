@@ -1,11 +1,11 @@
 ﻿
-namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.DTOs.Request
+namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos.Request
 {
-    public class PaymentInitialRequestDTO
+    public class PaymentInitialRequestDto
     {
         public string cart_id { get; set; }
         public decimal cart_amount { get; set; }
-        public CustomerORShippingDetailsDTO customer_details { get; set; }
+        public CustomerORShippingDetailsDto customer_details { get; set; }
         public string callback { get; set; }
         public string @return { get; set; }
 

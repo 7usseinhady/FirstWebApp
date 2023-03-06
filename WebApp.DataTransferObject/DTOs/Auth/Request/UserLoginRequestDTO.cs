@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.DataTransferObjects.DTOs.Auth.Request
+namespace WebApp.DataTransferObjects.Dtos.Auth.Request
 {
-    public class UserLoginRequestDTO
+    public class UserLoginRequestDto
     {
         [Display(Name = "PersonalKey"), Required(ErrorMessage = "Required"), MaxLength(100)]
         public string PersonalKey { get; set; }

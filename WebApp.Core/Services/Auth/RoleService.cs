@@ -3,7 +3,7 @@ using WebApp.Core.Bases;
 using WebApp.Core.Entities;
 using WebApp.Core.Interfaces;
 using WebApp.Core.Interfaces.Custom.Services;
-using WebApp.DataTransferObjects.DTOs;
+using WebApp.DataTransferObjects.Dtos;
 using WebApp.DataTransferObjects.Filters;
 using WebApp.DataTransferObjects.Interfaces;
 using WebApp.SharedKernel.Consts;
@@ -14,18 +14,18 @@ using WebApp.DataTransferObjects.Filters.Auth;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.Core.Extensions;
-using WebApp.DataTransferObjects.DTOs.Auth.Response;
+using WebApp.DataTransferObjects.Dtos.Auth.Response;
 using WebApp.Core.Entities.Auth;
 
 namespace WebApp.Core.Services
 {
     public class RoleService : BaseService, IRoleService
     {
-        public RoleService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDTO holderOfDTO, ICulture culture) : base(unitOfWork, mapper, holderOfDTO, culture)
+        public RoleService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture) : base(unitOfWork, mapper, holderOfDto, culture)
         {
         }
 
-        public async Task<HolderOfDTO> GetAllAsync(RoleFilter roleFilter)
+        public async Task<HolderOfDto> GetAllAsync(RoleFilter roleFilter)
         {
             List<bool> lIndicator = new List<bool>();
             try
@@ -35,43 +35,43 @@ namespace WebApp.Core.Services
 
                 var page = new Pager();
                 page.Set(roleFilter.PageSize, roleFilter.CurrentPage, totalCount);
-                _holderOfDTO.Add(Res.page, page);
+                _holderOfDto.Add(Res.page, page);
                 lIndicator.Add(true);
 
                 // pagination
                 query = query.AddPage(page.Skip, page.PageSize);
-                _holderOfDTO.Add(Res.lRoles, _mapper.Map<List<RoleResponseDTO>>(await query.ToListAsync()));
+                _holderOfDto.Add(Res.lRoles, _mapper.Map<List<RoleResponseDto>>(await query.ToListAsync()));
                 lIndicator.Add(true);
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
                 
                 lIndicator.Add(false);
             }
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
+            return _holderOfDto;
         }
-        public async Task<HolderOfDTO> GetByIdAsync(string id)
+        public async Task<HolderOfDto> GetByIdAsync(string id)
         {
             List<bool> lIndicator = new List<bool>();
             try
             {
                 var roleFilter = new RoleFilter() { Id = id };
-                _holderOfDTO.Add(Res.oRole, _mapper.Map<RoleResponseDTO>(await (await _unitOfWork.roles.BuildRoleQueryAsync(roleFilter)).SingleOrDefaultAsync()));
+                _holderOfDto.Add(Res.oRole, _mapper.Map<RoleResponseDto>(await (await _unitOfWork.roles.BuildRoleQueryAsync(roleFilter)).SingleOrDefaultAsync()));
                 lIndicator.Add(true);
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
                 
                 lIndicator.Add(false);
             }
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
             
-            return _holderOfDTO;
+            return _holderOfDto;
         }
-        public async Task<HolderOfDTO> SaveAsync(string roleName)
+        public async Task<HolderOfDto> SaveAsync(string roleName)
         {
             List<bool> lIndicator = new List<bool>();
             try
@@ -82,15 +82,15 @@ namespace WebApp.Core.Services
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
                 
                 lIndicator.Add(false);
             }
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
             
-            return _holderOfDTO;
+            return _holderOfDto;
         }
-        public HolderOfDTO Delete(string id)
+        public HolderOfDto Delete(string id)
         {
             List<bool> lIndicator = new List<bool>();
             try
@@ -100,13 +100,13 @@ namespace WebApp.Core.Services
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
                 
                 lIndicator.Add(false);
             }
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
             
-            return _holderOfDTO;
+            return _holderOfDto;
         }
     }
 }

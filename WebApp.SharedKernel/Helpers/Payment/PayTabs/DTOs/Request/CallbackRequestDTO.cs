@@ -1,7 +1,7 @@
 ﻿
-namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.DTOs.Request
+namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos.Request
 {
-    public class CallbackResponseDTO
+    public class CallbackResponseDto
     {
         public string cart_id { get; set; }
         public string tran_ref { get; set; }
@@ -9,10 +9,10 @@ namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.DTOs.Request
         public string cart_currency { get; set; }
         public string cart_description { get; set; }
 
-        public CustomerORShippingDetailsDTO customer_details { get; set; }
-        public CustomerORShippingDetailsDTO shipping_details { get; set; }
+        public CustomerORShippingDetailsDto customer_details { get; set; }
+        public CustomerORShippingDetailsDto shipping_details { get; set; }
 
-        public PaymentResultDTO payment_result { get; set; }
-        public PaymentInfoDTO payment_info { get; set; }
+        public PaymentResultDto payment_result { get; set; }
+        public PaymentInfoDto payment_info { get; set; }
     }
 }

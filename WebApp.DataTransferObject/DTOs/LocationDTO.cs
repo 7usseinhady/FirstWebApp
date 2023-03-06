@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json;
 
-namespace WebApp.DataTransferObjects.DTOs
+namespace WebApp.DataTransferObjects.Dtos
 {
-    public class LocationDTO
+    public class LocationDto
     {
-        public LocationDTO()
+        public LocationDto()
         {
         }
 
-        public LocationDTO(double latitude, double longitude)
+        public LocationDto(double latitude, double longitude)
         {
             this.Latitude = latitude;
             this.Longitude = longitude;

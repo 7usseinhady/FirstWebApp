@@ -1,4 +1,4 @@
-﻿using WebApp.DataTransferObjects.DTOs;
+﻿using WebApp.DataTransferObjects.Dtos;
 using WebApp.DataTransferObjects.Filters;
 using WebApp.DataTransferObjects.Filters.Auth;
 using WebApp.DataTransferObjects.Helpers;
@@ -13,9 +13,9 @@ namespace WebApp.Core.Interfaces.Custom.Services.Auth
 {
     public interface IRoleService
     {
-        public Task<HolderOfDTO> GetAllAsync(RoleFilter roleFilter);
-        public Task<HolderOfDTO> GetByIdAsync(string id);
-        public Task<HolderOfDTO> SaveAsync(string roleName);
-        public HolderOfDTO Delete(string id);
+        public Task<HolderOfDto> GetAllAsync(RoleFilter roleFilter);
+        public Task<HolderOfDto> GetByIdAsync(string id);
+        public Task<HolderOfDto> SaveAsync(string roleName);
+        public HolderOfDto Delete(string id);
     }
 }

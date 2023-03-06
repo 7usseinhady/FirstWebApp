@@ -1,6 +1,6 @@
-﻿namespace WebApp.DataTransferObject.DTOs.Request
+﻿namespace WebApp.DataTransferObject.Dtos.Request
 {
-    public class ContactUsRequestDTO
+    public class ContactUsRequestDto
     {
         public int Id { get; set; }
         public string PhoneNumber { get; set; }

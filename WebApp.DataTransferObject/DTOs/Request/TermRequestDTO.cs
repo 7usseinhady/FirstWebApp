@@ -1,6 +1,6 @@
-﻿namespace WebApp.DataTransferObject.DTOs.Request
+﻿namespace WebApp.DataTransferObject.Dtos.Request
 {
-    public class TermRequestDTO
+    public class TermRequestDto
     {
         public int Id { get; set; }
         public string TermTitleAr { get; set; }

@@ -1,4 +1,4 @@
-﻿using WebApp.SharedKernel.DTOs;
+﻿using WebApp.SharedKernel.Dtos;
 using Microsoft.AspNetCore.Http;
 
 namespace WebApp.SharedKernel.Interfaces
@@ -12,8 +12,8 @@ namespace WebApp.SharedKernel.Interfaces
         Task<string> ToBase64StringAsync(IFormFile file);
         Task<IFormFile> ToIFormFileAsync(string base64String, string fileName);
 
-        Task<Dictionary<string, object>> UploadImageAsync(FileDTO fileDTO);
-        Task<Dictionary<string, object>> UploadFileAsync(FileDTO fileDTO, string fileType);
+        Task<Dictionary<string, object>> UploadImageAsync(FileDto fileDto);
+        Task<Dictionary<string, object>> UploadFileAsync(FileDto fileDto, string fileType);
         Task<bool> DeleteFileAsync(string filePath);
         Task<bool> DeleteFilesNameInPathAsync(string folderPath, string fileName);
     }

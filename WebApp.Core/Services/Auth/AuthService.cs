@@ -17,9 +17,9 @@ using WebApp.SharedKernel.Helpers;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Hosting.Server;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
-using WebApp.DataTransferObjects.DTOs.Auth.Request;
+using WebApp.DataTransferObjects.Dtos.Auth.Request;
 using WebApp.SharedKernel.Helpers.Email;
-using WebApp.DataTransferObjects.DTOs.Auth.Response;
+using WebApp.DataTransferObjects.Dtos.Auth.Response;
 using WebApp.DataTransferObjects.Helpers;
 
 namespace WebApp.Core.Services.Auth
@@ -34,7 +34,7 @@ namespace WebApp.Core.Services.Auth
         private readonly ISMSService _smsService;
         private readonly IFileUtils _fileUtils;
 
-        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDTO holderOfDTO, ICulture culture, RoleManager<Role> roleManager, UserManager<User> userManager, IEmailSender emailSender, IOptions<Helpers.JWT> jwt, IServer server, ISMSService smsService, IFileUtils fileUtils) : base(unitOfWork, mapper, holderOfDTO, culture)
+        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture, RoleManager<Role> roleManager, UserManager<User> userManager, IEmailSender emailSender, IOptions<Helpers.JWT> jwt, IServer server, ISMSService smsService, IFileUtils fileUtils) : base(unitOfWork, mapper, holderOfDto, culture)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -46,93 +46,93 @@ namespace WebApp.Core.Services.Auth
         }
 
         #region Registeration and Answer
-        public async Task<HolderOfDTO> RegisterAdminAsync(AdminRegisterRequestDTO adminRegisterRequestDTO, HttpContext? httpContext)
+        public async Task<HolderOfDto> RegisterAdminAsync(AdminRegisterRequestDto adminRegisterRequestDto, HttpContext? httpContext)
         {
-            if (adminRegisterRequestDTO.IsBasedEmail)
+            if (adminRegisterRequestDto.IsBasedEmail)
             {
                 // Check mail if Exists or valid
-                if (string.IsNullOrEmpty(adminRegisterRequestDTO.Email))
+                if (string.IsNullOrEmpty(adminRegisterRequestDto.Email))
                 {
-                    _holderOfDTO.Add(Res.state, false);
-                    _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Email is required"].Value);
-                    return _holderOfDTO;
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Email is required"].Value);
+                    return _holderOfDto;
                 }
-                else if (!ObjectUtils.IsValidEmail(adminRegisterRequestDTO.Email))
+                else if (!ObjectUtils.IsValidEmail(adminRegisterRequestDto.Email))
                 {
-                    _holderOfDTO.Add(Res.state, false);
-                    _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Email is not correct"].Value);
-                    return _holderOfDTO;
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Email is not correct"].Value);
+                    return _holderOfDto;
                 }
-                else if (await _userManager.FindByEmailAsync(adminRegisterRequestDTO.Email) is not null)
+                else if (await _userManager.FindByEmailAsync(adminRegisterRequestDto.Email) is not null)
                 {
-                    _holderOfDTO.Add(Res.state, false);
-                    _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Email is already registered"].Value);
-                    return _holderOfDTO;
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Email is already registered"].Value);
+                    return _holderOfDto;
                 }
             }
             else
             {
                 // Check Phone if Exists or valid
-                if (string.IsNullOrEmpty(adminRegisterRequestDTO.PhoneNumber))
+                if (string.IsNullOrEmpty(adminRegisterRequestDto.PhoneNumber))
                 {
-                    _holderOfDTO.Add(Res.state, false);
-                    _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Phone is required"].Value);
-                    return _holderOfDTO;
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Phone is required"].Value);
+                    return _holderOfDto;
                 }
-                else if (!ObjectUtils.IsPhoneNumber(adminRegisterRequestDTO.PhoneNumber))
+                else if (!ObjectUtils.IsPhoneNumber(adminRegisterRequestDto.PhoneNumber))
                 {
-                    _holderOfDTO.Add(Res.state, false);
-                    _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Phone is not correct"].Value);
-                    return _holderOfDTO;
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Phone is not correct"].Value);
+                    return _holderOfDto;
                 }
-                else if (_userManager.Users.Where(x => x.PhoneNumber == adminRegisterRequestDTO.PhoneNumber).Count() > 0)
+                else if (_userManager.Users.Where(x => x.PhoneNumber == adminRegisterRequestDto.PhoneNumber).Count() > 0)
                 {
-                    _holderOfDTO.Add(Res.state, false);
-                    _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Phone is already registered"].Value);
-                    return _holderOfDTO;
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Phone is already registered"].Value);
+                    return _holderOfDto;
                 }
             }
 
             // Check username if Exists
-            if (!string.IsNullOrEmpty(adminRegisterRequestDTO.Username) && await _userManager.FindByNameAsync(adminRegisterRequestDTO.Username) is not null)
+            if (!string.IsNullOrEmpty(adminRegisterRequestDto.Username) && await _userManager.FindByNameAsync(adminRegisterRequestDto.Username) is not null)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Username is already registered"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Username is already registered"].Value);
+                return _holderOfDto;
             }
 
             // Check Role
-            if (!await _roleManager.RoleExistsAsync(adminRegisterRequestDTO.RoleName))
+            if (!await _roleManager.RoleExistsAsync(adminRegisterRequestDto.RoleName))
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid Role"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid Role"].Value);
+                return _holderOfDto;
             }
 
             // Create User With Hashing Password
-            var user = _mapper.Map<User>(adminRegisterRequestDTO);
+            var user = _mapper.Map<User>(adminRegisterRequestDto);
             user.UserInsertDate = DateTime.Now;
-            var resultUser = await _userManager.CreateAsync(user, adminRegisterRequestDTO.Password);
+            var resultUser = await _userManager.CreateAsync(user, adminRegisterRequestDto.Password);
             if (!resultUser.Succeeded)
             {
                 var errors = string.Empty;
                 foreach (var error in resultUser.Errors)
                     errors += $"{error.Description},";
                 errors = errors.Remove(errors.Length - 1, 1);
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, errors);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, errors);
+                return _holderOfDto;
             }
             // Add User To Role.
-            var resultRole = await _userManager.AddToRoleAsync(user, adminRegisterRequestDTO.RoleName);
+            var resultRole = await _userManager.AddToRoleAsync(user, adminRegisterRequestDto.RoleName);
             if (!resultRole.Succeeded)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["User was created successfully"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["User was created successfully"].Value);
+                return _holderOfDto;
             }
 
-            if (adminRegisterRequestDTO.RoleName == SharedKernel.Consts.MainRoles.User)
+            if (adminRegisterRequestDto.RoleName == SharedKernel.Consts.MainRoles.User)
             {
                 if (user.IsBasedEmail)
                     return await sendEmailConfirmationCodeAsync(user, httpContext);
@@ -140,21 +140,21 @@ namespace WebApp.Core.Services.Auth
                     return await sendPhoneConfirmationCodeAsync(user, httpContext);
             }
 
-            _holderOfDTO.Add(Res.state, true);
-            _holderOfDTO.Add(Res.isConfirmed, false);
-            _holderOfDTO.Add(Res.basedEmail, user.IsBasedEmail);
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, true);
+            _holderOfDto.Add(Res.isConfirmed, false);
+            _holderOfDto.Add(Res.basedEmail, user.IsBasedEmail);
+            return _holderOfDto;
         }
 
-        public async Task<HolderOfDTO> RegisterUserAsync(UserRegisterRequestDTO userRegisterRequestDTO, HttpContext? httpContext)
+        public async Task<HolderOfDto> RegisterUserAsync(UserRegisterRequestDto userRegisterRequestDto, HttpContext? httpContext)
         {
             if (!await _roleManager.RoleExistsAsync(SharedKernel.Consts.MainRoles.User))
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid Role"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid Role"].Value);
+                return _holderOfDto;
             }
-            var user = _mapper.Map<AdminRegisterRequestDTO>(userRegisterRequestDTO);
+            var user = _mapper.Map<AdminRegisterRequestDto>(userRegisterRequestDto);
             user.RoleName = SharedKernel.Consts.MainRoles.User;
             return await RegisterAdminAsync(user, httpContext);
         }
@@ -162,37 +162,37 @@ namespace WebApp.Core.Services.Auth
         #endregion
 
         #region Confirmation Code
-        public async Task<HolderOfDTO> EmailConfirmationAsync(EmailPhoneConfirmationRequestDTO emailConfirmationRequestDTO, HttpContext? httpContext)
+        public async Task<HolderOfDto> EmailConfirmationAsync(EmailPhoneConfirmationRequestDto emailConfirmationRequestDto, HttpContext? httpContext)
         {
-            var user = await getUserAsync(emailConfirmationRequestDTO.PersonalKey);
+            var user = await getUserAsync(emailConfirmationRequestDto.PersonalKey);
             if (user == null)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid Personal Key"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid Personal Key"].Value);
+                return _holderOfDto;
             }
             if (user.IsInactive)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["User is Inactive"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["User is Inactive"].Value);
+                return _holderOfDto;
 
             }
-            if (string.IsNullOrEmpty(emailConfirmationRequestDTO.TokenCode) || emailConfirmationRequestDTO.TokenCode.Length != 6)
+            if (string.IsNullOrEmpty(emailConfirmationRequestDto.TokenCode) || emailConfirmationRequestDto.TokenCode.Length != 6)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid Code"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid Code"].Value);
+                return _holderOfDto;
             }
 
             // Get Current ResetPasswordToken by Code
-            var currentResetPasswordToken = user.ValidationTokens.SingleOrDefault(t => t.ValidationCode == emailConfirmationRequestDTO.TokenCode);
+            var currentResetPasswordToken = user.ValidationTokens.SingleOrDefault(t => t.ValidationCode == emailConfirmationRequestDto.TokenCode);
 
             if (currentResetPasswordToken is null || !currentResetPasswordToken.isActive)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid or Inactive Code"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid or Inactive Code"].Value);
+                return _holderOfDto;
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, currentResetPasswordToken.ValidationToken);
@@ -202,9 +202,9 @@ namespace WebApp.Core.Services.Auth
                 foreach (var error in result.Errors)
                     errors += $"{error.Description},";
                 errors = errors.Remove(errors.Length - 1, 1);
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, errors);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, errors);
+                return _holderOfDto;
             }
             //
             user.ValidationTokens.ToList().RemoveAll(t => !t.isUsed && (t.isRevoked || t.isExpired));
@@ -221,66 +221,66 @@ namespace WebApp.Core.Services.Auth
             return holderResult;
         }
 
-        public async Task<HolderOfDTO> ResendEmailConfirmationCodeAsync(PersonalKeyRequestDTO personalKeyRequestDTO, HttpContext? httpContext)
+        public async Task<HolderOfDto> ResendEmailConfirmationCodeAsync(PersonalKeyRequestDto personalKeyRequestDto, HttpContext? httpContext)
         {
-            var user = await getUserAsync(personalKeyRequestDTO.PersonalKey);
+            var user = await getUserAsync(personalKeyRequestDto.PersonalKey);
 
             if (user == null)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid personal key"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid personal key"].Value);
+                return _holderOfDto;
             }
 
             if (!await _userManager.IsEmailConfirmedAsync(user))
                 return await sendEmailConfirmationCodeAsync(user, httpContext);
 
-            _holderOfDTO.Add(Res.state, true);
+            _holderOfDto.Add(Res.state, true);
 
             if (user.IsBasedEmail)
             {
-                _holderOfDTO.Add(Res.isConfirmed, user.EmailConfirmed);
-                _holderOfDTO.Add(Res.basedEmail, true);
+                _holderOfDto.Add(Res.isConfirmed, user.EmailConfirmed);
+                _holderOfDto.Add(Res.basedEmail, true);
             }
             else
             {
-                _holderOfDTO.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
-                _holderOfDTO.Add(Res.basedEmail, false);
+                _holderOfDto.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
+                _holderOfDto.Add(Res.basedEmail, false);
             }
-            return _holderOfDTO;
+            return _holderOfDto;
         }
 
-        public async Task<HolderOfDTO> PhoneConfirmationAsync(EmailPhoneConfirmationRequestDTO phoneConfirmationRequestDTO, HttpContext? httpContext)
+        public async Task<HolderOfDto> PhoneConfirmationAsync(EmailPhoneConfirmationRequestDto phoneConfirmationRequestDto, HttpContext? httpContext)
         {
-            var user = await getUserAsync(phoneConfirmationRequestDTO.PersonalKey);
+            var user = await getUserAsync(phoneConfirmationRequestDto.PersonalKey);
             if (user == null)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid Personal Key"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid Personal Key"].Value);
+                return _holderOfDto;
             }
             if (user.IsInactive)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["User is Inactive"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["User is Inactive"].Value);
+                return _holderOfDto;
 
             }
-            if (string.IsNullOrEmpty(phoneConfirmationRequestDTO.TokenCode) || phoneConfirmationRequestDTO.TokenCode.Length != 6)
+            if (string.IsNullOrEmpty(phoneConfirmationRequestDto.TokenCode) || phoneConfirmationRequestDto.TokenCode.Length != 6)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid Code"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid Code"].Value);
+                return _holderOfDto;
             }
 
             // Get Current ResetPasswordToken by Code
-            var currentResetPasswordToken = user.ValidationTokens.SingleOrDefault(t => t.ValidationCode == phoneConfirmationRequestDTO.TokenCode);
+            var currentResetPasswordToken = user.ValidationTokens.SingleOrDefault(t => t.ValidationCode == phoneConfirmationRequestDto.TokenCode);
 
             if (currentResetPasswordToken is null || !currentResetPasswordToken.isActive || currentResetPasswordToken.ValidationToken != "UserPhoneConfirmation")
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid or Inactive Code"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid or Inactive Code"].Value);
+                return _holderOfDto;
             }
 
             user.PhoneNumberConfirmed = true;
@@ -291,9 +291,9 @@ namespace WebApp.Core.Services.Auth
                 foreach (var error in result.Errors)
                     errors += $"{error.Description},";
                 errors = errors.Remove(errors.Length - 1, 1);
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, errors);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, errors);
+                return _holderOfDto;
             }
             //
             user.ValidationTokens.ToList().RemoveAll(t => !t.isUsed && (t.isRevoked || t.isExpired));
@@ -310,59 +310,59 @@ namespace WebApp.Core.Services.Auth
             return holderResult;
         }
 
-        public async Task<HolderOfDTO> ResendPhoneConfirmationCodeAsync(PersonalKeyRequestDTO personalKeyRequestDTO, HttpContext? httpContext)
+        public async Task<HolderOfDto> ResendPhoneConfirmationCodeAsync(PersonalKeyRequestDto personalKeyRequestDto, HttpContext? httpContext)
         {
-            var user = await getUserAsync(personalKeyRequestDTO.PersonalKey);
+            var user = await getUserAsync(personalKeyRequestDto.PersonalKey);
 
             if (user == null)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid personal key"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid personal key"].Value);
+                return _holderOfDto;
             }
 
             if (!await _userManager.IsPhoneNumberConfirmedAsync(user))
                 return await sendPhoneConfirmationCodeAsync(user, httpContext);
 
-            _holderOfDTO.Add(Res.state, true);
+            _holderOfDto.Add(Res.state, true);
 
             if (user.IsBasedEmail)
             {
-                _holderOfDTO.Add(Res.isConfirmed, user.EmailConfirmed);
-                _holderOfDTO.Add(Res.basedEmail, true);
+                _holderOfDto.Add(Res.isConfirmed, user.EmailConfirmed);
+                _holderOfDto.Add(Res.basedEmail, true);
             }
             else
             {
-                _holderOfDTO.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
-                _holderOfDTO.Add(Res.basedEmail, false);
+                _holderOfDto.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
+                _holderOfDto.Add(Res.basedEmail, false);
             }
-            return _holderOfDTO;
+            return _holderOfDto;
         }
         #endregion
 
         #region Login and Logout
-        public async Task<HolderOfDTO> LoginAsync(UserLoginRequestDTO userLoginRequestDTO, HttpContext? httpContext)
+        public async Task<HolderOfDto> LoginAsync(UserLoginRequestDto userLoginRequestDto, HttpContext? httpContext)
         {
-            var user = await getUserAsync(userLoginRequestDTO.PersonalKey);
+            var user = await getUserAsync(userLoginRequestDto.PersonalKey);
 
-            if (user is null || !await _userManager.CheckPasswordAsync(user, userLoginRequestDTO.Password))
+            if (user is null || !await _userManager.CheckPasswordAsync(user, userLoginRequestDto.Password))
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Personal Key or Password is incorrect"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Personal Key or Password is incorrect"].Value);
+                return _holderOfDto;
             }
             if (user.IsInactive)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["User is Inactive"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["User is Inactive"].Value);
+                return _holderOfDto;
 
             }
 
             bool loginWith = user.IsBasedEmail;
-            if (ObjectUtils.IsValidEmail(userLoginRequestDTO.PersonalKey))
+            if (ObjectUtils.IsValidEmail(userLoginRequestDto.PersonalKey))
                 loginWith = true;
-            else if (ObjectUtils.IsPhoneNumber(userLoginRequestDTO.PersonalKey))
+            else if (ObjectUtils.IsPhoneNumber(userLoginRequestDto.PersonalKey))
                 loginWith = false;
 
 
@@ -391,34 +391,34 @@ namespace WebApp.Core.Services.Auth
             return await BuildUserAuthAsync(user, userRefreshToken);
         }
 
-        public async Task<HolderOfDTO> AutoLoginAsync(string refreshToken, HttpContext? httpContext)
+        public async Task<HolderOfDto> AutoLoginAsync(string refreshToken, HttpContext? httpContext)
         {
             return await RefreshTokensAsync(refreshToken, httpContext);
         }
 
-        public async Task<HolderOfDTO> RefreshTokensAsync(string refreshToken, HttpContext? httpContext)
+        public async Task<HolderOfDto> RefreshTokensAsync(string refreshToken, HttpContext? httpContext)
         {
             // Check if Refresh Token is Empty
             if (string.IsNullOrEmpty(refreshToken))
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Refresh Token is required"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Refresh Token is required"].Value);
+                return _holderOfDto;
             }
             // Get User by any Refresh Token Even if it is Inactive 
             var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.RefreshToken == refreshToken));
 
             if (user == null)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid token"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid token"].Value);
+                return _holderOfDto;
             }
             if (user.IsInactive)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["User is Inactive"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["User is Inactive"].Value);
+                return _holderOfDto;
 
             }
 
@@ -430,9 +430,9 @@ namespace WebApp.Core.Services.Auth
             if (!currentUserRefreshToken.isActive)
             {
                 await _userManager.UpdateAsync(user);
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Inactive token"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Inactive token"].Value);
+                return _holderOfDto;
             }
 
             if (user.IsBasedEmail)
@@ -453,14 +453,14 @@ namespace WebApp.Core.Services.Auth
             return await BuildUserAuthAsync(user, currentUserRefreshToken);
         }
 
-        public async Task<HolderOfDTO> LogoutAsync(string refreshToken, HttpContext? httpContext)
+        public async Task<HolderOfDto> LogoutAsync(string refreshToken, HttpContext? httpContext)
         {
             // Check if Refresh Token is Empty
             if (string.IsNullOrEmpty(refreshToken))
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Refresh Token is required"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Refresh Token is required"].Value);
+                return _holderOfDto;
             }
 
             // Get User by any Refresh Token Even if it is Inactive 
@@ -468,9 +468,9 @@ namespace WebApp.Core.Services.Auth
 
             if (user == null)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid token"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid token"].Value);
+                return _holderOfDto;
             }
 
             // Get Current UserRefreshToken by refreshToken
@@ -482,36 +482,36 @@ namespace WebApp.Core.Services.Auth
             if (!currentUserRefreshToken.isActive)
             {
                 await _userManager.UpdateAsync(user);
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid token"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid token"].Value);
+                return _holderOfDto;
             }
             await _userManager.UpdateAsync(user);
 
-            _holderOfDTO.Add(Res.state, true);
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, true);
+            return _holderOfDto;
         }
         #endregion
 
         #region Forgot and Change Password
-        public async Task<HolderOfDTO> ChangePasswordAsync(ChangePasswordRequestDTO changePasswordRequestDTO, HttpContext? httpContext)
+        public async Task<HolderOfDto> ChangePasswordAsync(ChangePasswordRequestDto changePasswordRequestDto, HttpContext? httpContext)
         {
             // Check if Refresh Token is Empty
-            if (string.IsNullOrEmpty(changePasswordRequestDTO.RefreshToken))
+            if (string.IsNullOrEmpty(changePasswordRequestDto.RefreshToken))
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Refresh Token is required"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Refresh Token is required"].Value);
+                return _holderOfDto;
             }
 
             // Get User by any Refresh Token Even if it is Inactive 
-            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.RefreshToken == changePasswordRequestDTO.RefreshToken));
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.RefreshToken == changePasswordRequestDto.RefreshToken));
 
             if (user == null)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid token"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid token"].Value);
+                return _holderOfDto;
             }
 
             if (!await _userManager.IsEmailConfirmedAsync(user))
@@ -519,39 +519,39 @@ namespace WebApp.Core.Services.Auth
 
             if (user.IsInactive)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["User is Inactive"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["User is Inactive"].Value);
+                return _holderOfDto;
 
             }
 
             // Get Current UserRefreshToken by refreshToken
-            var currentUserRefreshToken = user.RefreshTokens.Single(t => t.RefreshToken == changePasswordRequestDTO.RefreshToken);
+            var currentUserRefreshToken = user.RefreshTokens.Single(t => t.RefreshToken == changePasswordRequestDto.RefreshToken);
 
             if (!currentUserRefreshToken.isActive)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Inactive token"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Inactive token"].Value);
+                return _holderOfDto;
             }
 
-            if (!await _userManager.CheckPasswordAsync(user, changePasswordRequestDTO.OldPassword))
+            if (!await _userManager.CheckPasswordAsync(user, changePasswordRequestDto.OldPassword))
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Old Password is incorrect"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Old Password is incorrect"].Value);
+                return _holderOfDto;
             }
 
-            var result = await _userManager.ChangePasswordAsync(user, changePasswordRequestDTO.OldPassword, changePasswordRequestDTO.NewPassword);
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordRequestDto.OldPassword, changePasswordRequestDto.NewPassword);
             if (!result.Succeeded)
             {
                 var errors = string.Empty;
                 foreach (var error in result.Errors)
                     errors += $"{error.Description},";
                 errors = errors.Remove(errors.Length - 1, 1);
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, errors);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, errors);
+                return _holderOfDto;
             }
             // log out user
             user.RefreshTokens.Remove(currentUserRefreshToken);
@@ -584,28 +584,28 @@ namespace WebApp.Core.Services.Auth
             //    catch { }
             //}
 
-            _holderOfDTO.Add(Res.state, true);
+            _holderOfDto.Add(Res.state, true);
             if (user.IsBasedEmail)
             {
-                _holderOfDTO.Add(Res.isConfirmed, user.EmailConfirmed);
-                _holderOfDTO.Add(Res.basedEmail, true);
+                _holderOfDto.Add(Res.isConfirmed, user.EmailConfirmed);
+                _holderOfDto.Add(Res.basedEmail, true);
             }
             else
             {
-                _holderOfDTO.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
-                _holderOfDTO.Add(Res.basedEmail, false);
+                _holderOfDto.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
+                _holderOfDto.Add(Res.basedEmail, false);
             }
-            return _holderOfDTO;
+            return _holderOfDto;
         }
 
-        public async Task<HolderOfDTO> ForgotPasswordAsync(PersonalKeyRequestDTO personalKeyRequestDTO, HttpContext? httpContext)
+        public async Task<HolderOfDto> ForgotPasswordAsync(PersonalKeyRequestDto personalKeyRequestDto, HttpContext? httpContext)
         {
-            var user = await getUserAsync(personalKeyRequestDTO.PersonalKey);
+            var user = await getUserAsync(personalKeyRequestDto.PersonalKey);
             if (user == null)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid Personal Key"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid Personal Key"].Value);
+                return _holderOfDto;
             }
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var userResetPasswordToken = GenerateUserValidationToken(httpContext, token);
@@ -633,99 +633,99 @@ namespace WebApp.Core.Services.Auth
                 catch
                 { }
             }
-            _holderOfDTO.Add(Res.state, true);
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, true);
+            return _holderOfDto;
         }
 
-        public async Task<HolderOfDTO> ResetPasswordAsync(ResetPasswordRequestDTO resetPasswordRequestDTO)
+        public async Task<HolderOfDto> ResetPasswordAsync(ResetPasswordRequestDto resetPasswordRequestDto)
         {
-            var user = await getUserAsync(resetPasswordRequestDTO.personalKey);
+            var user = await getUserAsync(resetPasswordRequestDto.personalKey);
             if (user == null)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid email"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid email"].Value);
+                return _holderOfDto;
             }
 
-            if (string.IsNullOrEmpty(resetPasswordRequestDTO.TokenCode) || resetPasswordRequestDTO.TokenCode.Length != 6)
+            if (string.IsNullOrEmpty(resetPasswordRequestDto.TokenCode) || resetPasswordRequestDto.TokenCode.Length != 6)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid Code"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid Code"].Value);
+                return _holderOfDto;
             }
 
             // Get Current ResetPasswordToken by Code
-            var currentResetPasswordToken = user.ValidationTokens.SingleOrDefault(t => t.ValidationCode == resetPasswordRequestDTO.TokenCode);
+            var currentResetPasswordToken = user.ValidationTokens.SingleOrDefault(t => t.ValidationCode == resetPasswordRequestDto.TokenCode);
 
             if (currentResetPasswordToken is null || !currentResetPasswordToken.isActive)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid or Inactive Code"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid or Inactive Code"].Value);
+                return _holderOfDto;
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, currentResetPasswordToken.ValidationToken, resetPasswordRequestDTO.Password);
+            var result = await _userManager.ResetPasswordAsync(user, currentResetPasswordToken.ValidationToken, resetPasswordRequestDto.Password);
             if (!result.Succeeded)
             {
                 var errors = string.Empty;
                 foreach (var error in result.Errors)
                     errors += $"{error.Description},";
                 errors = errors.Remove(errors.Length - 1, 1);
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, errors);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, errors);
+                return _holderOfDto;
             }
             user.ValidationTokens.ToList().RemoveAll(t => !t.isUsed && (t.isRevoked || t.isExpired));
             currentResetPasswordToken.isUsed = true;
             user.ValidationTokens.Add(currentResetPasswordToken);
             await _userManager.UpdateAsync(user);
 
-            _holderOfDTO.Add(Res.state, true);
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, true);
+            return _holderOfDto;
 
         }
         #endregion
 
         #region Addational Methods
-        public async Task<HolderOfDTO> AddUserToRoleAsync(UserRoleRequestDTO userRoleRequestDTO)
+        public async Task<HolderOfDto> AddUserToRoleAsync(UserRoleRequestDto userRoleRequestDto)
         {
-            var user = await _userManager.FindByIdAsync(userRoleRequestDTO.UserId);
-            var roleName = await getRoleNameAsync(userRoleRequestDTO.RoleId);
+            var user = await _userManager.FindByIdAsync(userRoleRequestDto.UserId);
+            var roleName = await getRoleNameAsync(userRoleRequestDto.RoleId);
             if (user is null || roleName is null)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Invalid user ID or Role"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Invalid user ID or Role"].Value);
+                return _holderOfDto;
             }
             if (await _userManager.IsInRoleAsync(user, roleName))
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["User already assigned to this role"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["User already assigned to this role"].Value);
+                return _holderOfDto;
             }
             var result = await _userManager.AddToRoleAsync(user, roleName);
             if (!result.Succeeded)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["Something went wrong when tring to add role to user"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Something went wrong when tring to add role to user"].Value);
+                return _holderOfDto;
             }
-            _holderOfDTO.Add(Res.state, true);
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, true);
+            return _holderOfDto;
         }
 
-        public async Task<HolderOfDTO> GetRoleUsersAsync(string roleName)
+        public async Task<HolderOfDto> GetRoleUsersAsync(string roleName)
         {
             var lUsers = await _userManager.GetUsersInRoleAsync(roleName);
             if (lUsers is null || lUsers.Count == 0)
             {
-                _holderOfDTO.Add(Res.state, false);
-                _holderOfDTO.Add(Res.message, _culture.SharedLocalizer["This role does not have users"].Value);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, _culture.SharedLocalizer["This role does not have users"].Value);
+                return _holderOfDto;
             }
-            _holderOfDTO.Add(Res.state, true);
-            _holderOfDTO.Add(Res.lUsers, _mapper.Map<List<UserResponseDTO>>(lUsers));
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, true);
+            _holderOfDto.Add(Res.lUsers, _mapper.Map<List<UserResponseDto>>(lUsers));
+            return _holderOfDto;
         }
         #endregion
 
@@ -748,7 +748,7 @@ namespace WebApp.Core.Services.Auth
             return user;
         }
 
-        private async Task<HolderOfDTO> sendPhoneConfirmationCodeAsync(User user, HttpContext httpContext)
+        private async Task<HolderOfDto> sendPhoneConfirmationCodeAsync(User user, HttpContext? httpContext)
         {
             user.ValidationTokens.ToList().RemoveAll(t => !t.isUsed && (t.isRevoked || t.isExpired));
             var userPhoneToken = GenerateUserValidationToken(httpContext, "UserPhoneConfirmation");
@@ -762,16 +762,16 @@ namespace WebApp.Core.Services.Auth
                 var messageContent = $"Your Confirmation Code is : {userPhoneToken.ValidationCode}";
                 _smsService.SendAsync(user.PhoneNumber, messageContent);
             }
-            catch { };
-            _holderOfDTO.Add(Res.state, true);
-            _holderOfDTO.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
-            _holderOfDTO.Add(Res.basedEmail, false);
+            catch { }
+            _holderOfDto.Add(Res.state, true);
+            _holderOfDto.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
+            _holderOfDto.Add(Res.basedEmail, false);
 
-            return _holderOfDTO;
+            return _holderOfDto;
 
         }
 
-        private async Task<HolderOfDTO> sendEmailConfirmationCodeAsync(User user, HttpContext httpContext)
+        private async Task<HolderOfDto> sendEmailConfirmationCodeAsync(User user, HttpContext? httpContext)
         {
             user.ValidationTokens.ToList().RemoveAll(t => !t.isUsed && (t.isRevoked || t.isExpired));
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -788,10 +788,10 @@ namespace WebApp.Core.Services.Auth
                 _emailSender.SendEmailAsync(message);
             }
             catch { };
-            _holderOfDTO.Add(Res.state, true);
-            _holderOfDTO.Add(Res.isConfirmed, user.EmailConfirmed);
-            _holderOfDTO.Add(Res.basedEmail, true);
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, true);
+            _holderOfDto.Add(Res.isConfirmed, user.EmailConfirmed);
+            _holderOfDto.Add(Res.basedEmail, true);
+            return _holderOfDto;
         }
 
         private async Task<string> getRoleNameAsync(string roleId)
@@ -837,12 +837,12 @@ namespace WebApp.Core.Services.Auth
             };
         }
 
-        private async Task<HolderOfDTO> BuildUserAuthAsync(User user, UserRefreshToken userRefreshToken)
+        private async Task<HolderOfDto> BuildUserAuthAsync(User user, UserRefreshToken userRefreshToken)
         {
             var rolesList = (List<string>)await _userManager.GetRolesAsync(user);
             var jwtSecurityToken = await CreateAccessTokenAsync(user);
 
-            var existsUser = new UserAuthResponseDTO
+            var existsUser = new UserAuthResponseDto
             {
                 Id = user.Id,
                 FullName = $"{user.FirstName} {user.LastName}",
@@ -858,19 +858,19 @@ namespace WebApp.Core.Services.Auth
                 DisplayPath = BuildProfileImagePath(user.Path)
 
             };
-            _holderOfDTO.Add(Res.state, true);
+            _holderOfDto.Add(Res.state, true);
             if (user.IsBasedEmail)
             {
-                _holderOfDTO.Add(Res.isConfirmed, user.EmailConfirmed);
-                _holderOfDTO.Add(Res.basedEmail, true);
+                _holderOfDto.Add(Res.isConfirmed, user.EmailConfirmed);
+                _holderOfDto.Add(Res.basedEmail, true);
             }
             else
             {
-                _holderOfDTO.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
-                _holderOfDTO.Add(Res.basedEmail, false);
+                _holderOfDto.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
+                _holderOfDto.Add(Res.basedEmail, false);
             }
-            _holderOfDTO.Add(Res.oUserAuth, existsUser);
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.oUserAuth, existsUser);
+            return _holderOfDto;
         }
 
         private async Task<JwtSecurityToken> CreateAccessTokenAsync(User user)

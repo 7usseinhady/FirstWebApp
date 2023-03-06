@@ -1,8 +1,8 @@
-﻿using WebApp.DataTransferObject.DTOs.Request;
+﻿using WebApp.DataTransferObject.Dtos.Request;
 
-namespace WebApp.DataTransferObject.DTOs.Response
+namespace WebApp.DataTransferObject.Dtos.Response
 {
-    public class VersionResponseDTO : VersionRequestDTO
+    public class VersionResponseDto : VersionRequestDto
     {
     }
 }

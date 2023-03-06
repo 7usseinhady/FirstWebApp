@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.DataTransferObjects.DTOs.Auth.Request
+namespace WebApp.DataTransferObjects.Dtos.Auth.Request
 {
-    public class ChangePasswordRequestDTO
+    public class ChangePasswordRequestDto
     {
         public string? RefreshToken { get; set; }
 

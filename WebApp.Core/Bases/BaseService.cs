@@ -18,30 +18,30 @@ namespace WebApp.Core.Bases
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IMapper _mapper;
-        protected readonly HolderOfDTO _holderOfDTO;
+        protected readonly HolderOfDto _holderOfDto;
         protected readonly ICulture _culture;
         protected readonly ConnectionStringConfiguration _connectionStringConfiguration;
-        protected BaseService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDTO holderOfDTO, ICulture culture)
+        protected BaseService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _holderOfDTO = holderOfDTO;
+            _holderOfDto = holderOfDto;
             _culture = culture;
         }
-        protected BaseService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDTO holderOfDTO, ICulture culture, ConnectionStringConfiguration connectionStringConfiguration)
+        protected BaseService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture, ConnectionStringConfiguration connectionStringConfiguration)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _holderOfDTO = holderOfDTO;
+            _holderOfDto = holderOfDto;
             _culture = culture;
             _connectionStringConfiguration= connectionStringConfiguration;
         }
         
 
 
-        protected async Task<HolderOfDTO> GetUserIdAsync(UserManager<User> userManager, string refreshToken)
+        protected async Task<HolderOfDto> GetUserIdAsync(UserManager<User> userManager, string refreshToken)
         {
-            HolderOfDTO internalHolder = new HolderOfDTO();
+            HolderOfDto internalHolder = new HolderOfDto();
             // Check if Refresh Token is Empty
             if (string.IsNullOrEmpty(refreshToken))
             {

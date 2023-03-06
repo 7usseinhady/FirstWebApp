@@ -1,6 +1,6 @@
-﻿namespace WebApp.DataTransferObjects.DTOs.Auth.Request
+﻿namespace WebApp.DataTransferObjects.Dtos.Auth.Request
 {
-    public class UserIdRequestDTO
+    public class UserIdRequestDto
     {
         public string UserId { get; set; }
     }

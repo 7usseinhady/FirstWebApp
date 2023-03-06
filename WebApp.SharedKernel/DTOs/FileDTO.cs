@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace WebApp.SharedKernel.DTOs
+namespace WebApp.SharedKernel.Dtos
 {
-    public class FileDTO
+    public class FileDto
     {
         public string? Id { get; set; }
         public IFormFile? File { get; set; }

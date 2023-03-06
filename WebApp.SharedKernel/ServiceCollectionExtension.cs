@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using WebApp.SharedKernel.Resources;
 using WebApp.SharedKernel.Helpers.Email.MailKit;
-using WebApp.SharedKernel.Helpers.Payment.PayTabs.DTOs.Request;
+using WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos.Request;
 using WebApp.SharedKernel.Helpers.SMS.GatewaySMS;
 
 namespace WebApp.SharedKernel
@@ -57,7 +57,7 @@ namespace WebApp.SharedKernel
             services.AddScoped<ISMSService, GatewaySMSService>();
             //Service.AddScoped<ISMSService, TwilioSMSService>();
 
-            services.AddScoped<IPaymentService<PaymentInitialRequestDTO>, PayTabsPaymentService>();
+            services.AddScoped<IPaymentService<PaymentInitialRequestDto>, PayTabsPaymentService>();
             services.AddScoped<IBaseApiConnection, BaseApiConnection>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IFileUtils, FileUtils>();

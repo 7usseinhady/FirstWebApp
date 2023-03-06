@@ -12,7 +12,7 @@ namespace WebApp.API.Controllers
     {
         private readonly IRoleService _roleService;
 
-        public RolesController(HolderOfDTO holderOfDTO, IRoleService roleService) : base(holderOfDTO)
+        public RolesController(HolderOfDto holderOfDto, IRoleService roleService) : base(holderOfDto)
         {
             _roleService = roleService;
         }

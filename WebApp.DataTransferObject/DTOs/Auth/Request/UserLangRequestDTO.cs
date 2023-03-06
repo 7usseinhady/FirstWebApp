@@ -1,6 +1,6 @@
-﻿namespace WebApp.DataTransferObjects.DTOs.Auth.Request
+﻿namespace WebApp.DataTransferObjects.Dtos.Auth.Request
 {
-    public class UserLangRequestDTO
+    public class UserLangRequestDto
     {
         public string UserId { get; set; }
         public string LastLang { get; set; }

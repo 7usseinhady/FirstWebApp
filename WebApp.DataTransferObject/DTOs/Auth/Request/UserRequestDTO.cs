@@ -1,9 +1,9 @@
 ﻿using WebApp.DataTransferObjects.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.DataTransferObjects.DTOs.Auth.Request
+namespace WebApp.DataTransferObjects.Dtos.Auth.Request
 {
-    public class UserRequestDTO : IInactive
+    public class UserRequestDto : IInactive
     {
         [Required]
         public string Id { get; set; }

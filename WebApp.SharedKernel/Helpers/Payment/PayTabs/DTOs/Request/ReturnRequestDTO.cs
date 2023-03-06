@@ -1,7 +1,7 @@
 ﻿
-namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.DTOs.Request
+namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos.Request
 {
-    public class ReturnResponseDTO
+    public class ReturnResponseDto
     {
         public string cartId { get; set; }
         public string tranRef { get; set; }

@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebApp.DataTransferObjects.DTOs;
+using WebApp.DataTransferObjects.Dtos;
 
-namespace WebApp.DataTransferObject.DTOs.Request
+namespace WebApp.DataTransferObject.Dtos.Request
 {
-    public class VersionRequestDTO
+    public class VersionRequestDto
     {
         public int Id { get; set; }
         public string? VersionCode { get; set; }
-        public SystemVersionDTO? SystemVersion { get; set; }
+        public SystemVersionDto? SystemVersion { get; set; }
         public bool ForcedUpdate { get; set; }
 
     }

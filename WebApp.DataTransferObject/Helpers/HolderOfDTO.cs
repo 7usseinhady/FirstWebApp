@@ -2,9 +2,9 @@
 
 namespace WebApp.DataTransferObjects.Helpers
 {
-    public class HolderOfDTO : Dictionary<string, object>
+    public class HolderOfDto : Dictionary<string, object>
     {
-        public HolderOfDTO()
+        public HolderOfDto()
         {
         }
     }

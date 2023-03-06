@@ -1,7 +1,7 @@
 ﻿
-namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.DTOs
+namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos
 {
-    public class PaymentInfoDTO
+    public class PaymentInfoDto
     {
         public string card_type { get; set; }
         public string card_scheme { get; set; }

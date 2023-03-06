@@ -1,9 +1,9 @@
 ﻿using WebApp.API.Bases;
 using WebApp.DataTransferObjects.Filters.Auth;
-using WebApp.SharedKernel.DTOs;
+using WebApp.SharedKernel.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
-using WebApp.DataTransferObjects.DTOs.Auth.Request;
+using WebApp.DataTransferObjects.Dtos.Auth.Request;
 using WebApp.DataTransferObjects.Helpers;
 
 namespace WebApp.API.Controllers
@@ -13,7 +13,7 @@ namespace WebApp.API.Controllers
     public class UserController : APIControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(HolderOfDTO holderOfDTO, IUserService userService) : base(holderOfDTO)
+        public UserController(HolderOfDto holderOfDto, IUserService userService) : base(holderOfDto)
         {
             _userService = userService;
         }
@@ -47,32 +47,32 @@ namespace WebApp.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(UserRequestDTO userRequestDTO)
+        public async Task<IActionResult> Put(UserRequestDto userRequestDto)
         {
             if (!ModelState.IsValid)
                 return NotValidModelState();
 
-            return State(await _userService.UpdateAsync(userRequestDTO));
+            return State(await _userService.UpdateAsync(userRequestDto));
 
         }
 
         [HttpPut("UpdateUserDeviceId")]
-        public async Task<IActionResult> UpdateUserDeviceIdAsync(UserDeviceIdRequestDTO userDeviceIdRequestDTO)
+        public async Task<IActionResult> UpdateUserDeviceIdAsync(UserDeviceIdRequestDto userDeviceIdRequestDto)
         {
             if (!ModelState.IsValid)
                 return NotValidModelState();
 
-            return State(await _userService.UpdateUserDeviceIdAsync(userDeviceIdRequestDTO));
+            return State(await _userService.UpdateUserDeviceIdAsync(userDeviceIdRequestDto));
 
         }
 
         [HttpPut("UpdateUserLang")]
-        public async Task<IActionResult> UpdateUserLangAsync(UserLangRequestDTO userLangRequestDTO)
+        public async Task<IActionResult> UpdateUserLangAsync(UserLangRequestDto userLangRequestDto)
         {
             if (!ModelState.IsValid)
                 return NotValidModelState();
 
-            return State(await _userService.UpdateUserLangAsync(userLangRequestDTO));
+            return State(await _userService.UpdateUserLangAsync(userLangRequestDto));
 
         }
 
@@ -87,33 +87,33 @@ namespace WebApp.API.Controllers
         }
 
         [HttpPut("UpdateByRF")]
-        public async Task<IActionResult> UpdateByRF(UserRequestDTO userRequestDTO)
+        public async Task<IActionResult> UpdateByRF(UserRequestDto userRequestDto)
         {
             if (!ModelState.IsValid)
                 return NotValidModelState();
 
-            return State(await _userService.UpdateByRefreshTokenAsync(userRequestDTO));
+            return State(await _userService.UpdateByRefreshTokenAsync(userRequestDto));
 
         }
 
         [HttpPost("UploadUserImage")]
-        public async Task<IActionResult> UploadUserImageAsync([FromForm] FileDTO fileDTO)
+        public async Task<IActionResult> UploadUserImageAsync([FromForm] FileDto fileDto)
         {
             if (!ModelState.IsValid)
             {
                 return NotValidModelState();
             }
-            return State(await _userService.ProfilePictureAsync(fileDTO));
+            return State(await _userService.ProfilePictureAsync(fileDto));
         }
 
         [HttpPost("UploadProfileByRF")]
-        public async Task<IActionResult> UploadProfileByRFAsync([FromForm] FileDTO fileDTO)
+        public async Task<IActionResult> UploadProfileByRFAsync([FromForm] FileDto fileDto)
         {
             if (!ModelState.IsValid)
             {
                 return NotValidModelState();
             }
-            return State(await _userService.ProfilePictureRefreshTokenAsync(fileDTO));
+            return State(await _userService.ProfilePictureRefreshTokenAsync(fileDto));
         }
 
         [HttpDelete("{id}")]

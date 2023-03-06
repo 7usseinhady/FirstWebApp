@@ -1,6 +1,6 @@
-﻿namespace WebApp.DataTransferObjects.DTOs.Auth.Request
+﻿namespace WebApp.DataTransferObjects.Dtos.Auth.Request
 {
-    public class TokenRequestDTO
+    public class TokenRequestDto
     {
         public string? Token { get; set; }
     }

@@ -114,7 +114,7 @@ namespace WebApp.Core.Helpers.AutoMapper
             {
                 return Decimal.ToDouble(number);
             }
-            catch (Exception ex)
+            catch
             {
                 return 0;
             }
@@ -126,7 +126,7 @@ namespace WebApp.Core.Helpers.AutoMapper
             {
                 return Convert.ToDecimal(number);
             }
-            catch (Exception ex)
+            catch
             {
                 return 0;
             }

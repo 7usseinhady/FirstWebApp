@@ -1,10 +1,10 @@
-﻿using WebApp.DataTransferObjects.DTOs.Auth.Request;
+﻿using WebApp.DataTransferObjects.Dtos.Auth.Request;
 using WebApp.DataTransferObjects.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.DataTransferObjects.DTOs.Auth.Response
+namespace WebApp.DataTransferObjects.Dtos.Auth.Response
 {
-    public class UserResponseDTO : UserRequestDTO, IFilePathDTO
+    public class UserResponseDto : UserRequestDto, IFilePathDto
     {
         [Display(Name = "UserName"), Required(ErrorMessage = "Required")]
         public string UserName { get; set; }

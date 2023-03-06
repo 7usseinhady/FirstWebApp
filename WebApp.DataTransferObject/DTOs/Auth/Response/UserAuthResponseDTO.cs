@@ -1,9 +1,9 @@
 ﻿using WebApp.DataTransferObjects.Interfaces;
 using Newtonsoft.Json;
 
-namespace WebApp.DataTransferObjects.DTOs.Auth.Response
+namespace WebApp.DataTransferObjects.Dtos.Auth.Response
 {
-    public class UserAuthResponseDTO : IFilePathDTO
+    public class UserAuthResponseDto : IFilePathDto
     {
         public string Id { get; set; }
         public string FullName { get; set; }

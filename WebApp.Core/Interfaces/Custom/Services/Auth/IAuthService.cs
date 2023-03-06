@@ -1,29 +1,29 @@
 ﻿using Microsoft.AspNetCore.Http;
-using WebApp.DataTransferObjects.DTOs.Auth.Request;
+using WebApp.DataTransferObjects.Dtos.Auth.Request;
 using WebApp.DataTransferObjects.Helpers;
 
 namespace WebApp.Core.Interfaces.Custom.Services.Auth
 {
     public interface IAuthService
     {
-        Task<HolderOfDTO> RegisterAdminAsync(AdminRegisterRequestDTO adminRegisterRequestDTO, HttpContext? httpContext);
-        Task<HolderOfDTO> RegisterUserAsync(UserRegisterRequestDTO userRegisterRequestDTO, HttpContext? httpContext);
+        Task<HolderOfDto> RegisterAdminAsync(AdminRegisterRequestDto adminRegisterRequestDto, HttpContext? httpContext);
+        Task<HolderOfDto> RegisterUserAsync(UserRegisterRequestDto userRegisterRequestDto, HttpContext? httpContext);
 
-        Task<HolderOfDTO> EmailConfirmationAsync(EmailPhoneConfirmationRequestDTO emailConfirmationRequestDTO, HttpContext? httpContext);
-        Task<HolderOfDTO> ResendEmailConfirmationCodeAsync(PersonalKeyRequestDTO personalKeyRequestDTO, HttpContext? httpContext);
-        Task<HolderOfDTO> PhoneConfirmationAsync(EmailPhoneConfirmationRequestDTO phoneConfirmationRequestDTO, HttpContext? httpContext);
-        Task<HolderOfDTO> ResendPhoneConfirmationCodeAsync(PersonalKeyRequestDTO personalKeyRequestDTO, HttpContext? httpContext);
+        Task<HolderOfDto> EmailConfirmationAsync(EmailPhoneConfirmationRequestDto emailConfirmationRequestDto, HttpContext? httpContext);
+        Task<HolderOfDto> ResendEmailConfirmationCodeAsync(PersonalKeyRequestDto personalKeyRequestDto, HttpContext? httpContext);
+        Task<HolderOfDto> PhoneConfirmationAsync(EmailPhoneConfirmationRequestDto phoneConfirmationRequestDto, HttpContext? httpContext);
+        Task<HolderOfDto> ResendPhoneConfirmationCodeAsync(PersonalKeyRequestDto personalKeyRequestDto, HttpContext? httpContext);
 
-        Task<HolderOfDTO> AutoLoginAsync(string refreshToken, HttpContext? httpContext);
-        Task<HolderOfDTO> LoginAsync(UserLoginRequestDTO userLoginRequestDTO, HttpContext? httpContext);
-        Task<HolderOfDTO> RefreshTokensAsync(string refreshToken, HttpContext? httpContext);
-        Task<HolderOfDTO> LogoutAsync(string refreshToken, HttpContext? httpContext);
+        Task<HolderOfDto> AutoLoginAsync(string refreshToken, HttpContext? httpContext);
+        Task<HolderOfDto> LoginAsync(UserLoginRequestDto userLoginRequestDto, HttpContext? httpContext);
+        Task<HolderOfDto> RefreshTokensAsync(string refreshToken, HttpContext? httpContext);
+        Task<HolderOfDto> LogoutAsync(string refreshToken, HttpContext? httpContext);
 
-        Task<HolderOfDTO> ChangePasswordAsync(ChangePasswordRequestDTO changePasswordRequestDTO, HttpContext? httpContext);
-        Task<HolderOfDTO> ForgotPasswordAsync(PersonalKeyRequestDTO personalKeyRequestDTO, HttpContext? httpContext);
-        Task<HolderOfDTO> ResetPasswordAsync(ResetPasswordRequestDTO resetPasswordRequestDTO);
+        Task<HolderOfDto> ChangePasswordAsync(ChangePasswordRequestDto changePasswordRequestDto, HttpContext? httpContext);
+        Task<HolderOfDto> ForgotPasswordAsync(PersonalKeyRequestDto personalKeyRequestDto, HttpContext? httpContext);
+        Task<HolderOfDto> ResetPasswordAsync(ResetPasswordRequestDto resetPasswordRequestDto);
 
-        Task<HolderOfDTO> AddUserToRoleAsync(UserRoleRequestDTO userRoleDTO);
-        Task<HolderOfDTO> GetRoleUsersAsync(string roleName);
+        Task<HolderOfDto> AddUserToRoleAsync(UserRoleRequestDto userRoleDto);
+        Task<HolderOfDto> GetRoleUsersAsync(string roleName);
     }
 }

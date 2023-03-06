@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using WebApp.Core.Entities.Auth;
-using WebApp.DataTransferObjects.DTOs.Auth.Request;
-using WebApp.DataTransferObjects.DTOs.Auth.Response;
+using WebApp.DataTransferObjects.Dtos.Auth.Request;
+using WebApp.DataTransferObjects.Dtos.Auth.Response;
 
 namespace WebApp.Core.Helpers.AutoMapper
 {
@@ -14,13 +14,13 @@ namespace WebApp.Core.Helpers.AutoMapper
             _sharedMapper = sharedMapper;
 
             #region Auth
-            CreateMap<UserRegisterRequestDTO, User>();
+            CreateMap<UserRegisterRequestDto, User>();
 
-            CreateMap<UserRequestDTO, User>();
-            CreateMap<User, UserResponseDTO>()
+            CreateMap<UserRequestDto, User>();
+            CreateMap<User, UserResponseDto>()
                 .ForMember(d => d.DisplayPath, o => o.MapFrom(s => _sharedMapper.BuildProfileImagePath(s.Path)));
 
-            CreateMap<Role, RoleResponseDTO>();
+            CreateMap<Role, RoleResponseDto>();
                 //.ForMember(d => d.UserCount, s => s.MapFrom(o => _sharedMapper.GetRoleUserCount(o.Id)));
             #endregion
         }

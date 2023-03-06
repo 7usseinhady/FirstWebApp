@@ -1,5 +1,5 @@
 ﻿using WebApp.SharedKernel.Consts;
-using WebApp.SharedKernel.DTOs;
+using WebApp.SharedKernel.Dtos;
 using WebApp.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
@@ -55,17 +55,17 @@ namespace WebApp.SharedKernel.Helpers
         public async Task<string> ToBase64StringAsync(IFormFile file) => await ToBase64StringAsync(await ToBytesAsync(file));
         public async Task<IFormFile> ToIFormFileAsync(string base64String, string fileName) => await ToIFormFileAsync(await ToBytesAsync(base64String), fileName);
 
-        public async Task<Dictionary<string, object>> UploadImageAsync(FileDTO fileDTO)
+        public async Task<Dictionary<string, object>> UploadImageAsync(FileDto fileDto)
         {
             var holder = new Dictionary<string, object>();
             List<bool> lIndicator = new List<bool>();
             try
             {
-                if (fileDTO.File is not null && fileDTO.File.Length > 0)
+                if (fileDto.File is not null && fileDto.File.Length > 0)
                 {
-                    string FileName = fileDTO.File.FileName;
+                    string FileName = fileDto.File.FileName;
 
-                    using (var image = Image.Load(fileDTO.File.OpenReadStream()))
+                    using (var image = Image.Load(fileDto.File.OpenReadStream()))
                     {
 
                         string newSize = ImageResize(image, 1200, 1200);
@@ -76,16 +76,16 @@ namespace WebApp.SharedKernel.Helpers
                         string extention = Path.GetExtension(FileName).ToLower();
                         if (FileExtentions.Count > 0 && FileExtentions.Contains(extention))
                         {
-                            if (!string.IsNullOrEmpty(fileDTO.FilePath))
+                            if (!string.IsNullOrEmpty(fileDto.FilePath))
                             {
-                                string dir = @"wwwroot\" + fileDTO.FilePath;
+                                string dir = @"wwwroot\" + fileDto.FilePath;
                                 if (!Directory.Exists(dir))
                                     Directory.CreateDirectory(dir);
 
-                                string fileName = $"{fileDTO.Id}{extention}";
-                                string path = Path.Combine(fileDTO.FilePath, fileName);
+                                string fileName = $"{fileDto.Id}{extention}";
+                                string path = Path.Combine(fileDto.FilePath, fileName);
                                 var filePath = Path.Combine(_environment.ContentRootPath, dir, fileName);
-                                await DeleteFilesNameInPathAsync(fileDTO.FilePath, fileDTO.Id!);
+                                await DeleteFilesNameInPathAsync(fileDto.FilePath, fileDto.Id!);
                                 image.Save(filePath);
                                 holder.Add(Res.filePath, path);
                                 lIndicator.Add(true);
@@ -110,29 +110,29 @@ namespace WebApp.SharedKernel.Helpers
         }
 
         //upload file with path i wwwroot in api and in the computer folder.
-        public async Task<Dictionary<string, object>> UploadFileAsync(FileDTO fileDTO, string fileType)
+        public async Task<Dictionary<string, object>> UploadFileAsync(FileDto fileDto, string fileType)
         {
             var holder = new Dictionary<string, object>();
             List<bool> lIndicator = new List<bool>();
             try
             {
-                if (fileDTO.File is not null && fileDTO.File.Length > 0)
+                if (fileDto.File is not null && fileDto.File.Length > 0)
                 {
                     List<string> FileExtentions = FileExtention(fileType);
-                    string extention = Path.GetExtension(fileDTO.File.FileName).ToLower();
+                    string extention = Path.GetExtension(fileDto.File.FileName).ToLower();
                     if (FileExtentions.Count > 0 && FileExtentions.Contains(extention))
                     {
-                        if (!string.IsNullOrEmpty(fileDTO.FilePath))
+                        if (!string.IsNullOrEmpty(fileDto.FilePath))
                         {
-                            string dir = @"wwwroot\" + fileDTO.FilePath;
+                            string dir = @"wwwroot\" + fileDto.FilePath;
                             if (!Directory.Exists(dir))
                                 Directory.CreateDirectory(dir);
-                            string fileName = $"{fileDTO.Id}{extention}";
-                            string path = Path.Combine(fileDTO.FilePath, fileName);
+                            string fileName = $"{fileDto.Id}{extention}";
+                            string path = Path.Combine(fileDto.FilePath, fileName);
                             var filePath = Path.Combine(_environment.ContentRootPath, dir, fileName);
                             using var fileStream = new FileStream(filePath, FileMode.Create);
-                            await DeleteFilesNameInPathAsync(fileDTO.FilePath, fileDTO.Id!);
-                            await fileDTO.File.CopyToAsync(fileStream);
+                            await DeleteFilesNameInPathAsync(fileDto.FilePath, fileDto.Id!);
+                            await fileDto.File.CopyToAsync(fileStream);
                             holder.Add(Res.filePath, path);
                             lIndicator.Add(true);
                         }

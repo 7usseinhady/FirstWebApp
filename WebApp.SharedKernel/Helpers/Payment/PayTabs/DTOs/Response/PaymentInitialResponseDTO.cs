@@ -1,12 +1,12 @@
 ﻿
-namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.DTOs.Response
+namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos.Response
 {
-    public class PaymentInitialResponseDTO
+    public class PaymentInitialResponseDto
     {
         public string cart_id { get; set; }
         public string tran_ref { get; set; }
         public string cart_amount { get; set; }
-        public CustomerORShippingDetailsDTO customer_details { get; set; }
+        public CustomerORShippingDetailsDto customer_details { get; set; }
         public string callback { get; set; }
         public string @return { get; set; }
 

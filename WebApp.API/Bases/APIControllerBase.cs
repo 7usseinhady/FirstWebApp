@@ -6,27 +6,27 @@ namespace WebApp.API.Bases
 {
     public class APIControllerBase : ControllerBase
     {
-        protected HolderOfDTO _holderOfDTO;
+        protected HolderOfDto _holderOfDto;
 
-        protected APIControllerBase(HolderOfDTO holderOfDTO)
+        protected APIControllerBase(HolderOfDto holderOfDto)
         {
-            _holderOfDTO = holderOfDTO;
+            _holderOfDto = holderOfDto;
         }
         protected IActionResult NotValidModelState()
         {
-            _holderOfDTO.Add(Res.state, false);
-            _holderOfDTO.Add(Res.modelState, ModelState);
-            return BadRequest(_holderOfDTO);
+            _holderOfDto.Add(Res.state, false);
+            _holderOfDto.Add(Res.modelState, ModelState);
+            return BadRequest(_holderOfDto);
         }
 
-        protected IActionResult State(HolderOfDTO holderOfDTO)
+        protected IActionResult State(HolderOfDto holderOfDto)
         {
-            if (holderOfDTO is not null)
+            if (holderOfDto is not null)
             {
-                if (!(bool)holderOfDTO[Res.state])
-                    return BadRequest(holderOfDTO);
+                if (!(bool)holderOfDto[Res.state])
+                    return BadRequest(holderOfDto);
 
-                return Ok(holderOfDTO);
+                return Ok(holderOfDto);
             }
             return BadRequest();
         }

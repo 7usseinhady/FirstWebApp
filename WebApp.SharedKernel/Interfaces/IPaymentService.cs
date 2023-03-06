@@ -2,8 +2,8 @@
 
 namespace WebApp.SharedKernel.Interfaces
 {
-    public interface IPaymentService<TPaymentRequestDTO> where TPaymentRequestDTO : class
+    public interface IPaymentService<TPaymentRequestDto> where TPaymentRequestDto : class
     {
-        Task<JObject> PayAsync(TPaymentRequestDTO paymentRequestDTO);
+        Task<JObject> PayAsync(TPaymentRequestDto paymentRequestDto);
     }
 }

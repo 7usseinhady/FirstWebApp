@@ -1,9 +1,9 @@
-﻿using WebApp.DataTransferObjects.DTOs.Auth.Request;
+﻿using WebApp.DataTransferObjects.Dtos.Auth.Request;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.DataTransferObjects.DTOs.Auth.Response
+namespace WebApp.DataTransferObjects.Dtos.Auth.Response
 {
-    public class RoleResponseDTO : RoleRequestDTO
+    public class RoleResponseDto : RoleRequestDto
     {
         public int? UserCount { get; set; }
 

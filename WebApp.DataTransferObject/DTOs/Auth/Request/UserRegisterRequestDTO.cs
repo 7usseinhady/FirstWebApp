@@ -1,10 +1,10 @@
 ﻿using WebApp.DataTransferObjects.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.DataTransferObjects.DTOs.Auth.Request
+namespace WebApp.DataTransferObjects.Dtos.Auth.Request
 {
 
-    public class UserRegisterRequestDTO
+    public class UserRegisterRequestDto
     {
 
         [Display(Name = "FirstName"), Required(ErrorMessage = "Required"), MaxLength(100)]

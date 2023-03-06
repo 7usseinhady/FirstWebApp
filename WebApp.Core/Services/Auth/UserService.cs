@@ -9,11 +9,11 @@ using WebApp.DataTransferObjects.Helpers;
 using WebApp.DataTransferObjects.Filters.Auth;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Entities.Auth;
-using WebApp.SharedKernel.DTOs;
+using WebApp.SharedKernel.Dtos;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
-using WebApp.DataTransferObjects.DTOs.Auth.Request;
+using WebApp.DataTransferObjects.Dtos.Auth.Request;
 using WebApp.Core.Extensions;
-using WebApp.DataTransferObjects.DTOs.Auth.Response;
+using WebApp.DataTransferObjects.Dtos.Auth.Response;
 
 namespace WebApp.Core.Services
 {
@@ -21,13 +21,13 @@ namespace WebApp.Core.Services
     {
         private UserManager<User> _userManager;
         private readonly IFileUtils _fileUtils;
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDTO holderOfDTO, ICulture culture, UserManager<User> userManager, IFileUtils fileUtils) : base(unitOfWork, mapper, holderOfDTO, culture)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture, UserManager<User> userManager, IFileUtils fileUtils) : base(unitOfWork, mapper, holderOfDto, culture)
         {
             _userManager = userManager;
             _fileUtils = fileUtils;
         }
 
-        public async Task<HolderOfDTO> GetAllAsync(UserFilter userFilter)
+        public async Task<HolderOfDto> GetAllAsync(UserFilter userFilter)
         {
             List<bool> lIndicator = new List<bool>();
             try
@@ -37,44 +37,44 @@ namespace WebApp.Core.Services
 
                 var page = new Pager();
                 page.Set(userFilter.PageSize, userFilter.CurrentPage, totalCount);
-                _holderOfDTO.Add(Res.page, page);
+                _holderOfDto.Add(Res.page, page);
                 lIndicator.Add(true);
 
                 // pagination
                 query = query.AddPage(page.Skip, page.PageSize);
-                _holderOfDTO.Add(Res.lUsers, _mapper.Map<List<UserResponseDTO>>(await query.ToListAsync()));
+                _holderOfDto.Add(Res.lUsers, _mapper.Map<List<UserResponseDto>>(await query.ToListAsync()));
                 lIndicator.Add(true);
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
                 lIndicator.Add(false);
             }
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
+            return _holderOfDto;
         }
 
-        public async Task<HolderOfDTO> GetByIdAsync(string userId)
+        public async Task<HolderOfDto> GetByIdAsync(string userId)
         {
             List<bool> lIndicator = new List<bool>();
             try
             {
                 var userFilter = new UserFilter() { Id = userId };
                 var query = await _unitOfWork.users.BuildUserQueryAsync(userFilter);
-                var userDTO = _mapper.Map<UserResponseDTO>(query.SingleOrDefault());
-                _holderOfDTO.Add(Res.oUser, userDTO);
+                var userDto = _mapper.Map<UserResponseDto>(query.SingleOrDefault());
+                _holderOfDto.Add(Res.oUser, userDto);
                 lIndicator.Add(true);
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
                 lIndicator.Add(false);
             }
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
 
-            return _holderOfDTO;
+            return _holderOfDto;
         }
-        public async Task<HolderOfDTO> GetByRefreshTokenAsync(string token)
+        public async Task<HolderOfDto> GetByRefreshTokenAsync(string token)
         {
             try
             {
@@ -88,61 +88,61 @@ namespace WebApp.Core.Services
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
-                _holderOfDTO.Add(Res.state, false);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.state, false);
+                return _holderOfDto;
             }
         }
 
-        public async Task<HolderOfDTO> UpdateAsync(UserRequestDTO userRequestDTO)
+        public async Task<HolderOfDto> UpdateAsync(UserRequestDto userRequestDto)
         {
             List<bool> lIndicator = new List<bool>();
             try
             {
-                var user = await _userManager.FindByIdAsync(userRequestDTO.Id);
+                var user = await _userManager.FindByIdAsync(userRequestDto.Id);
                 if (user is not null)
                 {
-                    if (!string.IsNullOrEmpty(userRequestDTO.PhoneNumber))
+                    if (!string.IsNullOrEmpty(userRequestDto.PhoneNumber))
                     {
-                        if (user.PhoneNumber != userRequestDTO.PhoneNumber)
+                        if (user.PhoneNumber != userRequestDto.PhoneNumber)
                         {
-                            var userByPhone = await _userManager.Users.Where(x => x.PhoneNumber == userRequestDTO.PhoneNumber).ToListAsync();
+                            var userByPhone = await _userManager.Users.Where(x => x.PhoneNumber == userRequestDto.PhoneNumber).ToListAsync();
                             if (userByPhone.Count() > 0)
                             {
-                                _holderOfDTO.Add(Res.state, false);
-                                _holderOfDTO.Add(Res.message, "phone number is already exist");
-                                return _holderOfDTO;
+                                _holderOfDto.Add(Res.state, false);
+                                _holderOfDto.Add(Res.message, "phone number is already exist");
+                                return _holderOfDto;
                             }
-                            user.Code = userRequestDTO.Code;
-                            user.LocalPhoneNumber = userRequestDTO.LocalPhoneNumber;
-                            user.PhoneNumber = userRequestDTO.PhoneNumber;
+                            user.Code = userRequestDto.Code;
+                            user.LocalPhoneNumber = userRequestDto.LocalPhoneNumber;
+                            user.PhoneNumber = userRequestDto.PhoneNumber;
                             user.PhoneNumberConfirmed = false;
                         }
                     }
 
-                    if (!string.IsNullOrEmpty(userRequestDTO.Email))
+                    if (!string.IsNullOrEmpty(userRequestDto.Email))
                     {
-                        if (user.Email != userRequestDTO.Email)
+                        if (user.Email != userRequestDto.Email)
                         {
-                            var userByEmail = await _userManager.Users.Where(x => x.Email == userRequestDTO.Email).ToListAsync();
+                            var userByEmail = await _userManager.Users.Where(x => x.Email == userRequestDto.Email).ToListAsync();
                             if (userByEmail.Count() > 0)
                             {
-                                _holderOfDTO.Add(Res.state, false);
-                                _holderOfDTO.Add(Res.message, "Email is already exist");
-                                return _holderOfDTO;
+                                _holderOfDto.Add(Res.state, false);
+                                _holderOfDto.Add(Res.message, "Email is already exist");
+                                return _holderOfDto;
                             }
-                            user.Email = userRequestDTO.Email;
+                            user.Email = userRequestDto.Email;
                             user.EmailConfirmed = false;
                         }
                     }
 
-                    user.SecondLocalPhoneNumber = userRequestDTO.SecondLocalPhoneNumber;
-                    user.SecondPhoneNumber = userRequestDTO.SecondPhoneNumber;
-                    user.FirstName = userRequestDTO.FirstName;
-                    user.LastName = userRequestDTO.LastName;
-                    user.IsFemale = userRequestDTO.IsFemale;
-                    user.IsInactive = userRequestDTO.IsInactive;
-                    user.UserUpdateId = userRequestDTO.Id;
+                    user.SecondLocalPhoneNumber = userRequestDto.SecondLocalPhoneNumber;
+                    user.SecondPhoneNumber = userRequestDto.SecondPhoneNumber;
+                    user.FirstName = userRequestDto.FirstName;
+                    user.LastName = userRequestDto.LastName;
+                    user.IsFemale = userRequestDto.IsFemale;
+                    user.IsInactive = userRequestDto.IsInactive;
+                    user.UserUpdateId = userRequestDto.Id;
                     user.UserUpdateDate = DateTime.UtcNow;
 
                     var result = await _userManager.UpdateAsync(user);
@@ -153,94 +153,94 @@ namespace WebApp.Core.Services
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
 
                 lIndicator.Add(false);
             }
 
-            _holderOfDTO.Add(Res.id, userRequestDTO.Id);
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
+            _holderOfDto.Add(Res.id, userRequestDto.Id);
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
 
-            return _holderOfDTO;
+            return _holderOfDto;
         }
 
-        public async Task<HolderOfDTO> UpdateByRefreshTokenAsync(UserRequestDTO userRequestDTO)
+        public async Task<HolderOfDto> UpdateByRefreshTokenAsync(UserRequestDto userRequestDto)
         {
             try
             {
-                var holder = await GetUserIdAsync(_userManager, userRequestDTO.Id);
+                var holder = await GetUserIdAsync(_userManager, userRequestDto.Id);
                 if (!holder.ContainsKey(Res.state) || !(bool)holder[Res.state])
                     return holder;
 
                 var userId = (string)holder[Res.uid];
-                userRequestDTO.Id = userId;
-                return await UpdateAsync(userRequestDTO);
+                userRequestDto.Id = userId;
+                return await UpdateAsync(userRequestDto);
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
-                _holderOfDTO.Add(Res.state, false);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.state, false);
+                return _holderOfDto;
             }
         }
 
-        public async Task<HolderOfDTO> UpdateUserDeviceIdAsync(UserDeviceIdRequestDTO userDeviceIdRequestDTO)
+        public async Task<HolderOfDto> UpdateUserDeviceIdAsync(UserDeviceIdRequestDto userDeviceIdRequestDto)
         {
             var lIndicator = new List<bool>();
             try
             {
-                var oUser = await _userManager.FindByIdAsync(userDeviceIdRequestDTO.UserId);
+                var oUser = await _userManager.FindByIdAsync(userDeviceIdRequestDto.UserId);
                 if (oUser is null)
                 {
-                    _holderOfDTO.Add(Res.state, false);
-                    _holderOfDTO.Add(Res.message, "Not Found User");
-                    return _holderOfDTO;
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, "Not Found User");
+                    return _holderOfDto;
                 }
 
-                oUser.DeviceTokenId = userDeviceIdRequestDTO.DeviceId;
+                oUser.DeviceTokenId = userDeviceIdRequestDto.DeviceId;
 
                 var result = await _userManager.UpdateAsync(oUser);
                 lIndicator.Add(result.Succeeded);
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
                 lIndicator.Add(false);
             }
 
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
+            return _holderOfDto;
         }
 
-        public async Task<HolderOfDTO> UpdateUserLangAsync(UserLangRequestDTO userLangRequestDTO)
+        public async Task<HolderOfDto> UpdateUserLangAsync(UserLangRequestDto userLangRequestDto)
         {
             var lIndicator = new List<bool>();
             try
             {
-                var oUser = await _userManager.FindByIdAsync(userLangRequestDTO.UserId);
+                var oUser = await _userManager.FindByIdAsync(userLangRequestDto.UserId);
                 if (oUser is null)
                 {
-                    _holderOfDTO.Add(Res.state, false);
-                    _holderOfDTO.Add(Res.message, "Not Found User");
-                    return _holderOfDTO;
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, "Not Found User");
+                    return _holderOfDto;
                 }
 
-                oUser.LastLang = userLangRequestDTO.LastLang;
+                oUser.LastLang = userLangRequestDto.LastLang;
 
                 var result = await _userManager.UpdateAsync(oUser);
                 lIndicator.Add(result.Succeeded);
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
                 lIndicator.Add(false);
             }
 
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
+            return _holderOfDto;
         }
 
-        public async Task<HolderOfDTO> DeactiveUserAsync(string userId)
+        public async Task<HolderOfDto> DeactiveUserAsync(string userId)
         {
             var lIndicator = new List<bool>();
             try
@@ -248,9 +248,9 @@ namespace WebApp.Core.Services
                 var oUser = await _userManager.FindByIdAsync(userId);
                 if (oUser is null)
                 {
-                    _holderOfDTO.Add(Res.state, false);
-                    _holderOfDTO.Add(Res.message, "Not Found User");
-                    return _holderOfDTO;
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, "Not Found User");
+                    return _holderOfDto;
                 }
 
                 oUser.IsInactive = true;
@@ -260,33 +260,33 @@ namespace WebApp.Core.Services
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
                 lIndicator.Add(false);
             }
 
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
+            return _holderOfDto;
         }
-        public async Task<HolderOfDTO> ProfilePictureAsync(FileDTO fileDTO)
+        public async Task<HolderOfDto> ProfilePictureAsync(FileDto fileDto)
         {
             List<bool> lIndicator = new List<bool>();
             try
             {
-                if (fileDTO is not null && !string.IsNullOrEmpty(fileDTO.Id))
+                if (fileDto is not null && !string.IsNullOrEmpty(fileDto.Id))
                 {
-                    fileDTO.FilePath = @"\Images\Users\";
-                    if (fileDTO.File is not null && fileDTO.File.Length > 0)
+                    fileDto.FilePath = @"\Images\Users\";
+                    if (fileDto.File is not null && fileDto.File.Length > 0)
                     {
-                        var holder = await _fileUtils.UploadImageAsync(fileDTO);
+                        var holder = await _fileUtils.UploadImageAsync(fileDto);
                         bool isUploaded = (bool)holder[Res.state];
 
                         if (isUploaded)
                         {
-                            var user = await _userManager.FindByIdAsync(fileDTO.Id);
+                            var user = await _userManager.FindByIdAsync(fileDto.Id);
                             if (user is not null)
                             {
                                 user.Path = holder[Res.filePath] as string;
-                                user.UserUpdateId = fileDTO.Id;
+                                user.UserUpdateId = fileDto.Id;
                                 user.UserUpdateDate = DateTime.UtcNow;
                                 var result = await _userManager.UpdateAsync(user);
                                 lIndicator.Add(result.Succeeded);
@@ -304,34 +304,34 @@ namespace WebApp.Core.Services
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
 
                 lIndicator.Add(false);
             }
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
+            return _holderOfDto;
 
         }
-        public async Task<HolderOfDTO> ProfilePictureRefreshTokenAsync(FileDTO fileDTO)
+        public async Task<HolderOfDto> ProfilePictureRefreshTokenAsync(FileDto fileDto)
         {
             try
             {
-                var holder = await GetUserIdAsync(_userManager, fileDTO.Id);
+                var holder = await GetUserIdAsync(_userManager, fileDto.Id);
                 if (!holder.ContainsKey(Res.state) || !(bool)holder[Res.state])
                     return holder;
 
                 var userId = (string)holder[Res.uid];
-                fileDTO.Id = userId;
-                return await ProfilePictureAsync(fileDTO);
+                fileDto.Id = userId;
+                return await ProfilePictureAsync(fileDto);
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
-                _holderOfDTO.Add(Res.state, false);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.state, false);
+                return _holderOfDto;
             }
         }
-        public async Task<HolderOfDTO> DeleteProfilePictureAsync(string id)
+        public async Task<HolderOfDto> DeleteProfilePictureAsync(string id)
         {
             List<bool> lIndicator = new List<bool>();
             try
@@ -339,9 +339,9 @@ namespace WebApp.Core.Services
                 var user = await _userManager.FindByIdAsync(id);
                 if (user is null)
                 {
-                    _holderOfDTO.Add(Res.message, "Invalid User");
-                    _holderOfDTO.Add(Res.state, false);
-                    return _holderOfDTO;
+                    _holderOfDto.Add(Res.message, "Invalid User");
+                    _holderOfDto.Add(Res.state, false);
+                    return _holderOfDto;
                 }
                 bool isDelete = await _fileUtils.DeleteFileAsync(user.Path);
                 if (isDelete)
@@ -354,14 +354,14 @@ namespace WebApp.Core.Services
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
 
                 lIndicator.Add(false);
             }
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
-            return _holderOfDTO;
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
+            return _holderOfDto;
         }
-        public async Task<HolderOfDTO> DeleteProfilePictureRefreshTokenAsync(string token)
+        public async Task<HolderOfDto> DeleteProfilePictureRefreshTokenAsync(string token)
         {
             try
             {
@@ -374,12 +374,12 @@ namespace WebApp.Core.Services
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
-                _holderOfDTO.Add(Res.state, false);
-                return _holderOfDTO;
+                _holderOfDto.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.state, false);
+                return _holderOfDto;
             }
         }
-        public HolderOfDTO Delete(string id)
+        public HolderOfDto Delete(string id)
         {
             List<bool> lIndicator = new List<bool>();
             try
@@ -389,13 +389,13 @@ namespace WebApp.Core.Services
             }
             catch (Exception ex)
             {
-                _holderOfDTO.Add(Res.message, ex.Message);
+                _holderOfDto.Add(Res.message, ex.Message);
 
                 lIndicator.Add(false);
             }
-            _holderOfDTO.Add(Res.state, lIndicator.All(x => x));
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
 
-            return _holderOfDTO;
+            return _holderOfDto;
         }
     }
 }

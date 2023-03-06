@@ -8,7 +8,7 @@ namespace WebApp.DataTransferObject
     {
         public static void LoadDataTransferObjectServices(this IServiceCollection services)
         {
-            services.AddTransient<HolderOfDTO>();
+            services.AddTransient<HolderOfDto>();
         }
     }
 }

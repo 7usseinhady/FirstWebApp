@@ -1,7 +1,7 @@
 ﻿
-namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.DTOs
+namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos
 {
-    public class PaymentResultDTO
+    public class PaymentResultDto
     {
         public string response_status { get; set; }
         public string response_code { get; set; }
