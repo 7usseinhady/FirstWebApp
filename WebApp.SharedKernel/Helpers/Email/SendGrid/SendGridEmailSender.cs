@@ -24,7 +24,7 @@ namespace WebApp.SharedKernel.Helpers.Email.SendGrid
 
             var apiKey = _keyConfig.SendGridKey;
             var client = new SendGridClient(apiKey);
-            var response = await client.SendEmailAsync(sendGridMessage);
+            await client.SendEmailAsync(sendGridMessage);
         }
 
         private async Task<SendGridMessage> CreateEmailMessageAsync(EmailMessage message)

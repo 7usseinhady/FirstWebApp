@@ -22,14 +22,12 @@ namespace WebApp.API.Middlewares
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     await context.Response.WriteAsync("Forbidden Access");
-                    return;
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 await context.Response.WriteAsync("Forbidden Access");
-                return;
             }
         }
     }

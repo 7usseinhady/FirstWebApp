@@ -11,6 +11,7 @@ using WebApp.Core.Entities.Auth;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using WebApp.Core.Helpers;
+using System.Runtime.ExceptionServices;
 
 namespace WebApp.Core.Bases
 {
@@ -20,7 +21,7 @@ namespace WebApp.Core.Bases
         protected readonly IMapper _mapper;
         protected readonly HolderOfDTO _holderOfDTO;
         protected readonly ICulture _culture;
-        protected readonly ConnectionStringConfiguration _connectionStringConfiguration;
+        protected readonly ConnectionStringConfiguration? _connectionStringConfiguration;
         protected BaseService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDTO holderOfDTO, ICulture culture)
         {
             _unitOfWork = unitOfWork;
@@ -34,7 +35,7 @@ namespace WebApp.Core.Bases
             _mapper = mapper;
             _holderOfDTO = holderOfDTO;
             _culture = culture;
-            _connectionStringConfiguration= connectionStringConfiguration;
+            _connectionStringConfiguration = connectionStringConfiguration;
         }
         
 
@@ -78,7 +79,7 @@ namespace WebApp.Core.Bases
             return internalHolder;
         }
 
-        protected async Task<string> GetUserDeviceTokenAsync(UserManager<User> userManager, string userId)
+        protected async Task<string?> GetUserDeviceTokenAsync(UserManager<User> userManager, string userId)
         {
             try
             {
@@ -135,7 +136,7 @@ namespace WebApp.Core.Bases
             var storedProcedureReturn = new StoredProcedureReturn();
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(_connectionStringConfiguration.ConStr))
+                using (SqlConnection sqlConnection = new SqlConnection(_connectionStringConfiguration?.ConStr))
                 using (SqlCommand sqlCommand = new SqlCommand(storedProcedureName, sqlConnection))
                 {
                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
@@ -148,7 +149,7 @@ namespace WebApp.Core.Bases
             }
             catch (Exception ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
             }
             return storedProcedureReturn;
         }

@@ -15,10 +15,10 @@ namespace WebApp.Core.Entities.Auth
         }
 
         [Required, MaxLength(100)]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = default!;
 
         [Required, MaxLength(100)]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = default!;
 
         [NotMapped]
         public string? FullName

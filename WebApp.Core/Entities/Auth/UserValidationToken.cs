@@ -13,11 +13,11 @@ namespace WebApp.Core.Entities.Auth
         [Key]
         public override long Id { get; set; }
 
-        [Required, MaxLength(6)]
-        public string ValidationCode { get; set; }
+        [Required, MaxLength(6)] 
+        public string ValidationCode { get; set; } = default!;
 
-        [Required, MaxLength(400)]
-        public string ValidationToken { get; set; }
+        [Required, MaxLength(400)] 
+        public string ValidationToken { get; set; } = default!;
         
         public DateTime CreatedOn { get; set; }
 
