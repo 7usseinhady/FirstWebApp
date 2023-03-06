@@ -823,8 +823,7 @@ namespace WebApp.Core.Services.Auth
 
         private UserValidationToken GenerateUserValidationToken(HttpContext? httpContext, string resetPasswordToken)
         {
-            Random generator = new Random();
-            String code = generator.Next(0, 1000000).ToString("D6");
+            string code = RandomNumberGenerator.GetInt32(0, 1000000).ToString("D6");
             var ipAdress = RequestUtils.GetClientIPAddress(httpContext);
             var userAgent = RequestUtils.GetClientAgent(httpContext);
             return new UserValidationToken

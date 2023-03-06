@@ -3,18 +3,21 @@ using System.Text.RegularExpressions;
 
 namespace WebApp.SharedKernel.Helpers
 {
-    public class ObjectUtils
+    public partial class ObjectUtils
     {
-
-        public static bool IsPhoneNumber(string number)
+        protected ObjectUtils()
         {
-            return Regex.Match(number, @"^(\+[0-9]{12})$").Success;
+            
         }
 
-        public static bool IsSALocalPhoneNumber(string number)
-        {
-            return Regex.Match(number, @"^(05[0-9]{8})$").Success;
-        }
+        [GeneratedRegex("^(\\+[0-9]{12})$")]
+        private static partial Regex IsPhoneNumber();
+        public static bool IsPhoneNumber(string number) => IsPhoneNumber().Match(number).Success;
+
+        [GeneratedRegex("^(05[0-9]{8})$")]
+        private static partial Regex IsSALocalPhoneNumber();
+        public static bool IsSALocalPhoneNumber(string number) => IsSALocalPhoneNumber().Match(number).Success;
+
         public static bool IsValidEmail(string email)
         {
             var trimmedEmail = email.Trim();
@@ -45,7 +48,7 @@ namespace WebApp.SharedKernel.Helpers
         {
             // raduis of the earth by miles or kilometers
 
-            double R = (unit == DistanceUnit.Miles) ? 3960 : 6371;
+            double R = unit == DistanceUnit.Miles ? 3960 : 6371;
             var lat = (y2 - y1).ToRadians();
             var lng = (x2 - x1).ToRadians();
             var h1 = Math.Sin(lat / 2) * Math.Sin(lat / 2) +
@@ -54,5 +57,7 @@ namespace WebApp.SharedKernel.Helpers
             var h2 = 2 * Math.Asin(Math.Min(1, Math.Sqrt(h1)));
             return R * h2;
         }
+
+        
     }
 }

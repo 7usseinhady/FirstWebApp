@@ -19,6 +19,7 @@ using Microsoft.OpenApi.Models;
 using WebApp.API.Middlewares;
 using WebApp.SharedKernel.Helpers.Email.MailKit;
 using WebApp.Infrastructure.TokenProviders;
+using Microsoft.Extensions.Logging.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,21 +33,7 @@ builder.WebHost.ConfigureKestrel(c =>
 #endregion
 
 #region Json newtonsoft and json patch
-//builder.Services.AddControllers();
 builder.Services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-builder.Services.AddControllersWithViews(options =>
-{
-    options.InputFormatters.Insert(0, new ServiceCollection()
-        .AddLogging()
-        .AddMvc()
-        .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
-        //.AddNewtonsoftJson()
-        .Services.BuildServiceProvider()
-        .GetRequiredService<IOptions<MvcOptions>>()
-        .Value
-        .InputFormatters
-        .OfType<NewtonsoftJsonPatchInputFormatter>().First());
-});
 #endregion
 
 #region Connection String
@@ -217,9 +204,9 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 
 var locOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
-app.UseRequestLocalization(locOptions.Value);
+app.UseRequestLocalization(locOptions!.Value);
 
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+//app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 //app.UseMiddleware<AuthKeyBasedMiddleware>();
 

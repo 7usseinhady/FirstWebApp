@@ -211,8 +211,9 @@ namespace WebApp.API.Controllers
             {
                 var cookieOptions = new CookieOptions
                 {
+                    Expires = userAuthResponseDTO.RefreshTokenExpiration.ToUniversalTime(),
                     HttpOnly = true,
-                    Expires = userAuthResponseDTO.RefreshTokenExpiration.ToUniversalTime()
+                    Secure = true
                 };
                 RequestUtils.SetCookie(httpContext, Res.refreshToken, userAuthResponseDTO.RefreshToken, cookieOptions);
             }
