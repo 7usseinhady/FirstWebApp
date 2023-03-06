@@ -151,10 +151,10 @@ namespace WebApp.Core.Helpers
 
         private static DbTypeMapEntry Find(Type type)
         {
-            object retObj = null;
+            object retObj = null!;
             for (int i = 0; i < DbTypeList.Count; i++)
             {
-                DbTypeMapEntry entry = (DbTypeMapEntry)DbTypeList[i];
+                DbTypeMapEntry entry = (DbTypeMapEntry)DbTypeList[i]!;
                 if (entry.Type == (Nullable.GetUnderlyingType(type) ?? type))
                 {
                     retObj = entry;
@@ -164,7 +164,7 @@ namespace WebApp.Core.Helpers
             if (retObj == null)
             {
                 throw
-                new ApplicationException("Referenced an unsupported Type " + type.ToString());
+                new ApplicationException("Referenced an unsupported Type " + type.ToString())!;
             }
 
             return (DbTypeMapEntry)retObj;
@@ -172,10 +172,10 @@ namespace WebApp.Core.Helpers
 
         private static DbTypeMapEntry Find(DbType dbType)
         {
-            object retObj = null;
+            object retObj = null!;
             for (int i = 0; i < DbTypeList.Count; i++)
             {
-                DbTypeMapEntry entry = (DbTypeMapEntry)DbTypeList[i];
+                DbTypeMapEntry entry = (DbTypeMapEntry)DbTypeList[i]!;
                 if (entry.DbType == dbType)
                 {
                     retObj = entry;
@@ -185,7 +185,7 @@ namespace WebApp.Core.Helpers
             if (retObj == null)
             {
                 throw
-                new ApplicationException("Referenced an unsupported DbType " + dbType.ToString());
+                new ApplicationException("Referenced an unsupported DbType " + dbType.ToString())!;
             }
 
             return (DbTypeMapEntry)retObj;
@@ -193,10 +193,10 @@ namespace WebApp.Core.Helpers
 
         private static DbTypeMapEntry Find(SqlDbType sqlDbType)
         {
-            object retObj = null;
+            object retObj = null!;
             for (int i = 0; i < DbTypeList.Count; i++)
             {
-                DbTypeMapEntry entry = (DbTypeMapEntry)DbTypeList[i];
+                DbTypeMapEntry entry = (DbTypeMapEntry)DbTypeList[i]!;
                 if (entry.SqlDbType == sqlDbType)
                 {
                     retObj = entry;
@@ -206,7 +206,7 @@ namespace WebApp.Core.Helpers
             if (retObj == null)
             {
                 throw
-                new ApplicationException("Referenced an unsupported SqlDbType");
+                new ApplicationException("Referenced an unsupported SqlDbType")!;
             }
 
             return (DbTypeMapEntry)retObj;

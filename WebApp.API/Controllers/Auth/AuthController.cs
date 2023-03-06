@@ -201,11 +201,10 @@ namespace WebApp.API.Controllers
 
         private void CheckStateAndSetRefreshToken(HttpContext httpContext, HolderOfDto holder)
         {
-            UserAuthResponseDto userAuthResponseDto = null;
-            if ((bool)holder[Res.state])
+            UserAuthResponseDto userAuthResponseDto = null!;
+            if ((bool)holder[Res.state] && holder.ContainsKey(Res.isConfirmed) && (bool)holder[Res.isConfirmed] && holder.ContainsKey(Res.oUserAuth))
             {
-                if(holder.ContainsKey(Res.isConfirmed) && (bool)holder[Res.isConfirmed] && holder.ContainsKey(Res.oUserAuth))
-                    userAuthResponseDto = (UserAuthResponseDto)holder[Res.oUserAuth];
+                userAuthResponseDto = (UserAuthResponseDto)holder[Res.oUserAuth];
             }
             if (userAuthResponseDto is not null && !String.IsNullOrEmpty(userAuthResponseDto.RefreshToken))
             {

@@ -81,7 +81,7 @@ builder.Services.AddSingleton(gateWaySmsConfiguration!);
 #endregion
 
 #region JWT Auth
-builder.Services.Configure<WebApp.Core.Helpers.JWT>(builder.Configuration.GetSection("JWT"));
+builder.Services.Configure<WebApp.Core.Helpers.Jwt>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

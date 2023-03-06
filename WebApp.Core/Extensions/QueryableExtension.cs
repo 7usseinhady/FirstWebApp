@@ -5,7 +5,7 @@ namespace WebApp.Core.Extensions
 {
     public static class QueryableExtension
     {
-        public static IQueryable<TSource> AddOrderBy<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, object>> orderBy = null, string orderByDirection = OrderBy.Ascending)
+        public static IQueryable<TSource> AddOrderBy<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, object>> orderBy = null!, string orderByDirection = OrderBy.Ascending)
         {
             if (orderBy != null)
             {

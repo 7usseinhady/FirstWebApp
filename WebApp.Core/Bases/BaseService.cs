@@ -42,7 +42,7 @@ namespace WebApp.Core.Bases
         
 
 
-        protected async Task<HolderOfDto> GetUserIdAsync(UserManager<User> userManager, string refreshToken)
+        protected async Task<HolderOfDto> GetUserIdAsync(UserManager<User> userManager, string? refreshToken)
         {
             HolderOfDto internalHolder = new HolderOfDto();
             // Check if Refresh Token is Empty

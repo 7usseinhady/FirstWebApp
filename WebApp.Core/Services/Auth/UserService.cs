@@ -20,7 +20,7 @@ namespace WebApp.Core.Services
 {
     public class UserService : BaseService, IUserService
     {
-        private UserManager<User> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly IFileUtils _fileUtils;
         public UserService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture, UserManager<User> userManager, IFileUtils fileUtils) : base(unitOfWork, mapper, holderOfDto, culture)
         {
@@ -103,38 +103,32 @@ namespace WebApp.Core.Services
                 var user = await _userManager.FindByIdAsync(userRequestDto.Id);
                 if (user is not null)
                 {
-                    if (!string.IsNullOrEmpty(userRequestDto.PhoneNumber))
+                    if (!string.IsNullOrEmpty(userRequestDto.PhoneNumber) && user.PhoneNumber != userRequestDto.PhoneNumber)
                     {
-                        if (user.PhoneNumber != userRequestDto.PhoneNumber)
+                        var userByPhone = await _userManager.Users.Where(x => x.PhoneNumber == userRequestDto.PhoneNumber).ToListAsync();
+                        if (userByPhone.Count > 0)
                         {
-                            var userByPhone = await _userManager.Users.Where(x => x.PhoneNumber == userRequestDto.PhoneNumber).ToListAsync();
-                            if (userByPhone.Count() > 0)
-                            {
-                                _holderOfDto.Add(Res.state, false);
-                                _holderOfDto.Add(Res.message, "phone number is already exist");
-                                return _holderOfDto;
-                            }
-                            user.Code = userRequestDto.Code;
-                            user.LocalPhoneNumber = userRequestDto.LocalPhoneNumber;
-                            user.PhoneNumber = userRequestDto.PhoneNumber;
-                            user.PhoneNumberConfirmed = false;
+                            _holderOfDto.Add(Res.state, false);
+                            _holderOfDto.Add(Res.message, "phone number is already exist");
+                            return _holderOfDto;
                         }
+                        user.Code = userRequestDto.Code;
+                        user.LocalPhoneNumber = userRequestDto.LocalPhoneNumber;
+                        user.PhoneNumber = userRequestDto.PhoneNumber;
+                        user.PhoneNumberConfirmed = false;
                     }
 
-                    if (!string.IsNullOrEmpty(userRequestDto.Email))
+                    if (!string.IsNullOrEmpty(userRequestDto.Email) && user.Email != userRequestDto.Email)
                     {
-                        if (user.Email != userRequestDto.Email)
+                        var userByEmail = await _userManager.Users.Where(x => x.Email == userRequestDto.Email).ToListAsync();
+                        if (userByEmail.Count > 0)
                         {
-                            var userByEmail = await _userManager.Users.Where(x => x.Email == userRequestDto.Email).ToListAsync();
-                            if (userByEmail.Count() > 0)
-                            {
-                                _holderOfDto.Add(Res.state, false);
-                                _holderOfDto.Add(Res.message, "Email is already exist");
-                                return _holderOfDto;
-                            }
-                            user.Email = userRequestDto.Email;
-                            user.EmailConfirmed = false;
+                            _holderOfDto.Add(Res.state, false);
+                            _holderOfDto.Add(Res.message, "Email is already exist");
+                            return _holderOfDto;
                         }
+                        user.Email = userRequestDto.Email;
+                        user.EmailConfirmed = false;
                     }
 
                     user.SecondLocalPhoneNumber = userRequestDto.SecondLocalPhoneNumber;

@@ -14,7 +14,7 @@ namespace WebApp.SharedKernel.Interfaces
 
         Task<Dictionary<string, object>> UploadImageAsync(FileDto fileDto);
         Task<Dictionary<string, object>> UploadFileAsync(FileDto fileDto, string fileType);
-        Task<bool> DeleteFileAsync(string filePath);
+        Task<bool> DeleteFileAsync(string? filePath);
         Task<bool> DeleteFilesNameInPathAsync(string folderPath, string fileName);
     }
 }

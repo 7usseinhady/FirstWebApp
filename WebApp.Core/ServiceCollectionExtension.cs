@@ -16,7 +16,7 @@ namespace WebApp.Core
             services.AddSingleton<SharedMapper>();
             services.AddSingleton(provider => new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new MappingProfile(provider.GetService<SharedMapper>()));
+                cfg.AddProfile(new MappingProfile(provider.GetService<SharedMapper>()!));
             }).CreateMapper());
             #endregion
 

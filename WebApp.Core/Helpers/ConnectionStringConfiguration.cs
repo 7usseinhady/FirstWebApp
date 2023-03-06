@@ -2,6 +2,6 @@
 {
     public class ConnectionStringConfiguration
     {
-        public string ConStr { get; set; }
+        public string ConStr { get; set; } = default!;
     }
 }

@@ -8,7 +8,7 @@ namespace WebApp.Core.Interfaces.Custom.Services.Auth
     public interface IUserService
     {
         Task<HolderOfDto> GetAllAsync(UserFilter userFilter);
-        Task<HolderOfDto> GetByIdAsync(string id);
+        Task<HolderOfDto> GetByIdAsync(string userId);
         Task<HolderOfDto> GetByRefreshTokenAsync(string token);
         Task<HolderOfDto> UpdateAsync(UserRequestDto userRequestDto);
         Task<HolderOfDto> UpdateByRefreshTokenAsync(UserRequestDto userRequestDto);

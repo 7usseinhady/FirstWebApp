@@ -6,7 +6,7 @@ using WebApp.Infrastructure.Repositories.Custom.Auth;
 
 namespace WebApp.Infrastructure.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public sealed class UnitOfWork : IUnitOfWork
     {
         private readonly WebAppDBContext _context;
 

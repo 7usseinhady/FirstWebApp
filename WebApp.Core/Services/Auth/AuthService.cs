@@ -29,11 +29,11 @@ namespace WebApp.Core.Services.Auth
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly IEmailSender _emailSender;
-        private readonly Helpers.JWT _jwt;
+        private readonly Helpers.Jwt _jwt;
         private readonly IServer _server;
         private readonly ISmsService _smsService;
 
-        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture, RoleManager<Role> roleManager, UserManager<User> userManager, IEmailSender emailSender, IOptions<Helpers.JWT> jwt, IServer server, ISmsService smsService) : base(unitOfWork, mapper, holderOfDto, culture)
+        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture, RoleManager<Role> roleManager, UserManager<User> userManager, IEmailSender emailSender, IOptions<Helpers.Jwt> jwt, IServer server, ISmsService smsService) : base(unitOfWork, mapper, holderOfDto, culture)
         {
             _roleManager = roleManager;
             _userManager = userManager;
