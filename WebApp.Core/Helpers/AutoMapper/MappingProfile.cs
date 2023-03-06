@@ -21,7 +21,6 @@ namespace WebApp.Core.Helpers.AutoMapper
                 .ForMember(d => d.DisplayPath, o => o.MapFrom(s => _sharedMapper.BuildProfileImagePath(s.Path)));
 
             CreateMap<Role, RoleResponseDto>();
-                //.ForMember(d => d.UserCount, s => s.MapFrom(o => _sharedMapper.GetRoleUserCount(o.Id)));
             #endregion
         }
 

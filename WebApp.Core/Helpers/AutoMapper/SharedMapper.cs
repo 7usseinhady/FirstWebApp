@@ -42,7 +42,7 @@ namespace WebApp.Core.Helpers.AutoMapper
             }
         }
 
-        public string BuildProfileImagePath(string path)
+        public string BuildProfileImagePath(string? path)
         {
             try
             {
