@@ -2,6 +2,7 @@
 using WebApp.SharedKernel.Consts;
 using WebApp.SharedKernel.Interfaces;
 using WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos.Request;
+using System.Runtime.ExceptionServices;
 
 namespace WebApp.SharedKernel.Helpers.Payment.PayTabs
 {
@@ -19,12 +20,12 @@ namespace WebApp.SharedKernel.Helpers.Payment.PayTabs
         {
             try
             {
-                JObject result = null;
                 return await _baseApiConnection.PostAsync(controller: "payment", action: "request", body: paymentInitialRequestDto);
             }
-            catch(Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return null!;
             }
         }
     }

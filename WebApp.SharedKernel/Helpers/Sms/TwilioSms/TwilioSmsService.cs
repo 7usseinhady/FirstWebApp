@@ -2,20 +2,20 @@
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 
-namespace WebApp.SharedKernel.Helpers.SMS.TwilioSMS
+namespace WebApp.SharedKernel.Helpers.Sms.TwilioSms
 {
-    public class TwilioSMSService : ISMSService
+    public class TwilioSmsService : ISmsService
     {
-        private readonly TwilioSMSConfiguration _twilioSMSConfiguration;
-        public TwilioSMSService(TwilioSMSConfiguration twilioSMSConfiguration)
+        private readonly TwilioSmsConfiguration _twilioSmsConfiguration;
+        public TwilioSmsService(TwilioSmsConfiguration twilioSmsConfiguration)
         {
-            _twilioSMSConfiguration = twilioSMSConfiguration;
-            TwilioClient.Init(_twilioSMSConfiguration.AccountSID, _twilioSMSConfiguration.AuthToken);
+            _twilioSmsConfiguration = twilioSmsConfiguration;
+            TwilioClient.Init(_twilioSmsConfiguration.AccountSID, _twilioSmsConfiguration.AuthToken);
         }
         public async Task SendAsync(string mobileNumber, string body)
         {
             var result = MessageResource.Create(
-                from: new Twilio.Types.PhoneNumber(_twilioSMSConfiguration.PhoneNumber),
+                from: new Twilio.Types.PhoneNumber(_twilioSmsConfiguration.PhoneNumber),
                 body: body,
                 to: mobileNumber);
         }

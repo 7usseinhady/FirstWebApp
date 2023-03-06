@@ -8,8 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebApp.SharedKernel.Consts;
 using WebApp.SharedKernel.Helpers.Email.SendGrid;
-using WebApp.SharedKernel.Helpers.SMS.GatewaySMS;
-using WebApp.SharedKernel.Helpers.SMS.TwilioSMS;
+using WebApp.SharedKernel.Helpers.Sms.GatewaySms;
+using WebApp.SharedKernel.Helpers.Sms.TwilioSms;
 using WebApp.SharedKernel;
 using WebApp.DataTransferObject;
 using WebApp.Core;
@@ -66,18 +66,18 @@ builder.Services.Configure<EmailConfirmationTokenProviderOptions>(opt =>
                opt.TokenLifespan = TimeSpan.FromHours(2));
 #endregion
 
-#region SMS SetUp
-// Twilio SMS configration
-var twilioSMSConfiguration = builder.Configuration
-                                .GetSection(Res.TwilioSMSConfiguration)
-                                .Get<TwilioSMSConfiguration>();
-builder.Services.AddSingleton(twilioSMSConfiguration!);
+#region Sms SetUp
+// Twilio Sms configration
+var twilioSmsConfiguration = builder.Configuration
+                                .GetSection(Res.TwilioSmsConfiguration)
+                                .Get<TwilioSmsConfiguration>();
+builder.Services.AddSingleton(twilioSmsConfiguration!);
 
-// Gateway SMS configration
-var gateWaySMSConfiguration = builder.Configuration
-                                .GetSection(Res.GatewaySMSConfiguration)
-                                .Get<GatewaySMSConfiguration>();
-builder.Services.AddSingleton(gateWaySMSConfiguration!);
+// Gateway Sms configration
+var gateWaySmsConfiguration = builder.Configuration
+                                .GetSection(Res.GatewaySmsConfiguration)
+                                .Get<GatewaySmsConfiguration>();
+builder.Services.AddSingleton(gateWaySmsConfiguration!);
 #endregion
 
 #region JWT Auth
@@ -131,12 +131,12 @@ builder.Services.AddHttpClient(Res.PayTabsUri, c =>
         c.DefaultRequestHeaders.Add("Authorization", payTabsServerToken);
 });
 
-// GateWaySMS
-builder.Services.AddHttpClient(Res.GatewaySMSUri, c =>
+// GateWaySms
+builder.Services.AddHttpClient(Res.GatewaySmsUri, c =>
 {
-    string GateWaySMSUri = builder.Configuration.GetValue<string>(Res.GatewaySMSUri)!;
-    if (!string.IsNullOrEmpty(GateWaySMSUri))
-        c.BaseAddress = new Uri(GateWaySMSUri);
+    string GateWaySmsUri = builder.Configuration.GetValue<string>(Res.GatewaySmsUri)!;
+    if (!string.IsNullOrEmpty(GateWaySmsUri))
+        c.BaseAddress = new Uri(GateWaySmsUri);
 });
 #endregion
 

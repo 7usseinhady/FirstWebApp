@@ -2,7 +2,7 @@
 using MimeKit;
 using MailKit.Security;
 using MailKit.Net.Smtp;
-//using SmtpClient = MailKit.Net.Smtp.SmtpClient;
+using System.Runtime.ExceptionServices;
 
 namespace WebApp.SharedKernel.Helpers.Email.MailKit
 {
@@ -28,11 +28,11 @@ namespace WebApp.SharedKernel.Helpers.Email.MailKit
                     await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, SecureSocketOptions.None);
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
                     await client.AuthenticateAsync(_emailConfig.UserName, _emailConfig.Password);
-                    var response = await client.SendAsync(mailMessage);
+                    _ = await client.SendAsync(mailMessage);
                 }
-                catch (Exception ex)
+                catch (AggregateException ex)
                 {
-                    throw ex;
+                    ExceptionDispatchInfo.Capture(ex).Throw();
                 }
                 finally
                 {

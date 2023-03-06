@@ -10,10 +10,10 @@ namespace WebApp.SharedKernel.Helpers.Notification.FCM
         }
 
         [JsonProperty("title")]
-        public string Title { get; set; }
+        public string Title { get; set; } = default!;
 
         [JsonProperty("body")]
-        public string Body { get; set; }
+        public string Body { get; set; } = default!;
 
         public string? DeviceId { get; set; }
         public string? Topic { get; set; }

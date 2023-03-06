@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using WebApp.SharedKernel.Resources;
 using WebApp.SharedKernel.Helpers.Email.MailKit;
 using WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos.Request;
-using WebApp.SharedKernel.Helpers.SMS.GatewaySMS;
+using WebApp.SharedKernel.Helpers.Sms.GatewaySms;
 
 namespace WebApp.SharedKernel
 {
@@ -54,8 +54,8 @@ namespace WebApp.SharedKernel
             services.AddScoped<IEmailSender, MailKitEmailSender>();
             //Service.AddScoped<IEmailSender, SendGridEmailSender>();
 
-            services.AddScoped<ISMSService, GatewaySMSService>();
-            //Service.AddScoped<ISMSService, TwilioSMSService>();
+            services.AddScoped<ISmsService, GatewaySmsService>();
+            //Service.AddScoped<ISmsService, TwilioSmsService>();
 
             services.AddScoped<IPaymentService<PaymentInitialRequestDto>, PayTabsPaymentService>();
             services.AddScoped<IBaseApiConnection, BaseApiConnection>();

@@ -1,7 +1,7 @@
 ﻿
-namespace WebApp.SharedKernel.Helpers.SMS.TwilioSMS
+namespace WebApp.SharedKernel.Helpers.Sms.TwilioSms
 {
-    public class TwilioSMSConfiguration
+    public class TwilioSmsConfiguration
     {
         public string AccountSID { get; set; }
         public string AuthToken { get; set; }
