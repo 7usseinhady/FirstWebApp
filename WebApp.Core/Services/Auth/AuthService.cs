@@ -115,9 +115,10 @@ namespace WebApp.Core.Services.Auth
             var resultUser = await _userManager.CreateAsync(user, adminRegisterRequestDto.Password);
             if (!resultUser.Succeeded)
             {
-                var errors = string.Empty;
+                StringBuilder sb = new();
                 foreach (var error in resultUser.Errors)
-                    errors += $"{error.Description},";
+                    sb.Append($"{error.Description},");
+                var errors = sb.ToString();
                 errors = errors.Remove(errors.Length - 1, 1);
                 _holderOfDto.Add(Res.state, false);
                 _holderOfDto.Add(Res.message, errors);

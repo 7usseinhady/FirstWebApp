@@ -201,13 +201,13 @@ namespace WebApp.API.Controllers
 
         private void CheckStateAndSetRefreshToken(HttpContext httpContext, HolderOfDto holder)
         {
-            UserAuthResponseDTO userAuthResponseDTO = null;
+            UserAuthResponseDto userAuthResponseDto = null;
             if ((bool)holder[Res.state])
             {
                 if(holder.ContainsKey(Res.isConfirmed) && (bool)holder[Res.isConfirmed] && holder.ContainsKey(Res.oUserAuth))
-                    userAuthResponseDTO = (UserAuthResponseDTO)holder[Res.oUserAuth];
+                    userAuthResponseDto = (UserAuthResponseDto)holder[Res.oUserAuth];
             }
-            if (userAuthResponseDTO is not null && !String.IsNullOrEmpty(userAuthResponseDTO.RefreshToken))
+            if (userAuthResponseDto is not null && !String.IsNullOrEmpty(userAuthResponseDto.RefreshToken))
             {
                 var cookieOptions = new CookieOptions
                 {
