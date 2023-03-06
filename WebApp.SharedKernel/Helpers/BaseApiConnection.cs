@@ -21,34 +21,34 @@ namespace WebApp.SharedKernel.Helpers
             _client = _clientFactory.CreateClient(UriKey);
         }
 
-        public async Task<JObject> GetAsync(string controller, string action = null, string id = null, string queryString = null)
+        public async Task<JObject> GetAsync(string controller, string action = null!, string id = null!, string queryString = null!)
         {
             var uri = buildUrl(controller, action, id, queryString);
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
             return await SendAsync(request);
         }
-        public async Task<JObject> PostAsync(string controller, string action = null, string id = null, string queryString = null, object body = null)
+        public async Task<JObject> PostAsync(string controller, string action = null!, string id = null!, string queryString = null!, object body = null!)
         {
             var uri = buildUrl(controller, action, id, queryString);
             var request = new HttpRequestMessage(HttpMethod.Post, uri);
             request.Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
             return await SendAsync(request);
         }
-        public async Task<JObject> PutAsync(string controller, string action = null, string id = null, string queryString = null, object body = null)
+        public async Task<JObject> PutAsync(string controller, string action = null!, string id = null!, string queryString = null!, object body = null!)
         {
             var uri = buildUrl(controller, action, id, queryString);
             var request = new HttpRequestMessage(HttpMethod.Put, uri);
             request.Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
             return await SendAsync(request);
         }
-        public async Task<JObject> PatchAsync(string controller, string action = null, string id = null, string queryString = null, object body = null)
+        public async Task<JObject> PatchAsync(string controller, string action = null!, string id = null!, string queryString = null!, object body = null!)
         {
             var uri = buildUrl(controller, action, id, queryString);
             var request = new HttpRequestMessage(HttpMethod.Patch, uri);
             request.Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
             return await SendAsync(request);
         }
-        public async Task<JObject> DeleteAsync(string controller, string action = null, string id = null, string queryString = null, object body = null)
+        public async Task<JObject> DeleteAsync(string controller, string action = null!, string id = null!, string queryString = null!, object body = null!)
         {
             var uri = buildUrl(controller, action, id, queryString);
             var request = new HttpRequestMessage(HttpMethod.Delete, uri);
@@ -56,12 +56,12 @@ namespace WebApp.SharedKernel.Helpers
             return await SendAsync(request);
         }
 
-        protected string buildUrl(string controller, string action = null, string id = null, string queryString = null)
+        protected string buildUrl(string controller, string action = null!, string id = null!, string queryString = null!)
         {
             StringBuilder sb = new StringBuilder($"{controller}");
             sb.Append(!string.IsNullOrWhiteSpace(action) ? $"/{action}" : "");
             sb.Append(!string.IsNullOrWhiteSpace(id) ? $"/{id}" : "");
-            //sb.Append($"?culture={CultureInfo.CurrentCulture.Name}");
+            //sb.Append($"?culture={CultureInfo.CurrentCulture.Name}")
             sb.Append(!string.IsNullOrWhiteSpace(queryString) ? $"{queryString}" : "");
             return sb.ToString();
         }

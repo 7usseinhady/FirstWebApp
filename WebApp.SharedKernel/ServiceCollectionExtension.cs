@@ -52,10 +52,10 @@ namespace WebApp.SharedKernel
             services.AddScoped<INotificationService, NotificationService>();
 
             services.AddScoped<IEmailSender, MailKitEmailSender>();
-            //Service.AddScoped<IEmailSender, SendGridEmailSender>();
+            //Service.AddScoped<IEmailSender, SendGridEmailSender>()
 
             services.AddScoped<ISmsService, GatewaySmsService>();
-            //Service.AddScoped<ISmsService, TwilioSmsService>();
+            //Service.AddScoped<ISmsService, TwilioSmsService>()
 
             services.AddScoped<IPaymentService<PaymentInitialRequestDto>, PayTabsPaymentService>();
             services.AddScoped<IBaseApiConnection, BaseApiConnection>();

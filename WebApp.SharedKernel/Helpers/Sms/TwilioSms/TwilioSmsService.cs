@@ -14,7 +14,7 @@ namespace WebApp.SharedKernel.Helpers.Sms.TwilioSms
         }
         public async Task SendAsync(string mobileNumber, string body)
         {
-            var result = MessageResource.Create(
+            _ = MessageResource.Create(
                 from: new Twilio.Types.PhoneNumber(_twilioSmsConfiguration.PhoneNumber),
                 body: body,
                 to: mobileNumber);
@@ -23,7 +23,7 @@ namespace WebApp.SharedKernel.Helpers.Sms.TwilioSms
         public async Task SendMultiAsync(List<string> lMobileNumbers, string body)
         {
             foreach (var mobileNumber in lMobileNumbers)
-                SendAsync(mobileNumber, body);
+                await SendAsync(mobileNumber, body);
         }
     }
 }
