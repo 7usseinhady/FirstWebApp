@@ -22,7 +22,7 @@ namespace WebApp.SharedKernel.Helpers
             {
                 var stream = file.OpenReadStream();
                 using (var br = new BinaryReader(stream))
-                    data = br.ReadBytes((int) stream.Length);
+                    data = br.ReadBytes((int)stream.Length);
             }
             if (data is not null && data.Length > 0)
                 return data;
@@ -31,17 +31,8 @@ namespace WebApp.SharedKernel.Helpers
         }
         public async Task<byte[]?> ToBytesAsync(string base64String)
         {
-            if(!string.IsNullOrEmpty(base64String))
+            if (!string.IsNullOrEmpty(base64String))
                 return Convert.FromBase64String(base64String);
-            return null;
-        }
-        public async Task<IFormFile?> ToIFormFileAsync(byte[] byteArray, string fileName)
-        {
-            if (byteArray is not null && byteArray.Length > 0)
-            {
-                var stream = new MemoryStream(byteArray);
-                return new FormFile(stream, 0, byteArray.Length, "file", fileName);
-            }
             return null;
         }
         public async Task<string?> ToBase64StringAsync(byte[] byteArray)
@@ -54,7 +45,16 @@ namespace WebApp.SharedKernel.Helpers
         }
         public async Task<string> ToBase64StringAsync(IFormFile file) => await ToBase64StringAsync(await ToBytesAsync(file));
         public async Task<IFormFile> ToIFormFileAsync(string base64String, string fileName) => await ToIFormFileAsync(await ToBytesAsync(base64String), fileName);
-
+        
+         public async Task<IFormFile?> ToIFormFileAsync(byte[] byteArray, string fileName)
+        {
+            if (byteArray is not null && byteArray.Length > 0)
+            {
+                var stream = new MemoryStream(byteArray);
+                return new FormFile(stream, 0, byteArray.Length, "file", fileName);
+            }
+            return null;
+        }
         public async Task<Dictionary<string, object>> UploadImageAsync(FileDto fileDto)
         {
             var holder = new Dictionary<string, object>();

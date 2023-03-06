@@ -8,28 +8,28 @@ namespace WebApp.SharedKernel.Helpers
     {
         public static CultureInfo GetRequestCulureInfo(HttpContext? httpContext)
         {
-			if (httpContext is null)
-				return null;
+            if (httpContext is null)
+                return null!;
             return httpContext.Features.Get<IRequestCultureFeature>().RequestCulture.Culture;
         }
 
-		public static string GetClientIPAddress(HttpContext? httpContext)
-		{
-			if(httpContext is null)
-				return null;
+        public static string GetClientIPAddress(HttpContext? httpContext)
+        {
+            if (httpContext is null)
+                return null!;
             string clientIp = httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             return clientIp;
-		}
-		
-		public static string GetClientAgent(HttpContext? httpContext)
-		{
-			if (httpContext is null)
-				return null;
-			string clientAgent = string.Empty;
+        }
+
+        public static string GetClientAgent(HttpContext? httpContext)
+        {
+            if (httpContext is null)
+                return null!;
+            string clientAgent = string.Empty;
             if (!string.IsNullOrEmpty(httpContext.Request.Headers["User-Agent"]))
                 clientAgent = httpContext.Request.Headers["User-Agent"];
             return clientAgent;
-		}
+        }
 
         public static void SetCookie(HttpContext httpContext, string key, string value, CookieOptions cookieOptions)
         {

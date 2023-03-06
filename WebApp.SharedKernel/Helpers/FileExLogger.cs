@@ -1,7 +1,7 @@
 ﻿
 namespace WebApp.SharedKernel.Helpers
 {
-    public class FileExLogger
+    public static class FileExLogger
     {
         public static bool Log(string message)
         {
@@ -10,8 +10,8 @@ namespace WebApp.SharedKernel.Helpers
                 List<bool> lIndicator = new List<bool>();
                 var fileName = $"{DateTime.UtcNow.ToString("ddMMyyyy")}.txt";
 
-                //string dir = Path.GetTempPath();
-                //lIndicator.Add(Write(dir, fileName, message));
+                //string dir = Path.GetTempPath()
+                //lIndicator.Add(Write(dir, fileName, message))
 
                 string dir = @"wwwroot\Logs\";
                 lIndicator.Add(Write(dir, fileName, message));

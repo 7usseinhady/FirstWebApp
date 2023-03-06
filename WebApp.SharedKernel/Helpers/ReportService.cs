@@ -1,12 +1,13 @@
 ﻿using AspNetCore.Reporting;
 using WebApp.SharedKernel.Interfaces;
 using System.Text;
+using System.Runtime.ExceptionServices;
 
 namespace WebApp.SharedKernel.Helpers
 {
     public class ReportService : IReportService
     {
-        public async Task<byte[]> GenerateReportAsync(string reportName, object dataSource, string reportType = "pdf", string dataSetName = "DataSet1", Dictionary<string, string> parameters = null)
+        public async Task<byte[]> GenerateReportAsync(string reportName, object dataSource, string reportType = "pdf", string dataSetName = "DataSet1", Dictionary<string, string> parameters = null!)
         {
             try
             {
@@ -21,9 +22,10 @@ namespace WebApp.SharedKernel.Helpers
                 var result = report.Execute(GetRenderType(reportType), parameters : parameters);
                 return result.MainStream;
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return null!;
             }
         }
 
@@ -35,7 +37,6 @@ namespace WebApp.SharedKernel.Helpers
                 switch (reportType.ToLower())
                 {
                     default:
-                    case "pdf":
                         renderType = RenderType.Pdf;
                         break;
                     case "word":
