@@ -23,7 +23,7 @@ namespace WebApp.Core.Interfaces.Custom.Services.Auth
         Task<HolderOfDto> ForgotPasswordAsync(PersonalKeyRequestDto personalKeyRequestDto, HttpContext? httpContext);
         Task<HolderOfDto> ResetPasswordAsync(ResetPasswordRequestDto resetPasswordRequestDto);
 
-        Task<HolderOfDto> AddUserToRoleAsync(UserRoleRequestDto userRoleDto);
+        Task<HolderOfDto> AddUserToRoleAsync(UserRoleRequestDto userRoleRequestDto);
         Task<HolderOfDto> GetRoleUsersAsync(string roleName);
     }
 }

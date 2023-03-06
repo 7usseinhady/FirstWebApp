@@ -147,7 +147,7 @@ namespace WebApp.Core.Bases
                     storedProcedureReturn.lParameters = sqlDataAdapter.GetFillParameters().ToList();
                 }
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
                 ExceptionDispatchInfo.Capture(ex).Throw();
             }

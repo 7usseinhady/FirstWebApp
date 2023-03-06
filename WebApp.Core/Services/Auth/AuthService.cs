@@ -21,6 +21,8 @@ using WebApp.DataTransferObjects.Dtos.Auth.Request;
 using WebApp.SharedKernel.Helpers.Email;
 using WebApp.DataTransferObjects.Dtos.Auth.Response;
 using WebApp.DataTransferObjects.Helpers;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace WebApp.Core.Services.Auth
 {
@@ -32,9 +34,8 @@ namespace WebApp.Core.Services.Auth
         private readonly Helpers.JWT _jwt;
         private readonly IServer _server;
         private readonly ISMSService _smsService;
-        private readonly IFileUtils _fileUtils;
 
-        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture, RoleManager<Role> roleManager, UserManager<User> userManager, IEmailSender emailSender, IOptions<Helpers.JWT> jwt, IServer server, ISMSService smsService, IFileUtils fileUtils) : base(unitOfWork, mapper, holderOfDto, culture)
+        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture, RoleManager<Role> roleManager, UserManager<User> userManager, IEmailSender emailSender, IOptions<Helpers.JWT> jwt, IServer server, ISMSService smsService) : base(unitOfWork, mapper, holderOfDto, culture)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -42,7 +43,6 @@ namespace WebApp.Core.Services.Auth
             _jwt = jwt.Value;
             _server = server;
             _smsService = smsService;
-            _fileUtils = fileUtils;
         }
 
         #region Registeration and Answer
@@ -199,19 +199,20 @@ namespace WebApp.Core.Services.Auth
             var result = await _userManager.ConfirmEmailAsync(user, currentResetPasswordToken.ValidationToken);
             if (!result.Succeeded)
             {
-                var errors = string.Empty;
+                StringBuilder sb = new();
                 foreach (var error in result.Errors)
-                    errors += $"{error.Description},";
+                    sb.Append($"{error.Description},");
+                var errors = sb.ToString();
                 errors = errors.Remove(errors.Length - 1, 1);
                 _holderOfDto.Add(Res.state, false);
                 _holderOfDto.Add(Res.message, errors);
                 return _holderOfDto;
             }
-            //
+            
             user.ValidationTokens.ToList().RemoveAll(t => !t.isUsed && (t.isRevoked || t.isExpired));
             currentResetPasswordToken.isUsed = true;
             user.ValidationTokens.Add(currentResetPasswordToken);
-            //
+            
             var newUserRefreshToken = GenerateUserRefreshToken(httpContext);
             user.RefreshTokens.Add(newUserRefreshToken);
             // Save Updates
@@ -288,19 +289,20 @@ namespace WebApp.Core.Services.Auth
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                var errors = string.Empty;
+                StringBuilder sb = new();
                 foreach (var error in result.Errors)
-                    errors += $"{error.Description},";
+                    sb.Append($"{error.Description},");
+                var errors = sb.ToString();
                 errors = errors.Remove(errors.Length - 1, 1);
                 _holderOfDto.Add(Res.state, false);
                 _holderOfDto.Add(Res.message, errors);
                 return _holderOfDto;
             }
-            //
+            
             user.ValidationTokens.ToList().RemoveAll(t => !t.isUsed && (t.isRevoked || t.isExpired));
             currentResetPasswordToken.isUsed = true;
             user.ValidationTokens.Add(currentResetPasswordToken);
-            //
+            
             var newUserRefreshToken = GenerateUserRefreshToken(httpContext);
             user.RefreshTokens.Add(newUserRefreshToken);
             // Save Updates
@@ -378,14 +380,14 @@ namespace WebApp.Core.Services.Auth
                     return await sendPhoneConfirmationCodeAsync(user, httpContext);
             }
 
-            //
+            
             user.ValidationTokens.ToList().RemoveAll(t => !t.isUsed && (t.isRevoked || t.isExpired));
-            //
+            
             user.RefreshTokens.ToList().RemoveAll(t => !t.isActive);
             var userRefreshToken = GenerateUserRefreshToken(httpContext);
             user.RefreshTokens.ToList().RemoveAll(t => t.IpAdress == userRefreshToken.IpAdress && t.Agent == userRefreshToken.Agent);
             user.RefreshTokens.Add(userRefreshToken);
-            // 
+            
             await _userManager.UpdateAsync(user);
 
             user.IsBasedEmail = loginWith;
@@ -424,7 +426,7 @@ namespace WebApp.Core.Services.Auth
             }
 
             user.ValidationTokens.ToList().RemoveAll(t => !t.isUsed && (t.isRevoked || t.isExpired));
-            //
+            
             var currentUserRefreshToken = user.RefreshTokens.Single(t => t.RefreshToken == refreshToken);
             user.RefreshTokens.ToList().RemoveAll(t => t.IpAdress == currentUserRefreshToken.IpAdress && t.Agent == currentUserRefreshToken.Agent);
             user.RefreshTokens.ToList().RemoveAll(t => !t.isActive);
@@ -546,9 +548,10 @@ namespace WebApp.Core.Services.Auth
             var result = await _userManager.ChangePasswordAsync(user, changePasswordRequestDto.OldPassword, changePasswordRequestDto.NewPassword);
             if (!result.Succeeded)
             {
-                var errors = string.Empty;
+                StringBuilder sb = new();
                 foreach (var error in result.Errors)
-                    errors += $"{error.Description},";
+                    sb.Append($"{error.Description},");
+                var errors = sb.ToString();
                 errors = errors.Remove(errors.Length - 1, 1);
                 _holderOfDto.Add(Res.state, false);
                 _holderOfDto.Add(Res.message, errors);
@@ -570,20 +573,14 @@ namespace WebApp.Core.Services.Auth
                 try
                 {
                     // send change password notification to email
-                    var message = new EmailMessage(new List<string>() { user.Email }, _culture.SharedLocalizer["WebApp App, Did you change your Password"].Value, messageContent, null);
-                    _emailSender.SendEmailAsync(message);
+                    var message = new EmailMessage(new List<string>() { user.Email }, _culture.SharedLocalizer["WebApp App, Did you change your Password"].Value, messageContent);
+                    _ = _emailSender.SendEmailAsync(message);
                 }
-                catch { }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex?.Message);
+                }
             }
-            //if (!string.IsNullOrEmpty(user.PhoneNumber) && user.PhoneNumberConfirmed)
-            //{
-            //    try
-            //    {
-            //        // send change password notification to PhoneNumber
-            //        _smsService.Send(user.PhoneNumber, messageContent);
-            //    }
-            //    catch { }
-            //}
 
             _holderOfDto.Add(Res.state, true);
             if (user.IsBasedEmail)
@@ -619,20 +616,24 @@ namespace WebApp.Core.Services.Auth
             {
                 try
                 {
-                    var message = new EmailMessage(new List<string>() { user.Email }, "Acceptance WebApp Request", messageContent, null);
-                    _emailSender.SendEmailAsync(message);
+                    var message = new EmailMessage(new List<string>() { user.Email }, "Acceptance WebApp Request", messageContent);
+                    _ = _emailSender.SendEmailAsync(message);
                 }
-                catch
-                { }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex?.Message.ToString());
+                }
             }
             if (!string.IsNullOrEmpty(user.PhoneNumber))
             {
                 try
                 {
-                    _smsService.SendAsync(user.PhoneNumber, messageContent);
+                    _ = _smsService.SendAsync(user.PhoneNumber, messageContent);
                 }
-                catch
-                { }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex?.Message.ToString());
+                }
             }
             _holderOfDto.Add(Res.state, true);
             return _holderOfDto;
@@ -668,9 +669,10 @@ namespace WebApp.Core.Services.Auth
             var result = await _userManager.ResetPasswordAsync(user, currentResetPasswordToken.ValidationToken, resetPasswordRequestDto.Password);
             if (!result.Succeeded)
             {
-                var errors = string.Empty;
+                StringBuilder sb = new();
                 foreach (var error in result.Errors)
-                    errors += $"{error.Description},";
+                    sb.Append($"{error.Description},");
+                var errors = sb.ToString();
                 errors = errors.Remove(errors.Length - 1, 1);
                 _holderOfDto.Add(Res.state, false);
                 _holderOfDto.Add(Res.message, errors);
@@ -731,20 +733,20 @@ namespace WebApp.Core.Services.Auth
         #endregion
 
         #region Helper Methods
-        private async Task<User> getUserAsync(string personalKey)
+        private async Task<User?> getUserAsync(string personalKey)
         {
-            User user = null;
+            User user = null!;
             if (ObjectUtils.IsSALocalPhoneNumber(personalKey))
             {
-                user = await _userManager.Users.Where(x => x.LocalPhoneNumber == personalKey).SingleOrDefaultAsync();
+                user = (await _userManager.Users.SingleOrDefaultAsync(x => x.LocalPhoneNumber == personalKey))!;
             }
             else if (ObjectUtils.IsValidEmail(personalKey))
             {
-                user = await _userManager.FindByEmailAsync(personalKey);
+                user = (await _userManager.FindByEmailAsync(personalKey))!;
             }
             else
             {
-                user = await _userManager.FindByNameAsync(personalKey);
+                user = (await _userManager.FindByNameAsync(personalKey))!;
             }
             return user;
         }
@@ -761,11 +763,14 @@ namespace WebApp.Core.Services.Auth
             {
                 // send code to PhoneNumber
                 var messageContent = $"Your Confirmation Code is : {userPhoneToken.ValidationCode}";
-                _smsService.SendAsync(user.PhoneNumber, messageContent);
+                _ = _smsService.SendAsync(user?.PhoneNumber!, messageContent);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex?.Message.ToString());
+            }
             _holderOfDto.Add(Res.state, true);
-            _holderOfDto.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
+            _holderOfDto.Add(Res.isConfirmed, user?.PhoneNumberConfirmed!);
             _holderOfDto.Add(Res.basedEmail, false);
 
             return _holderOfDto;
@@ -785,30 +790,31 @@ namespace WebApp.Core.Services.Auth
             {
                 // send code to email
                 var messageContent = $"Your Email Confirmation Code is : {userEmailConfirmationToken.ValidationCode}";
-                var message = new EmailMessage(new List<string>() { user.Email }, "WebApp App, Email Confirmation Code", messageContent, null);
-                _emailSender.SendEmailAsync(message);
+                var message = new EmailMessage(new List<string>() { user.Email! }, "WebApp App, Email Confirmation Code", messageContent);
+                _ = _emailSender.SendEmailAsync(message);
             }
-            catch { };
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex?.Message.ToString());
+            }
             _holderOfDto.Add(Res.state, true);
             _holderOfDto.Add(Res.isConfirmed, user.EmailConfirmed);
             _holderOfDto.Add(Res.basedEmail, true);
             return _holderOfDto;
         }
 
-        private async Task<string> getRoleNameAsync(string roleId)
+        private async Task<string?> getRoleNameAsync(string roleId)
         {
             var role = await _roleManager.FindByIdAsync(roleId);
             if (role is not null)
                 return role.Name;
-            return null;
+            return string.Empty;
         }
-
-
 
         private UserRefreshToken GenerateUserRefreshToken(HttpContext? httpContext)
         {
             var randomNumber = new byte[32];
-            using var generator = new RNGCryptoServiceProvider();
+            using var generator = RandomNumberGenerator.Create();
             generator.GetBytes(randomNumber);
             var ipAdress = RequestUtils.GetClientIPAddress(httpContext);
             var userAgent = RequestUtils.GetClientAgent(httpContext);
@@ -847,28 +853,28 @@ namespace WebApp.Core.Services.Auth
             {
                 Id = user.Id,
                 FullName = $"{user.FirstName} {user.LastName}",
-                Email = user.Email,
-                Username = user.UserName,
+                Email = user?.Email!,
+                Username = user?.UserName!,
                 Roles = rolesList,
                 RefreshToken = userRefreshToken.RefreshToken,
                 RefreshTokenExpiration = userRefreshToken.ExpiresOn,
 
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 AccessTokenExpiration = jwtSecurityToken.ValidTo,
-                Path = user.Path,
-                DisplayPath = BuildProfileImagePath(user.Path)
+                Path = user?.Path!,
+                DisplayPath = BuildProfileImagePath(user?.Path!)
 
             };
             _holderOfDto.Add(Res.state, true);
-            if (user.IsBasedEmail)
-            {
-                _holderOfDto.Add(Res.isConfirmed, user.EmailConfirmed);
-                _holderOfDto.Add(Res.basedEmail, true);
-            }
-            else
+            if (user!.IsBasedEmail)
             {
                 _holderOfDto.Add(Res.isConfirmed, user.PhoneNumberConfirmed);
                 _holderOfDto.Add(Res.basedEmail, false);
+            }
+            else
+            {
+                _holderOfDto.Add(Res.isConfirmed, user.EmailConfirmed);
+                _holderOfDto.Add(Res.basedEmail, true);
             }
             _holderOfDto.Add(Res.oUserAuth, existsUser);
             return _holderOfDto;
@@ -894,7 +900,7 @@ namespace WebApp.Core.Services.Auth
             {
                 new Claim("uid", user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email ?? " "),
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Sub, user?.UserName!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             }
             .Union(userClaims);
@@ -914,7 +920,7 @@ namespace WebApp.Core.Services.Auth
 
         private string BuildProfileImagePath(string path)
         {
-            var adresses = _server.Features.Get<IServerAddressesFeature>().Addresses.ToList<string>();
+            var adresses = _server?.Features?.Get<IServerAddressesFeature>()?.Addresses.ToList<string>()!;
             if (!string.IsNullOrEmpty(path))
             {
                 var uri = path.Replace(@"\", @"/");

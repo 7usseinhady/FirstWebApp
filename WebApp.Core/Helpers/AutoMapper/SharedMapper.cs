@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
+using System.Runtime.ExceptionServices;
 using WebApp.Core.Interfaces;
 using WebApp.DataTransferObjects.Filters.Auth;
 using WebApp.SharedKernel.Helpers;
@@ -22,10 +23,11 @@ namespace WebApp.Core.Helpers.AutoMapper
                 var baseURL = UriUtils.FormatUri(UriUtils.GetServerAddress(_server, true), false, false, false);
                 return UriUtils.BuildUniqueURL(baseURL, path);
             }
-            catch(Exception ex)
+            catch(AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
             }
+            return string.Empty;
         }
 
         public string BuildImagePath(string path)
@@ -36,10 +38,11 @@ namespace WebApp.Core.Helpers.AutoMapper
                 var baseURL = UriUtils.FormatUri(UriUtils.GetServerAddress(_server, true), false, false, false);
                 return UriUtils.BuildUniqueURL(baseURL, path);
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
             }
+            return string.Empty;
         }
 
         public string BuildProfileImagePath(string? path)
@@ -50,10 +53,11 @@ namespace WebApp.Core.Helpers.AutoMapper
                 var baseURL = UriUtils.FormatUri(UriUtils.GetServerAddress(_server, true), false, false, false);
                 return UriUtils.BuildUniqueURL(baseURL, path);
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
             }
+            return string.Empty;
         }
 
         public DateTime? ToDateTime(string dateOnly)
@@ -84,7 +88,7 @@ namespace WebApp.Core.Helpers.AutoMapper
             }
         }
 
-        public string ToDateOnly(DateTime? dateTime)
+        public string? ToDateOnly(DateTime? dateTime)
         {
             try
             {
@@ -92,11 +96,11 @@ namespace WebApp.Core.Helpers.AutoMapper
             }
             catch (Exception)
             {
-                return null;
+                return string.Empty;
             }
         }
 
-        public string ToTimeOnly(TimeSpan? timeSpan)
+        public string? ToTimeOnly(TimeSpan? timeSpan)
         {
             try
             {
@@ -104,7 +108,7 @@ namespace WebApp.Core.Helpers.AutoMapper
             }
             catch (Exception)
             {
-                return null;
+                return string.Empty;
             }
         }
 
