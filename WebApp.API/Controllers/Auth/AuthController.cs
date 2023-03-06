@@ -105,7 +105,7 @@ namespace WebApp.API.Controllers
                 return NotValidModelState();
             var refreshToken = tokenRequestDto.Token ??  Request.Cookies[Res.refreshToken];
 
-            _holderOfDto = await _authService.AutoLoginAsync(refreshToken, HttpContext);
+            _holderOfDto = await _authService.AutoLoginAsync(refreshToken!, HttpContext);
 
             CheckStateAndSetRefreshToken(HttpContext, _holderOfDto);
 
@@ -201,13 +201,13 @@ namespace WebApp.API.Controllers
 
         private void CheckStateAndSetRefreshToken(HttpContext httpContext, HolderOfDto holder)
         {
-            UserAuthResponseDto userAuthResponseDto = null;
+            UserAuthResponseDTO userAuthResponseDTO = null;
             if ((bool)holder[Res.state])
             {
                 if(holder.ContainsKey(Res.isConfirmed) && (bool)holder[Res.isConfirmed] && holder.ContainsKey(Res.oUserAuth))
-                    userAuthResponseDto = (UserAuthResponseDto)holder[Res.oUserAuth];
+                    userAuthResponseDTO = (UserAuthResponseDTO)holder[Res.oUserAuth];
             }
-            if (userAuthResponseDto is not null && !String.IsNullOrEmpty(userAuthResponseDto.RefreshToken))
+            if (userAuthResponseDTO is not null && !String.IsNullOrEmpty(userAuthResponseDTO.RefreshToken))
             {
                 var cookieOptions = new CookieOptions
                 {

@@ -19,7 +19,6 @@ using Microsoft.OpenApi.Models;
 using WebApp.API.Middlewares;
 using WebApp.SharedKernel.Helpers.Email.MailKit;
 using WebApp.Infrastructure.TokenProviders;
-using Microsoft.Extensions.Logging.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -100,7 +99,7 @@ builder.Services.AddAuthentication(options =>
             ValidateLifetime = true,
             ValidIssuer = builder.Configuration["JWT:Issuer"],
             ValidAudience = builder.Configuration["JWT:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!)),
             ClockSkew = TimeSpan.FromMinutes(30)
         };
     });
