@@ -19,7 +19,7 @@ namespace WebApp.SharedKernel.Consts
         public const string SendGridEmailConfiguration = nameof(SendGridEmailConfiguration);
         public const string MailKitEmailConfiguration = nameof(MailKitEmailConfiguration);
         public const string EmailConfirmation = nameof(EmailConfirmation);
-        public const string TwilioSMSConfiguration = nameof(TwilioSMSConfiguration);
+        public const string TwilioSmsConfiguration = nameof(TwilioSmsConfiguration);
         public const string uid = nameof(uid);
         public const string PayTabsUri = nameof(PayTabsUri);
         public const string payTabsServerToken = nameof(payTabsServerToken);
@@ -30,8 +30,8 @@ namespace WebApp.SharedKernel.Consts
         public const string oPaymentTransactionService = nameof(oPaymentTransactionService);
         public const string lPaymentTransactionServices = nameof(lPaymentTransactionServices);
 
-        public const string GatewaySMSUri = nameof(GatewaySMSUri);
-        public const string GatewaySMSConfiguration = nameof(GatewaySMSConfiguration);
+        public const string GatewaySmsUri = nameof(GatewaySmsUri);
+        public const string GatewaySmsConfiguration = nameof(GatewaySmsConfiguration);
 
         public const string lTerms = nameof(lTerms);
         public const string oTerm = nameof(oTerm);

@@ -1,6 +1,7 @@
 ﻿using FirebaseAdmin;
 using FirebaseAdmin.Messaging;
 using Google.Apis.Auth.OAuth2;
+using System.Runtime.ExceptionServices;
 using WebApp.SharedKernel.Interfaces;
 
 namespace WebApp.SharedKernel.Helpers.Notification.FCM
@@ -40,9 +41,11 @@ namespace WebApp.SharedKernel.Helpers.Notification.FCM
                 var response = await FirebaseMessaging.GetMessaging(_firebaseApp).SendAsync(message);
                 return !string.IsNullOrEmpty(response);
             }
-            catch (Exception ex)
+
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return false;
             }
         }
         public async Task<bool> SendNotificationToTopicAsync(NotificationRequest notificationRequestModel)
@@ -60,9 +63,10 @@ namespace WebApp.SharedKernel.Helpers.Notification.FCM
                 var response = await FirebaseMessaging.GetMessaging(_firebaseApp).SendAsync(message);
                 return !string.IsNullOrEmpty(response);
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return false;
             }
         }
 
@@ -71,11 +75,12 @@ namespace WebApp.SharedKernel.Helpers.Notification.FCM
             try
             {
                 var response = await FirebaseMessaging.GetMessaging(_firebaseApp).SubscribeToTopicAsync(devicesTokens, topic);
-                return response.SuccessCount == devicesTokens.Count();
+                return response.SuccessCount == devicesTokens.Count;
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return false;
             }
         }
         public async Task<bool> UnsubscribeFromTopicAsync(List<string> devicesTokens, string topic)
@@ -83,11 +88,12 @@ namespace WebApp.SharedKernel.Helpers.Notification.FCM
             try
             {
                 var response = await FirebaseMessaging.GetMessaging(_firebaseApp).UnsubscribeFromTopicAsync(devicesTokens, topic);
-                return response.SuccessCount == devicesTokens.Count();
+                return response.SuccessCount == devicesTokens.Count;
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return false;
             }
         }
 

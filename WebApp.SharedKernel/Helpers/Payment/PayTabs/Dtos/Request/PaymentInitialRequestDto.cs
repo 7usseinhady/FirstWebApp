@@ -3,13 +3,13 @@ namespace WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos.Request
 {
     public class PaymentInitialRequestDto
     {
-        public string cart_id { get; set; }
-        public decimal cart_amount { get; set; }
-        public CustomerORShippingDetailsDto customer_details { get; set; }
-        public string callback { get; set; }
-        public string @return { get; set; }
+        public string cart_id { get; set; } = default!;
+        public decimal cart_amount { get; set; } = default!;
+        public CustomerORShippingDetailsDto customer_details { get; set; } = default!;
+        public string callback { get; set; } = default!;
+        public string @return { get; set; } = default!;
 
-        public int profile_id { get; } = 00000; //90218;
+        public int profile_id { get; } = 00000;
         public string tran_type { get; } = "sale";
         public string cart_description { get; } = "cart_description";
         public string cart_currency { get; } = "SAR";

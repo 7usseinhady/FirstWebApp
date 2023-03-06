@@ -3,8 +3,8 @@ namespace WebApp.SharedKernel.Helpers.Email.SendGrid
 {
     public class SendGridKeyConfiguration
     {
-        public string SendGridKey { get; set; }
-        public string Email { get; set; }
-        public string Name { get; set; }
+        public string SendGridKey { get; set; } = default!;
+        public string Email { get; set; } = default!;
+        public string Name { get; set; } = default!;
     }
 }
