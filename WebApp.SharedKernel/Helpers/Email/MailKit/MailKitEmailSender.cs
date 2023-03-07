@@ -42,7 +42,7 @@ namespace WebApp.SharedKernel.Helpers.Email.MailKit
             }
         }
 
-        private MimeMessage CreateEmailMessage(EmailMessage message)
+        private static MimeMessage CreateEmailMessage(EmailMessage message)
         {
             var emailMessage = new MimeMessage();
 

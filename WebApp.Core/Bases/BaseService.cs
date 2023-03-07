@@ -43,7 +43,7 @@ namespace WebApp.Core.Bases
         
 
 
-        protected async Task<HolderOfDto> GetUserIdAsync(UserManager<User> userManager, string? refreshToken)
+        protected static async Task<HolderOfDto> GetUserIdAsync(UserManager<User> userManager, string? refreshToken)
         {
             HolderOfDto internalHolder = new HolderOfDto();
             // Check if Refresh Token is Empty
@@ -82,7 +82,7 @@ namespace WebApp.Core.Bases
             return internalHolder;
         }
 
-        protected async Task<string?> GetUserDeviceTokenAsync(UserManager<User> userManager, string userId)
+        protected static async Task<string?> GetUserDeviceTokenAsync(UserManager<User> userManager, string userId)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace WebApp.Core.Bases
             }
         }
 
-        protected async Task<string> GetUserLastLangAsync(UserManager<User> userManager, string userId)
+        protected static async Task<string> GetUserLastLangAsync(UserManager<User> userManager, string userId)
         {
             try
             {
@@ -122,7 +122,7 @@ namespace WebApp.Core.Bases
             }
         }
         
-        protected async Task<int> GetUserLastLangIndexAsync(UserManager<User> userManager, string userId)
+        protected static async Task<int> GetUserLastLangIndexAsync(UserManager<User> userManager, string userId)
         {
             try
             {

@@ -57,7 +57,7 @@ namespace WebApp.SharedKernel.Helpers
             return await SendAsync(request);
         }
 
-        protected string buildUrl(string controller, string action = null!, string id = null!, string queryString = null!)
+        protected static string buildUrl(string controller, string action = null!, string id = null!, string queryString = null!)
         {
             StringBuilder sb = new StringBuilder($"{controller}");
             sb.Append(!string.IsNullOrWhiteSpace(action) ? $"/{action}" : "");

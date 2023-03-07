@@ -29,7 +29,7 @@ namespace WebApp.SharedKernel.Helpers
             }
         }
 
-        private RenderType GetRenderType(string reportType)
+        private static RenderType GetRenderType(string reportType)
         {
             var renderType = RenderType.Pdf;
             if (!string.IsNullOrEmpty(reportType))

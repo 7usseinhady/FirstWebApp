@@ -7,7 +7,7 @@ using WebApp.SharedKernel.Helpers;
 
 namespace WebApp.Core.Helpers.AutoMapper
 {
-    public class SharedMapper
+    public partial class SharedMapper
     {
         private readonly IServer _server;
 
@@ -60,7 +60,12 @@ namespace WebApp.Core.Helpers.AutoMapper
             return string.Empty;
         }
 
-        public DateTime? ToDateTime(string dateOnly)
+    }
+
+    // Static Methods
+    public partial class SharedMapper
+    {
+        public static DateTime? ToDateTime(string dateOnly)
         {
             try
             {
@@ -74,7 +79,7 @@ namespace WebApp.Core.Helpers.AutoMapper
             }
         }
 
-        public TimeSpan? ToTimeSpan(string timeOnly)
+        public static TimeSpan? ToTimeSpan(string timeOnly)
         {
             try
             {
@@ -88,7 +93,7 @@ namespace WebApp.Core.Helpers.AutoMapper
             }
         }
 
-        public string? ToDateOnly(DateTime? dateTime)
+        public static string? ToDateOnly(DateTime? dateTime)
         {
             try
             {
@@ -100,7 +105,7 @@ namespace WebApp.Core.Helpers.AutoMapper
             }
         }
 
-        public string? ToTimeOnly(TimeSpan? timeSpan)
+        public static string? ToTimeOnly(TimeSpan? timeSpan)
         {
             try
             {
@@ -112,7 +117,7 @@ namespace WebApp.Core.Helpers.AutoMapper
             }
         }
 
-        public double ToDouble(decimal number)
+        public static double ToDouble(decimal number)
         {
             try
             {
@@ -124,7 +129,7 @@ namespace WebApp.Core.Helpers.AutoMapper
             }
         }
 
-        public decimal ToDecimal(double number)
+        public static decimal ToDecimal(double number)
         {
             try
             {

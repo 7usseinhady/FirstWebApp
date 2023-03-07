@@ -83,7 +83,7 @@ namespace WebApp.Core.Services.Auth
                     _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Phone is not correct"].Value);
                     return _holderOfDto;
                 }
-                else if (_userManager.Users.Where(x => x.PhoneNumber == adminRegisterRequestDto.PhoneNumber).Count() > 0)
+                else if (_userManager.Users.Where(x => x.PhoneNumber == adminRegisterRequestDto.PhoneNumber).Any())
                 {
                     _holderOfDto.Add(Res.state, false);
                     _holderOfDto.Add(Res.message, _culture.SharedLocalizer["Phone is already registered"].Value);
@@ -809,7 +809,7 @@ namespace WebApp.Core.Services.Auth
             return string.Empty;
         }
 
-        private UserRefreshToken GenerateUserRefreshToken(HttpContext? httpContext)
+        private static UserRefreshToken GenerateUserRefreshToken(HttpContext? httpContext)
         {
             var randomNumber = new byte[32];
             using var generator = RandomNumberGenerator.Create();
@@ -826,7 +826,7 @@ namespace WebApp.Core.Services.Auth
             };
         }
 
-        private UserValidationToken GenerateUserValidationToken(HttpContext? httpContext, string resetPasswordToken)
+        private static UserValidationToken GenerateUserValidationToken(HttpContext? httpContext, string resetPasswordToken)
         {
             string code = RandomNumberGenerator.GetInt32(0, 1000000).ToString("D6");
             var ipAdress = RequestUtils.GetClientIPAddress(httpContext);

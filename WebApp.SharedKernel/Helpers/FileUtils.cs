@@ -200,7 +200,7 @@ namespace WebApp.SharedKernel.Helpers
             return lIndicator.All(x => x);
         }
 
-        private List<string> FileExtention(string fileType)
+        private static List<string> FileExtention(string fileType)
         {
             switch (fileType)
             {
@@ -217,7 +217,7 @@ namespace WebApp.SharedKernel.Helpers
                     return new List<string>();
             }
         }
-        private string ImageResize(Image img, int MaxWidth, int MaxHeight)
+        private static string ImageResize(Image img, int MaxWidth, int MaxHeight)
         {
             if (img.Width > MaxWidth || img.Height > MaxHeight)
             {

@@ -199,12 +199,14 @@ namespace WebApp.API.Controllers
             return State(await _authService.GetRoleUsersAsync(roleName));
         }
 
-        private void CheckStateAndSetRefreshToken(HttpContext httpContext, HolderOfDto holder)
+        private static void CheckStateAndSetRefreshToken(HttpContext httpContext, HolderOfDto holder)
         {
             UserAuthResponseDto userAuthResponseDto = null!;
-            if ((bool)holder[Res.state] && holder.ContainsKey(Res.isConfirmed) && (bool)holder[Res.isConfirmed] && holder.ContainsKey(Res.oUserAuth))
+            object? isConfirmed;
+            object? oUserAuthResponseDto;
+            if ((bool)holder[Res.state] && holder.TryGetValue(Res.isConfirmed, out isConfirmed) && (bool)isConfirmed && holder.TryGetValue(Res.isConfirmed, out oUserAuthResponseDto))
             {
-                userAuthResponseDto = (UserAuthResponseDto)holder[Res.oUserAuth];
+                userAuthResponseDto = (UserAuthResponseDto)oUserAuthResponseDto;
             }
             if (userAuthResponseDto is not null && !String.IsNullOrEmpty(userAuthResponseDto.RefreshToken))
             {
