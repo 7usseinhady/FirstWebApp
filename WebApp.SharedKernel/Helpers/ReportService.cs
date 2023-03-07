@@ -7,7 +7,7 @@ namespace WebApp.SharedKernel.Helpers
 {
     public class ReportService : IReportService
     {
-        public async Task<byte[]> GenerateReportAsync(string reportName, object dataSource, string reportType = "pdf", string dataSetName = "DataSet1", Dictionary<string, string> parameters = null!)
+        public byte[] GenerateReport(string reportName, object dataSource, string reportType = "pdf", string dataSetName = "DataSet1", Dictionary<string, string> parameters = null!)
         {
             try
             {

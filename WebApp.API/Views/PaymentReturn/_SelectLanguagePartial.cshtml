@@ -10,18 +10,18 @@
 @{
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
 
-    var cultureItems = locOptions.Value.SupportedUICultures
+    var cultureItems = locOptions?.Value?.SupportedUICultures!
         .Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName.Replace("(مصر)", "") })
         .ToList();
 
     var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
     returnUrl = returnUrl + Context.Request.QueryString;
-    //var x = @$"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}";
+    //var x = @$"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}"
 }
 
 <div title="@localizer["Request culture provider:"] @requestCulture?.Provider?.GetType().Name">
     <form id="selectLanguage" method="POST" asp-controller="Culture" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl">
-        <select id="smallSelect" class="form-select form-select-sm" name="culture" asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems"  onchange="this.form.submit();">
+        <select id="smallSelect" class="form-select form-select-sm" name="culture" asp-for="@requestCulture!.RequestCulture.UICulture.Name" asp-items="cultureItems"  onchange="this.form.submit();">
         </select>
 
 

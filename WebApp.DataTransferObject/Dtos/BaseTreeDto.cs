@@ -9,7 +9,7 @@
         public virtual List<TTree> Children { get; set; } = default!;
 
 
-        public static async Task<List<TTree>> ToTreeAsync(List<TTree> lTreeDtos)
+        public static List<TTree> ToTree(List<TTree> lTreeDtos)
         {
             var treeDictionary = new Dictionary<TKey, TTree>();
 

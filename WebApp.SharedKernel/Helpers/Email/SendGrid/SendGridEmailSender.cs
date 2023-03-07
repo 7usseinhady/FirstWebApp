@@ -17,7 +17,7 @@ namespace WebApp.SharedKernel.Helpers.Email.SendGrid
 
         public async Task SendEmailAsync(EmailMessage message)
         {
-            var sendGridMessage = await CreateEmailMessageAsync(message);
+            var sendGridMessage = CreateEmailMessage(message);
             
             // From
             sendGridMessage.SetFrom(new EmailAddress(_keyConfig.Email, _keyConfig.Name));
@@ -27,7 +27,7 @@ namespace WebApp.SharedKernel.Helpers.Email.SendGrid
             await client.SendEmailAsync(sendGridMessage);
         }
 
-        private async Task<SendGridMessage> CreateEmailMessageAsync(EmailMessage message)
+        private SendGridMessage CreateEmailMessage(EmailMessage message)
         {
             var sendGridMessage = new SendGridMessage();
 
@@ -58,7 +58,7 @@ namespace WebApp.SharedKernel.Helpers.Email.SendGrid
                     if (file.Length > 0)
                     {
                         var attachment = new Attachment();
-                        attachment.Content = await _fileUtils.ToBase64StringAsync(file);
+                        attachment.Content = _fileUtils.ToBase64String(file);
                         attachment.Type = file.ContentType;
                         attachment.Filename = file.FileName;
                         attachment.Disposition = file.ContentDisposition;

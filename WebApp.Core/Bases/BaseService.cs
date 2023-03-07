@@ -24,6 +24,7 @@ namespace WebApp.Core.Bases
         protected readonly HolderOfDto _holderOfDto;
         protected readonly ICulture _culture;
         protected readonly ConnectionStringConfiguration? _connectionStringConfiguration;
+
         protected BaseService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture)
         {
             _unitOfWork = unitOfWork;

@@ -14,7 +14,7 @@ namespace WebApp.SharedKernel.Helpers.Sms.TwilioSms
         }
         public async Task SendAsync(string mobileNumber, string body)
         {
-            _ = MessageResource.Create(
+            _ = await MessageResource.CreateAsync(
                 from: new Twilio.Types.PhoneNumber(_twilioSmsConfiguration.PhoneNumber),
                 body: body,
                 to: mobileNumber);

@@ -1,6 +1,5 @@
 ﻿using WebApp.DataTransferObjects.Filters.Auth;
 using WebApp.Infrastructure.DBContexts;
-using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Interfaces.Custom.Repositories.Auth;
 using WebApp.Core.Entities.Auth;
 using System.Runtime.ExceptionServices;
@@ -13,7 +12,7 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
         {
         }
 
-        public async Task<IQueryable<UserRole>> BuildUserRoleQuery(UserRoleFilter userRoleFilter)
+        public IQueryable<UserRole> BuildUserRoleQuery(UserRoleFilter userRoleFilter)
         {
             try
             {

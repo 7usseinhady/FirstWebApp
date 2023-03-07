@@ -272,7 +272,7 @@ namespace WebApp.Core.Services
                     fileDto.FilePath = @"\Images\Users\";
                     if (fileDto.File is not null && fileDto.File.Length > 0)
                     {
-                        var holder = await _fileUtils.UploadImageAsync(fileDto);
+                        var holder = _fileUtils.UploadImage(fileDto);
                         bool isUploaded = (bool)holder[Res.state];
 
                         if (isUploaded)
@@ -338,7 +338,7 @@ namespace WebApp.Core.Services
                     _holderOfDto.Add(Res.state, false);
                     return _holderOfDto;
                 }
-                bool isDelete = await _fileUtils.DeleteFileAsync(user.Path);
+                bool isDelete = _fileUtils.DeleteFile(user.Path);
                 if (isDelete)
                 {
                     user.Path = null;

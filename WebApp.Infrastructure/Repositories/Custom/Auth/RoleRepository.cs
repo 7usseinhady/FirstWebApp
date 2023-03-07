@@ -14,7 +14,7 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
             _dbContext = dbContext;
         }
 
-        public async Task<IQueryable<Role>> BuildRoleQueryAsync(RoleFilter roleFilter)
+        public IQueryable<Role> BuildRoleQuery(RoleFilter roleFilter)
         {
             try
             {

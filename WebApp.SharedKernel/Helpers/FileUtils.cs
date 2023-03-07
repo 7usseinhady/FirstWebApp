@@ -15,7 +15,7 @@ namespace WebApp.SharedKernel.Helpers
         {
             _environment = environment;
         }
-        public async Task<byte[]?> ToBytesAsync(IFormFile file)
+        public byte[]? ToBytes(IFormFile file)
         {
             byte[]? data = null;
             if (file is not null && file.Length > 0)
@@ -27,15 +27,15 @@ namespace WebApp.SharedKernel.Helpers
             if (data is not null && data.Length > 0)
                 return data;
             else
-                return null;
+                return null!;
         }
-        public async Task<byte[]?> ToBytesAsync(string base64String)
+        public byte[]? ToBytes(string base64String)
         {
             if (!string.IsNullOrEmpty(base64String))
                 return Convert.FromBase64String(base64String);
-            return null;
+            return null!;
         }
-        public async Task<string?> ToBase64StringAsync(byte[] byteArray)
+        public string? ToBase64String(byte[] byteArray)
         {
             if (byteArray is not null && byteArray.Length > 0)
             {
@@ -43,9 +43,9 @@ namespace WebApp.SharedKernel.Helpers
             }
             return null;
         }
-        public async Task<string?> ToBase64StringAsync(IFormFile file) => await ToBase64StringAsync((await ToBytesAsync(file))!);
-        public async Task<IFormFile?> ToIFormFileAsync(string base64String, string fileName) => await ToIFormFileAsync((await ToBytesAsync(base64String))!, fileName);
-         public async Task<IFormFile?> ToIFormFileAsync(byte[] byteArray, string fileName)
+        public string? ToBase64String(IFormFile file) => ToBase64String(ToBytes(file)!);
+        public IFormFile? ToIFormFile(string base64String, string fileName) => ToIFormFile(ToBytes(base64String)!, fileName);
+        public IFormFile? ToIFormFile(byte[] byteArray, string fileName)
         {
             if (byteArray is not null && byteArray.Length > 0)
             {
@@ -55,7 +55,7 @@ namespace WebApp.SharedKernel.Helpers
             return null;
         }
 
-        public async Task<Dictionary<string, object>> UploadImageAsync(FileDto fileDto)
+        public Dictionary<string, object> UploadImage(FileDto fileDto)
         {
             var holder = new Dictionary<string, object>();
             List<bool> lIndicator = new List<bool>();
@@ -85,7 +85,7 @@ namespace WebApp.SharedKernel.Helpers
                                 string fileName = $"{fileDto.Id}{extention}";
                                 string path = Path.Combine(fileDto.FilePath, fileName);
                                 var filePath = Path.Combine(_environment.ContentRootPath, dir, fileName);
-                                await DeleteFilesNameInPathAsync(fileDto.FilePath, fileDto.Id!);
+                                DeleteFilesNameInPath(fileDto.FilePath, fileDto.Id!);
                                 image.Save(filePath);
                                 holder.Add(Res.filePath, path);
                                 lIndicator.Add(true);
@@ -131,7 +131,7 @@ namespace WebApp.SharedKernel.Helpers
                             string path = Path.Combine(fileDto.FilePath, fileName);
                             var filePath = Path.Combine(_environment.ContentRootPath, dir, fileName);
                             using var fileStream = new FileStream(filePath, FileMode.Create);
-                            await DeleteFilesNameInPathAsync(fileDto.FilePath, fileDto.Id!);
+                            DeleteFilesNameInPath(fileDto.FilePath, fileDto.Id!);
                             await fileDto.File.CopyToAsync(fileStream);
                             holder.Add(Res.filePath, path);
                             lIndicator.Add(true);
@@ -153,7 +153,7 @@ namespace WebApp.SharedKernel.Helpers
             holder.Add(Res.state, lIndicator.All(x => x));
             return holder;
         }
-        public async Task<bool> DeleteFileAsync(string filePath)
+        public bool DeleteFile(string? filePath)
         {
             List<bool> lIndicator = new List<bool>();
             try
@@ -172,7 +172,7 @@ namespace WebApp.SharedKernel.Helpers
             }
             return lIndicator.All(x => x);
         }
-        public async Task<bool> DeleteFilesNameInPathAsync(string folderPath, string fileName)
+        public bool DeleteFilesNameInPath(string folderPath, string fileName)
         {
             var fileDir = @"wwwroot" + folderPath;
             List<bool> lIndicator = new List<bool>();
@@ -193,7 +193,7 @@ namespace WebApp.SharedKernel.Helpers
                 }
                 lIndicator.Add(true);
             }
-            catch (Exception ex)
+            catch
             {
                 lIndicator.Add(false);
             }

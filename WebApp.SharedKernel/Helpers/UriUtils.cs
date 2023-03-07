@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Hosting.Server;
+using System.Runtime.ExceptionServices;
 
 namespace WebApp.SharedKernel.Helpers
 {
-    public class UriUtils
+    public static class UriUtils
     {
         public static string GetServerAddress(IServer server, bool isHttps)
         {
             try
             {
                 var uri = string.Empty;
-                var adresses = server.Features.Get<IServerAddressesFeature>().Addresses.ToList<string>();
+                var adresses = server?.Features?.Get<IServerAddressesFeature>()?.Addresses.ToList<string>()!;
                 if (adresses is not null && adresses.Count > 0)
                 {
-                    for (int i = 0; i < adresses.Count(); i++)
+                    for (int i = 0; i < adresses.Count; i++)
                     {
                         if (isHttps)
                         {
@@ -40,11 +41,12 @@ namespace WebApp.SharedKernel.Helpers
                     return uri;
                 }
                 else
-                    throw new Exception("can not find server adress");
+                    throw new AggregateException("can not find server adress");
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return string.Empty;
             }
         }
 
@@ -54,7 +56,7 @@ namespace WebApp.SharedKernel.Helpers
             {
                 if (!string.IsNullOrEmpty(uri))
                 {
-                    Uri fullUri = null;
+                    Uri fullUri = null!;
                     if (!withPortNo)
                     {
                         fullUri = new Uri(uri);
@@ -73,11 +75,12 @@ namespace WebApp.SharedKernel.Helpers
                     uri = uri.EndsWith("/") ? uri.Substring(0, uri.Length - 1) : uri;
                     return uri;
                 }
-                throw new ArgumentNullException();
+                throw new AggregateException("Null uri");
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return string.Empty;
             }
         }
 
@@ -103,9 +106,10 @@ namespace WebApp.SharedKernel.Helpers
                 else
                     return string.Empty;
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                throw ex;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return string.Empty;
             }
         }
     }

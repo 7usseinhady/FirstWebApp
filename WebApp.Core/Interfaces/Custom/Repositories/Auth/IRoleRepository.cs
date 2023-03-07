@@ -6,6 +6,6 @@ namespace WebApp.Core.Interfaces.Custom.Repositories.Auth
 {
     public interface IRoleRepository : IGenericRepository<Role>
     {
-        Task<IQueryable<Role>> BuildRoleQueryAsync(RoleFilter roleFilter);
+        IQueryable<Role> BuildRoleQuery(RoleFilter roleFilter);
     }
 }

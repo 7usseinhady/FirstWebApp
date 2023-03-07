@@ -38,13 +38,13 @@ namespace WebApp.SharedKernel.Helpers
         }
 
         // Get distance between 2 points
-        public static async Task<double> GetEuclideanDistanceAsync(double x1, double y1, double x2, double y2)
+        public static double GetEuclideanDistance(double x1, double y1, double x2, double y2)
         {
             return Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
         }
 
         // Get distance between 2 points
-        public static async Task<double> GetHarversineDistanceAsync(double x1, double y1, double x2, double y2, DistanceUnit unit)
+        public static double GetHarversineDistance(double x1, double y1, double x2, double y2, DistanceUnit unit)
         {
             // raduis of the earth by miles or kilometers
 

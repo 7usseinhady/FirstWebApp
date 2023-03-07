@@ -31,7 +31,7 @@ namespace WebApp.Core.Services
             List<bool> lIndicator = new List<bool>();
             try
             {
-                var query = await _unitOfWork.roles.BuildRoleQueryAsync(roleFilter);
+                var query = _unitOfWork.roles.BuildRoleQuery(roleFilter);
                 int totalCount = await query.CountAsync();
 
                 var page = new Pager();
@@ -59,7 +59,7 @@ namespace WebApp.Core.Services
             try
             {
                 var roleFilter = new RoleFilter() { Id = id };
-                _holderOfDto.Add(Res.oRole, _mapper.Map<RoleResponseDto>(await (await _unitOfWork.roles.BuildRoleQueryAsync(roleFilter)).SingleOrDefaultAsync()));
+                _holderOfDto.Add(Res.oRole, _mapper.Map<RoleResponseDto>(await _unitOfWork.roles.BuildRoleQuery(roleFilter).SingleOrDefaultAsync()));
                 lIndicator.Add(true);
             }
             catch (Exception ex)
