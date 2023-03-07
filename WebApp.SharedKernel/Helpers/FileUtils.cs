@@ -166,7 +166,7 @@ namespace WebApp.SharedKernel.Helpers
                 }
                 lIndicator.Add(true);
             }
-            catch (Exception ex)
+            catch
             {
                 lIndicator.Add(false);
             }
@@ -186,7 +186,10 @@ namespace WebApp.SharedKernel.Helpers
                         File.Delete(file);
                         lIndicator.Add(true);
                     }
-                    catch { }
+                    catch 
+                    {
+                        Console.WriteLine(string.Empty);
+                    }
                 }
                 lIndicator.Add(true);
             }

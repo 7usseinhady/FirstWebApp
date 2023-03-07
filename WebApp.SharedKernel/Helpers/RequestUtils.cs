@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace WebApp.SharedKernel.Helpers
 {
-    public class RequestUtils
+    public static class RequestUtils
     {
         public static CultureInfo GetRequestCulureInfo(HttpContext? httpContext)
         {
