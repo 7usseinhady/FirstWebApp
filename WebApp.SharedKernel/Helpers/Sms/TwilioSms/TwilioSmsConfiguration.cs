@@ -3,8 +3,8 @@ namespace WebApp.SharedKernel.Helpers.Sms.TwilioSms
 {
     public class TwilioSmsConfiguration
     {
-        public string AccountSID { get; set; }
-        public string AuthToken { get; set; }
-        public string PhoneNumber { get; set; }
+        public string AccountSID { get; set; } = default!;
+        public string AuthToken { get; set; } = default!;
+        public string PhoneNumber { get; set; } = default!;
     }
 }

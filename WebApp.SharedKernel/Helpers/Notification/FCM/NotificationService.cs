@@ -20,7 +20,7 @@ namespace WebApp.SharedKernel.Helpers.Notification.FCM
                     Credential = GoogleCredential.FromFile(path)
                 });
             }
-            catch (Exception ex)
+            catch
             {
                 _firebaseApp = FirebaseApp.DefaultInstance;
             }
