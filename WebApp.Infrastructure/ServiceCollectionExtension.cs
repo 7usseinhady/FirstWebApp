@@ -22,7 +22,7 @@ namespace WebApp.Infrastructure
                 .UseSqlServer(connectionString, b =>
                 {
                     b.MigrationsAssembly(typeof(WebAppDBContext).Assembly.FullName);
-                     //.UseNetTopologySuite();
+                     //.UseNetTopologySuite()
                 });
             });
             #endregion
@@ -30,9 +30,9 @@ namespace WebApp.Infrastructure
             #region Add Identity
             services.AddIdentity<User, Role>(option =>
             {
-                //option.Password.RequiredLength = 7;
-                //option.Password.RequireDigit = false;
-                //option.Password.RequireUppercase = false;
+                //option.Password.RequiredLength = 7
+                //option.Password.RequireDigit = false
+                //option.Password.RequireUppercase = false
                 option.SignIn.RequireConfirmedAccount = true;
                 option.SignIn.RequireConfirmedEmail = true;
                 option.SignIn.RequireConfirmedPhoneNumber = true;

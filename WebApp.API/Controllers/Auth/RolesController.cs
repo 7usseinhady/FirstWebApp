@@ -8,7 +8,7 @@ namespace WebApp.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class RolesController : APIControllerBase
+    public class RolesController : ApiControllerBase
     {
         private readonly IRoleService _roleService;
 

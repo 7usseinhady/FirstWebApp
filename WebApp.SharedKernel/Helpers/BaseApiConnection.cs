@@ -14,6 +14,7 @@ namespace WebApp.SharedKernel.Helpers
         public BaseApiConnection(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
+            _client = null!;
         }
 
         public void SetApiUri(string UriKey)

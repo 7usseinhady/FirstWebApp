@@ -4,11 +4,11 @@ using WebApp.DataTransferObject.Dtos;
 
 namespace WebApp.API.Bases
 {
-    public class APIControllerBase : ControllerBase
+    public class ApiControllerBase : ControllerBase
     {
         protected HolderOfDto _holderOfDto;
 
-        protected APIControllerBase(HolderOfDto holderOfDto)
+        protected ApiControllerBase(HolderOfDto holderOfDto)
         {
             _holderOfDto = holderOfDto;
         }

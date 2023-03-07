@@ -12,7 +12,7 @@ namespace WebApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : APIControllerBase
+    public class AuthController : ApiControllerBase
     {
         private readonly IAuthService _authService;
         public AuthController(HolderOfDto holderOfDto, IAuthService authService) : base(holderOfDto)

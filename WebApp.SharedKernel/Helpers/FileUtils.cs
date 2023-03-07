@@ -43,8 +43,8 @@ namespace WebApp.SharedKernel.Helpers
             }
             return null;
         }
-        public async Task<string?> ToBase64StringAsync(IFormFile file) => await ToBase64StringAsync(await ToBytesAsync(file));
-        public async Task<IFormFile?> ToIFormFileAsync(string base64String, string fileName) => await ToIFormFileAsync(await ToBytesAsync(base64String), fileName);
+        public async Task<string?> ToBase64StringAsync(IFormFile file) => await ToBase64StringAsync((await ToBytesAsync(file))!);
+        public async Task<IFormFile?> ToIFormFileAsync(string base64String, string fileName) => await ToIFormFileAsync((await ToBytesAsync(base64String))!, fileName);
          public async Task<IFormFile?> ToIFormFileAsync(byte[] byteArray, string fileName)
         {
             if (byteArray is not null && byteArray.Length > 0)

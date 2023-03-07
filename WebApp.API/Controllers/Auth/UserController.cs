@@ -10,7 +10,7 @@ namespace WebApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : APIControllerBase
+    public class UserController : ApiControllerBase
     {
         private readonly IUserService _userService;
         public UserController(HolderOfDto holderOfDto, IUserService userService) : base(holderOfDto)

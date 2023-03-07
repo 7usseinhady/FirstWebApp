@@ -8,8 +8,7 @@ namespace WebApp.SharedKernel.Helpers
 {
     public partial class Culture
     {
-        private static readonly ImmutableArray<string> _supportedCultures;
-        static Culture() => _supportedCultures = ImmutableArray.Create("ar-EG", "en");
+        private static readonly ImmutableArray<string> _supportedCultures = ImmutableArray.Create("ar-EG", "en");
 
         public static int CurrentIndex()
         {
