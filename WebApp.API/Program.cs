@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using WebApp.Core.Helpers;
 using Hangfire;
@@ -114,7 +112,6 @@ builder.Services.LoadInfrastructureServices(conStr);
 #endregion
 
 #region API .Net Core IOC Container
-builder.Services.AddSingleton<AuthKeyBasedMiddleware>();
 #endregion
 
 #region for Base Api Connection SetUp
@@ -200,7 +197,7 @@ app.UseRequestLocalization(locOptions!.Value);
 
 // app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
 
-// app.UseMiddleware<AuthKeyBasedMiddleware>()
+//app.UseAuthKeyBasedMiddleware()
 
 app.UseAuthentication();
 app.UseAuthorization();
