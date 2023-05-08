@@ -4,16 +4,16 @@ using WebApp.Core.Interfaces;
 using WebApp.SharedKernel.Consts;
 using WebApp.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using WebApp.DataTransferObject.Filters.Auth;
+using WebApp.SharedKernel.Filters.Auth;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Entities.Auth;
 using WebApp.SharedKernel.Dtos;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
-using WebApp.DataTransferObject.Dtos.Auth.Request;
+using WebApp.SharedKernel.Dtos.Auth.Request;
 using WebApp.Core.Extensions;
-using WebApp.DataTransferObject.Dtos.Auth.Response;
-using WebApp.DataTransferObject.Dtos;
-using WebApp.DataTransferObject.Dtos.Response;
+using WebApp.SharedKernel.Dtos.Auth.Response;
+using WebApp.SharedKernel.Dtos;
+using WebApp.SharedKernel.Dtos.Response;
 
 namespace WebApp.Core.Services
 {

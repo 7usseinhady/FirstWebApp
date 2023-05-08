@@ -4,9 +4,9 @@ using WebApp.SharedKernel.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
-using WebApp.DataTransferObject.Dtos.Auth.Request;
-using WebApp.DataTransferObject.Dtos.Auth.Response;
-using WebApp.DataTransferObject.Dtos;
+using WebApp.SharedKernel.Dtos.Auth.Request;
+using WebApp.SharedKernel.Dtos.Auth.Response;
+using WebApp.SharedKernel.Dtos;
 
 namespace WebApp.API.Controllers
 {

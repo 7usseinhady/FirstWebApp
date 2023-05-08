@@ -1,4 +1,4 @@
-﻿using WebApp.DataTransferObject.Interfaces;
+﻿using WebApp.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using System.Runtime.ExceptionServices;
 using WebApp.Core.Interfaces;
-using WebApp.DataTransferObject.Filters.Auth;
+using WebApp.SharedKernel.Filters.Auth;
 using WebApp.SharedKernel.Helpers;
 
 namespace WebApp.Core.Helpers.AutoMapper

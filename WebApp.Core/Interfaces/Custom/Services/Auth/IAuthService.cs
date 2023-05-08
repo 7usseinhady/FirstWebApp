@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using WebApp.DataTransferObject.Dtos;
-using WebApp.DataTransferObject.Dtos.Auth.Request;
+using WebApp.SharedKernel.Dtos;
+using WebApp.SharedKernel.Dtos.Auth.Request;
 
 namespace WebApp.Core.Interfaces.Custom.Services.Auth
 {

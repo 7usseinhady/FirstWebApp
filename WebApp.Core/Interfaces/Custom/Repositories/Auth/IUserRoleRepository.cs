@@ -1,4 +1,4 @@
-﻿using WebApp.DataTransferObject.Filters.Auth;
+﻿using WebApp.SharedKernel.Filters.Auth;
 using WebApp.Core.Entities.Auth;
 
 namespace WebApp.Core.Interfaces.Custom.Repositories.Auth

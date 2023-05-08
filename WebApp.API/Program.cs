@@ -9,7 +9,6 @@ using WebApp.SharedKernel.Helpers.Email.SendGrid;
 using WebApp.SharedKernel.Helpers.Sms.GatewaySms;
 using WebApp.SharedKernel.Helpers.Sms.TwilioSms;
 using WebApp.SharedKernel;
-using WebApp.DataTransferObject;
 using WebApp.Core;
 using WebApp.Infrastructure;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -104,14 +103,15 @@ builder.Services.AddAuthentication(options =>
 
 #endregion
 
+#region API .Net Core IOC Container
+
 #region Load Services and IOC Containers for other Projects
 builder.Services.LoadSharedKernelServices();
-builder.Services.LoadDataTransferObjectServices();
 builder.Services.LoadCoreServices();
 builder.Services.LoadInfrastructureServices(conStr);
 #endregion
 
-#region API .Net Core IOC Container
+
 #endregion
 
 #region for Base Api Connection SetUp
@@ -140,8 +140,6 @@ builder.Services.AddHttpClient(Res.GatewaySmsUri, c =>
 #region Add Cors
 builder.Services.AddCors();
 #endregion
-
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

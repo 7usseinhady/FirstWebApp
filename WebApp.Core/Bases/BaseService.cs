@@ -10,8 +10,8 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using WebApp.Core.Helpers;
 using System.Runtime.ExceptionServices;
-using WebApp.DataTransferObject.Dtos;
-using WebApp.DataTransferObject.Dtos.Response;
+using WebApp.SharedKernel.Dtos;
+using WebApp.SharedKernel.Dtos.Response;
 
 namespace WebApp.Core.Bases
 {

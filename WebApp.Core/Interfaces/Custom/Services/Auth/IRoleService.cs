@@ -1,13 +1,13 @@
-﻿using WebApp.DataTransferObject.Dtos;
-using WebApp.DataTransferObject.Filters;
-using WebApp.DataTransferObject.Filters.Auth;
-using WebApp.DataTransferObject.Interfaces;
+﻿using WebApp.SharedKernel.Dtos;
+using WebApp.SharedKernel.Filters;
+using WebApp.SharedKernel.Filters.Auth;
+using WebApp.SharedKernel.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebApp.DataTransferObject.Dtos;
+using WebApp.SharedKernel.Dtos;
 
 namespace WebApp.Core.Interfaces.Custom.Services.Auth
 {

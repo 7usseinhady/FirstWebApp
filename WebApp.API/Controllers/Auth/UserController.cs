@@ -1,10 +1,9 @@
 ﻿using WebApp.API.Bases;
-using WebApp.DataTransferObject.Filters.Auth;
+using WebApp.SharedKernel.Filters.Auth;
 using WebApp.SharedKernel.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
-using WebApp.DataTransferObject.Dtos.Auth.Request;
-using WebApp.DataTransferObject.Dtos;
+using WebApp.SharedKernel.Dtos.Auth.Request;
 
 namespace WebApp.API.Controllers
 {

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebApp.DataTransferObject\WebApp.DataTransferObject.csproj" />
+    <ProjectReference Include="..\WebApp.SharedKernel\WebApp.SharedKernel.csproj" />
     <ProjectReference Include="..\WebApp.SharedKernel\WebApp.SharedKernel.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebApp.Core.Interfaces;
-using WebApp.DataTransferObject.Interfaces;
+using WebApp.SharedKernel.Interfaces;
 
 namespace WebApp.Core.Entities.Auth
 {
