@@ -65,7 +65,7 @@
             _preCurrentPagesNumber = IsEven(MaxPaginationWidth) ? _nextCurrentPagesNumber - 1 : _nextCurrentPagesNumber;
         }
 
-        private bool IsEven(int number) => number % 2 == 0;
+        private static bool IsEven(int number) => number % 2 == 0;
 
     }
 }

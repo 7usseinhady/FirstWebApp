@@ -11,7 +11,6 @@ using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.SharedKernel.Dtos.Auth.Request;
 using WebApp.Core.Extensions;
 using WebApp.SharedKernel.Dtos.Auth.Response;
-using WebApp.SharedKernel.Dtos;
 using WebApp.SharedKernel.Dtos.Response;
 using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
 
