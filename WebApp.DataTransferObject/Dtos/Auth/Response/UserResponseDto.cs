@@ -1,8 +1,8 @@
-﻿using WebApp.DataTransferObjects.Dtos.Auth.Request;
-using WebApp.DataTransferObjects.Interfaces;
+﻿using WebApp.DataTransferObject.Dtos.Auth.Request;
+using WebApp.DataTransferObject.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.DataTransferObjects.Dtos.Auth.Response
+namespace WebApp.DataTransferObject.Dtos.Auth.Response
 {
     public class UserResponseDto : UserRequestDto, IFilePathDto
     {

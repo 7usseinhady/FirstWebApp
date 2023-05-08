@@ -1,7 +1,7 @@
-﻿using WebApp.DataTransferObjects.Dtos;
-using WebApp.DataTransferObjects.Filters;
-using WebApp.DataTransferObjects.Filters.Auth;
-using WebApp.DataTransferObjects.Interfaces;
+﻿using WebApp.DataTransferObject.Dtos;
+using WebApp.DataTransferObject.Filters;
+using WebApp.DataTransferObject.Filters.Auth;
+using WebApp.DataTransferObject.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

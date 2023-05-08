@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using WebApp.Core.Entities.Auth;
-using WebApp.DataTransferObjects.Dtos.Auth.Request;
-using WebApp.DataTransferObjects.Dtos.Auth.Response;
+using WebApp.DataTransferObject.Dtos.Auth.Request;
+using WebApp.DataTransferObject.Dtos.Auth.Response;
 
 namespace WebApp.Core.Helpers.AutoMapper
 {

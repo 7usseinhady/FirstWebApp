@@ -1,9 +1,8 @@
-﻿using WebApp.DataTransferObjects.Helpers;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.DataTransferObjects.Filters.Auth
+namespace WebApp.DataTransferObject.Filters.Auth
 {
-    public class UserFilter : Pager
+    public class UserFilter : PagerFilter
     {
         public string? Id { get; set; }
         public string? RoleName { get; set; }

@@ -1,5 +1,5 @@
 ﻿using WebApp.API.Bases;
-using WebApp.DataTransferObjects.Filters.Auth;
+using WebApp.DataTransferObject.Filters.Auth;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.DataTransferObject.Dtos;

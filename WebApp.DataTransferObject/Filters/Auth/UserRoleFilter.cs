@@ -1,8 +1,6 @@
-﻿using WebApp.DataTransferObjects.Helpers;
-
-namespace WebApp.DataTransferObjects.Filters.Auth
+﻿namespace WebApp.DataTransferObject.Filters.Auth
 {
-    public class UserRoleFilter : Pager
+    public class UserRoleFilter : PagerFilter
     {
         public string? UserId { get; set; }
         public string? RoleId { get; set; }

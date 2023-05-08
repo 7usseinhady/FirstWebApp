@@ -1,7 +1,7 @@
-﻿using WebApp.DataTransferObjects.Dtos.Auth.Request;
+﻿using WebApp.DataTransferObject.Dtos.Auth.Request;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.DataTransferObjects.Dtos.Auth.Response
+namespace WebApp.DataTransferObject.Dtos.Auth.Response
 {
     public class RoleResponseDto : RoleRequestDto
     {

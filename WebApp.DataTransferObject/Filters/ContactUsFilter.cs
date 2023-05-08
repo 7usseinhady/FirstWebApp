@@ -1,8 +1,6 @@
-﻿using WebApp.DataTransferObjects.Helpers;
-
-namespace WebApp.DataTransferObjects.Filters
+﻿namespace WebApp.DataTransferObject.Filters
 {
-    public class ContactUsFilter : Pager
+    public class ContactUsFilter : PagerFilter
     {
         public int? ContactUsId { get; set; }
         public string? PhoneNumber { get; set; }

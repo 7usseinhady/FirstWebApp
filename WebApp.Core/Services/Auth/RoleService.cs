@@ -1,22 +1,16 @@
 ﻿using AutoMapper;
 using WebApp.Core.Bases;
-using WebApp.Core.Entities;
 using WebApp.Core.Interfaces;
-using WebApp.Core.Interfaces.Custom.Services;
-using WebApp.DataTransferObjects.Dtos;
-using WebApp.DataTransferObjects.Filters;
-using WebApp.DataTransferObjects.Interfaces;
 using WebApp.SharedKernel.Consts;
 using WebApp.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using WebApp.DataTransferObjects.Helpers;
-using WebApp.DataTransferObjects.Filters.Auth;
-using Microsoft.AspNetCore.Identity;
+using WebApp.DataTransferObject.Filters.Auth;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.Core.Extensions;
-using WebApp.DataTransferObjects.Dtos.Auth.Response;
+using WebApp.DataTransferObject.Dtos.Auth.Response;
 using WebApp.Core.Entities.Auth;
 using WebApp.DataTransferObject.Dtos;
+using WebApp.DataTransferObject.Helpers;
 
 namespace WebApp.Core.Services
 {
@@ -34,13 +28,12 @@ namespace WebApp.Core.Services
                 var query = _unitOfWork.roles.BuildRoleQuery(roleFilter);
                 int totalCount = await query.CountAsync();
 
-                var page = new Pager();
-                page.Set(roleFilter.PageSize, roleFilter.CurrentPage, totalCount);
+                var page = new PagerResponseDto(totalCount, roleFilter.PageSize, roleFilter.CurrentPage, roleFilter.MaxPaginationWidth);
                 _holderOfDto.Add(Res.page, page);
                 lIndicator.Add(true);
 
                 // pagination
-                query = query.AddPage(page.Skip, page.PageSize);
+                query = query.AddPage(page.Skip, page.Take);
                 _holderOfDto.Add(Res.lRoles, _mapper.Map<List<RoleResponseDto>>(await query.ToListAsync()));
                 lIndicator.Add(true);
             }

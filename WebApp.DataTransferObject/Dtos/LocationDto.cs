@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace WebApp.DataTransferObjects.Dtos
+namespace WebApp.DataTransferObject.Dtos
 {
     public class LocationDto
     {

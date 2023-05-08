@@ -1,5 +1,5 @@
 ﻿
-namespace WebApp.DataTransferObjects.Dtos
+namespace WebApp.DataTransferObject.Dtos
 {
     public partial class ErrorMessageDto
     {

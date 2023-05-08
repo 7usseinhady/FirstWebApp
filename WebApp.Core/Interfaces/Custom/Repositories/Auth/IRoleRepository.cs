@@ -1,4 +1,4 @@
-﻿using WebApp.DataTransferObjects.Filters.Auth;
+﻿using WebApp.DataTransferObject.Filters.Auth;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Entities.Auth;
 

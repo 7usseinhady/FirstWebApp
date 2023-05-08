@@ -1,4 +1,4 @@
-﻿using WebApp.DataTransferObjects.Filters.Auth;
+﻿using WebApp.DataTransferObject.Filters.Auth;
 using WebApp.Infrastructure.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Core.Interfaces.Custom.Repositories.Auth;

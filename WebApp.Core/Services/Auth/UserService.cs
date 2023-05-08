@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
 using WebApp.Core.Bases;
 using WebApp.Core.Interfaces;
-using WebApp.DataTransferObjects.Interfaces;
+using WebApp.DataTransferObject.Interfaces;
 using WebApp.SharedKernel.Consts;
 using WebApp.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using WebApp.DataTransferObjects.Helpers;
-using WebApp.DataTransferObjects.Filters.Auth;
+using WebApp.DataTransferObject.Helpers;
+using WebApp.DataTransferObject.Filters.Auth;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Entities.Auth;
 using WebApp.SharedKernel.Dtos;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
-using WebApp.DataTransferObjects.Dtos.Auth.Request;
+using WebApp.DataTransferObject.Dtos.Auth.Request;
 using WebApp.Core.Extensions;
-using WebApp.DataTransferObjects.Dtos.Auth.Response;
+using WebApp.DataTransferObject.Dtos.Auth.Response;
 using WebApp.DataTransferObject.Dtos;
 
 namespace WebApp.Core.Services
@@ -36,13 +36,12 @@ namespace WebApp.Core.Services
                 var query = await _unitOfWork.users.BuildUserQueryAsync(userFilter);
                 int totalCount = await query.CountAsync();
 
-                var page = new Pager();
-                page.Set(userFilter.PageSize, userFilter.CurrentPage, totalCount);
+                var page = new PagerResponseDto(totalCount, userFilter.PageSize, userFilter.CurrentPage, userFilter.MaxPaginationWidth);
                 _holderOfDto.Add(Res.page, page);
                 lIndicator.Add(true);
 
                 // pagination
-                query = query.AddPage(page.Skip, page.PageSize);
+                query = query.AddPage(page.Skip, page.Take);
                 _holderOfDto.Add(Res.lUsers, _mapper.Map<List<UserResponseDto>>(await query.ToListAsync()));
                 lIndicator.Add(true);
             }

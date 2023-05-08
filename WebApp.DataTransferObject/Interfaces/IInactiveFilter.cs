@@ -1,4 +1,4 @@
-﻿namespace WebApp.DataTransferObjects.Interfaces
+﻿namespace WebApp.DataTransferObject.Interfaces
 {
     public interface IInactiveFilter
     {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using WebApp.Core.Interfaces;
-using WebApp.DataTransferObjects.Helpers;
-using WebApp.DataTransferObjects.Interfaces;
+using WebApp.DataTransferObject.Helpers;
+using WebApp.DataTransferObject.Interfaces;
 using WebApp.SharedKernel.Consts;
 using WebApp.SharedKernel.Helpers;
 using WebApp.SharedKernel.Interfaces;

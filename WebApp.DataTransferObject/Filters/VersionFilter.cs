@@ -1,8 +1,6 @@
-﻿using WebApp.DataTransferObjects.Helpers;
-
-namespace WebApp.DataTransferObjects.Filters
+﻿namespace WebApp.DataTransferObject.Filters
 {
-    public class VersionFilter : Pager
+    public class VersionFilter : PagerFilter
     {
         public int? Id { get; set; }
         public string? VersionCode { get; set; }

@@ -17,9 +17,9 @@ using WebApp.SharedKernel.Helpers;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Hosting.Server;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
-using WebApp.DataTransferObjects.Dtos.Auth.Request;
+using WebApp.DataTransferObject.Dtos.Auth.Request;
 using WebApp.SharedKernel.Helpers.Email;
-using WebApp.DataTransferObjects.Dtos.Auth.Response;
+using WebApp.DataTransferObject.Dtos.Auth.Response;
 using WebApp.DataTransferObject.Dtos;
 
 namespace WebApp.Core.Services.Auth

@@ -9,7 +9,7 @@ using WebApp.Core.Interfaces;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.Core.Services.Auth;
 using WebApp.DataTransferObject.Dtos;
-using WebApp.DataTransferObjects.Dtos.Auth.Request;
+using WebApp.DataTransferObject.Dtos.Auth.Request;
 using WebApp.SharedKernel.Consts;
 using WebApp.SharedKernel.Interfaces;
 

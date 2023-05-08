@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebApp.DataTransferObjects.Dtos;
+using WebApp.DataTransferObject.Dtos;
 
 namespace WebApp.DataTransferObject.Dtos.Request
 {

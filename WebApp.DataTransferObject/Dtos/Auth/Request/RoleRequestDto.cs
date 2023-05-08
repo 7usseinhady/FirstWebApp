@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.DataTransferObjects.Dtos.Auth.Request
+namespace WebApp.DataTransferObject.Dtos.Auth.Request
 {
     public class RoleRequestDto
     {
