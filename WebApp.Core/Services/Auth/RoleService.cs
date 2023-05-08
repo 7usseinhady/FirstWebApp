@@ -10,7 +10,7 @@ using WebApp.Core.Extensions;
 using WebApp.DataTransferObject.Dtos.Auth.Response;
 using WebApp.Core.Entities.Auth;
 using WebApp.DataTransferObject.Dtos;
-using WebApp.DataTransferObject.Helpers;
+using WebApp.DataTransferObject.Dtos.Response;
 
 namespace WebApp.Core.Services
 {

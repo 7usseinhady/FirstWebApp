@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using WebApp.Core.Bases;
 using WebApp.Core.Interfaces;
-using WebApp.DataTransferObject.Interfaces;
 using WebApp.SharedKernel.Consts;
 using WebApp.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using WebApp.DataTransferObject.Helpers;
 using WebApp.DataTransferObject.Filters.Auth;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Entities.Auth;
@@ -15,6 +13,7 @@ using WebApp.DataTransferObject.Dtos.Auth.Request;
 using WebApp.Core.Extensions;
 using WebApp.DataTransferObject.Dtos.Auth.Response;
 using WebApp.DataTransferObject.Dtos;
+using WebApp.DataTransferObject.Dtos.Response;
 
 namespace WebApp.Core.Services
 {
