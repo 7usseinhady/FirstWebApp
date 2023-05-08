@@ -4,13 +4,13 @@ using WebApp.Core.Interfaces;
 using WebApp.SharedKernel.Consts;
 using WebApp.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using WebApp.SharedKernel.Filters.Auth;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.Core.Extensions;
 using WebApp.SharedKernel.Dtos.Auth.Response;
 using WebApp.Core.Entities.Auth;
 using WebApp.SharedKernel.Dtos;
 using WebApp.SharedKernel.Dtos.Response;
+using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
 
 namespace WebApp.Core.Services
 {
@@ -20,7 +20,7 @@ namespace WebApp.Core.Services
         {
         }
 
-        public async Task<HolderOfDto> GetAllAsync(RoleFilter roleFilter)
+        public async Task<HolderOfDto> GetAllAsync(RoleFilterRequestDto roleFilter)
         {
             List<bool> lIndicator = new List<bool>();
             try
@@ -51,7 +51,7 @@ namespace WebApp.Core.Services
             List<bool> lIndicator = new List<bool>();
             try
             {
-                var roleFilter = new RoleFilter() { Id = id };
+                var roleFilter = new RoleFilterRequestDto() { Id = id };
                 _holderOfDto.Add(Res.oRole, _mapper.Map<RoleResponseDto>(await _unitOfWork.roles.BuildRoleQuery(roleFilter).SingleOrDefaultAsync()));
                 lIndicator.Add(true);
             }

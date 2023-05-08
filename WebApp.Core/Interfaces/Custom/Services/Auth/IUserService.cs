@@ -1,13 +1,13 @@
-﻿using WebApp.SharedKernel.Filters.Auth;
-using WebApp.SharedKernel.Dtos;
+﻿using WebApp.SharedKernel.Dtos;
 using WebApp.SharedKernel.Dtos.Auth.Request;
 using WebApp.SharedKernel.Dtos;
+using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
 
 namespace WebApp.Core.Interfaces.Custom.Services.Auth
 {
     public interface IUserService
     {
-        Task<HolderOfDto> GetAllAsync(UserFilter userFilter);
+        Task<HolderOfDto> GetAllAsync(UserFilterRequestDto userFilter);
         Task<HolderOfDto> GetByIdAsync(string userId);
         Task<HolderOfDto> GetByRefreshTokenAsync(string token);
         Task<HolderOfDto> UpdateAsync(UserRequestDto userRequestDto);
