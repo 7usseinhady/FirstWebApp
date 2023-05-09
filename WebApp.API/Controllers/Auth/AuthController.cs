@@ -7,10 +7,11 @@ using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.SharedKernel.Dtos.Auth.Request;
 using WebApp.SharedKernel.Dtos.Auth.Response;
 using WebApp.SharedKernel.Dtos;
+using WebApp.API.Consts;
 
 namespace WebApp.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Routes.apiBase)]
     [ApiController]
     public class AuthController : ApiControllerBase
     {

@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.SharedKernel.Dtos.Auth.Request;
 using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
+using WebApp.API.Consts;
 
 namespace WebApp.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Routes.apiBase)]
     [ApiController]
     public class UserController : ApiControllerBase
     {

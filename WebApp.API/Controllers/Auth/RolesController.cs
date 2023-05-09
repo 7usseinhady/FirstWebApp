@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.SharedKernel.Dtos;
 using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
+using WebApp.API.Consts;
 
 namespace WebApp.API.Controllers
 {
+    [Route(Routes.apiBase)]
     [ApiController]
-    [Route("api/[controller]")]
     public class RolesController : ApiControllerBase
     {
         private readonly IRoleService _roleService;
