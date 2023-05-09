@@ -1,15 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using WebApp.SharedKernel.Helpers;
 using WebApp.SharedKernel.Interfaces;
-using WebApp.SharedKernel.Helpers.Payment.PayTabs;
-using WebApp.SharedKernel.Helpers.Notification.FCM;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using WebApp.SharedKernel.Resources;
-using WebApp.SharedKernel.Helpers.Email.MailKit;
-using WebApp.SharedKernel.Helpers.Payment.PayTabs.Dtos.Request;
-using WebApp.SharedKernel.Helpers.Sms.GatewaySms;
 using WebApp.SharedKernel.Dtos;
 
 namespace WebApp.SharedKernel
@@ -51,17 +46,8 @@ namespace WebApp.SharedKernel
             services.AddTransient<HolderOfDto>();
 
             services.AddScoped<ICulture, Culture>();
-            services.AddScoped<INotificationService, NotificationService>();
-
-            services.AddScoped<IEmailSender, MailKitEmailSender>();
-            //Service.AddScoped<IEmailSender, SendGridEmailSender>()
-
-            services.AddScoped<ISmsService, GatewaySmsService>();
-            //Service.AddScoped<ISmsService, TwilioSmsService>()
-
-            services.AddScoped<IPaymentService<PaymentInitialRequestDto>, PayTabsPaymentService>();
+            
             services.AddScoped<IBaseApiConnection, BaseApiConnection>();
-            services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IFileUtils, FileUtils>();
         }
     }

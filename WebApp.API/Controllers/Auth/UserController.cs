@@ -1,13 +1,14 @@
 ﻿using WebApp.API.Bases;
-using WebApp.SharedKernel.Filters.Auth;
 using WebApp.SharedKernel.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.SharedKernel.Dtos.Auth.Request;
+using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
+using WebApp.API.Consts;
 
 namespace WebApp.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Routes.apiBase)]
     [ApiController]
     public class UserController : ApiControllerBase
     {
@@ -19,7 +20,7 @@ namespace WebApp.API.Controllers
 
 
         [HttpPost("GetAll")]
-        public async Task<IActionResult> GetAllAsync(UserFilter userFilter)
+        public async Task<IActionResult> GetAllAsync(UserFilterRequestDto userFilter)
         {
             if (!ModelState.IsValid)
                 return NotValidModelState();

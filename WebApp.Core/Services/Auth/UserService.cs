@@ -4,7 +4,6 @@ using WebApp.Core.Interfaces;
 using WebApp.SharedKernel.Consts;
 using WebApp.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using WebApp.SharedKernel.Filters.Auth;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Core.Entities.Auth;
 using WebApp.SharedKernel.Dtos;
@@ -12,8 +11,8 @@ using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.SharedKernel.Dtos.Auth.Request;
 using WebApp.Core.Extensions;
 using WebApp.SharedKernel.Dtos.Auth.Response;
-using WebApp.SharedKernel.Dtos;
 using WebApp.SharedKernel.Dtos.Response;
+using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
 
 namespace WebApp.Core.Services
 {
@@ -27,7 +26,7 @@ namespace WebApp.Core.Services
             _fileUtils = fileUtils;
         }
 
-        public async Task<HolderOfDto> GetAllAsync(UserFilter userFilter)
+        public async Task<HolderOfDto> GetAllAsync(UserFilterRequestDto userFilter)
         {
             List<bool> lIndicator = new List<bool>();
             try
@@ -58,7 +57,7 @@ namespace WebApp.Core.Services
             List<bool> lIndicator = new List<bool>();
             try
             {
-                var userFilter = new UserFilter() { Id = userId };
+                var userFilter = new UserFilterRequestDto() { Id = userId };
                 var query = await _unitOfWork.users.BuildUserQueryAsync(userFilter);
                 var userDto = _mapper.Map<UserResponseDto>(query.SingleOrDefault());
                 _holderOfDto.Add(Res.oUser, userDto);

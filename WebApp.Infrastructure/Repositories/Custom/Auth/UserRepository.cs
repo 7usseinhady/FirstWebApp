@@ -1,9 +1,9 @@
-﻿using WebApp.SharedKernel.Filters.Auth;
-using WebApp.Infrastructure.DBContexts;
+﻿using WebApp.Infrastructure.DBContexts;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Core.Interfaces.Custom.Repositories.Auth;
 using WebApp.Core.Entities.Auth;
 using System.Runtime.ExceptionServices;
+using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
 
 namespace WebApp.Infrastructure.Repositories.Custom.Auth
 {
@@ -16,7 +16,7 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
             _dbContext = dbContext;
         }
 
-        public async Task<IQueryable<User>> BuildUserQueryAsync(UserFilter userFilter)
+        public async Task<IQueryable<User>> BuildUserQueryAsync(UserFilterRequestDto userFilter)
         {
             try
             {

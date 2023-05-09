@@ -1,13 +1,14 @@
 ﻿using WebApp.API.Bases;
-using WebApp.SharedKernel.Filters.Auth;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.SharedKernel.Dtos;
+using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
+using WebApp.API.Consts;
 
 namespace WebApp.API.Controllers
 {
+    [Route(Routes.apiBase)]
     [ApiController]
-    [Route("api/[controller]")]
     public class RolesController : ApiControllerBase
     {
         private readonly IRoleService _roleService;
@@ -18,7 +19,7 @@ namespace WebApp.API.Controllers
         }
 
         [HttpPost("GetAll")]
-        public async Task<IActionResult> GetAllAsync([FromBody] RoleFilter roleFilter)
+        public async Task<IActionResult> GetAllAsync([FromBody] RoleFilterRequestDto roleFilter)
         {
             if (!ModelState.IsValid)
                 return NotValidModelState();

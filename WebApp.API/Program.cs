@@ -5,17 +5,20 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebApp.SharedKernel.Consts;
-using WebApp.SharedKernel.Helpers.Email.SendGrid;
-using WebApp.SharedKernel.Helpers.Sms.GatewaySms;
-using WebApp.SharedKernel.Helpers.Sms.TwilioSms;
+using WebApp.Core.Helpers.Email.SendGrid;
+using WebApp.Core.Helpers.Sms.GatewaySms;
+using WebApp.Core.Helpers.Sms.TwilioSms;
 using WebApp.SharedKernel;
 using WebApp.Core;
 using WebApp.Infrastructure;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi.Models;
 using WebApp.API.Middlewares;
-using WebApp.SharedKernel.Helpers.Email.MailKit;
+using WebApp.Core.Helpers.Email.MailKit;
 using WebApp.Infrastructure.TokenProviders;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using WebApp.API.ServiceConfigurations;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,6 +106,67 @@ builder.Services.AddAuthentication(options =>
 
 #endregion
 
+#region Api Versioning
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new UrlSegmentApiVersionReader()
+        //new QueryStringApiVersionReader(ApiVersions.apiVersion),
+        //new HeaderApiVersionReader(ApiVersions.apiVersion),
+        //new MediaTypeApiVersionReader(ApiVersions.apiVersion)
+        );
+});
+
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
+// to let swagger create swagger json files for other versions
+builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
+
+builder.Services.AddEndpointsApiExplorer();
+
+#endregion
+
+#region Swagger
+
+builder.Services.AddSwaggerGen(c =>
+{
+    //Add the custom header to all operations
+    //c.OperationFilter<OperationFilter>()
+
+    // setup Bearer Authorization Field
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please insert JWT with Bearer into field",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+   {
+     new OpenApiSecurityScheme
+     {
+       Reference = new OpenApiReference
+       {
+         Type = ReferenceType.SecurityScheme,
+         Id = "Bearer"
+       }
+      },
+      Array.Empty<string>()
+    }
+  });
+});
+
+
+#endregion
+
 #region API .Net Core IOC Container
 
 #region Load Services and IOC Containers for other Projects
@@ -141,44 +205,18 @@ builder.Services.AddHttpClient(Res.GatewaySmsUri, c =>
 builder.Services.AddCors();
 #endregion
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "My API",
-        Version = "v1"
-    });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please insert JWT with Bearer into field",
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-   {
-     new OpenApiSecurityScheme
-     {
-       Reference = new OpenApiReference
-       {
-         Type = ReferenceType.SecurityScheme,
-         Id = "Bearer"
-       }
-      },
-      Array.Empty<string>()
-    }
-  });
-});
+
 
 var app = builder.Build();
 
 app.UseSwagger();
+IEnumerable<string> groupNames = app.Services.GetRequiredService<IApiVersionDescriptionProvider>().ApiVersionDescriptions.Select(x => x.GroupName);
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Local");
-    options.SwaggerEndpoint(url: "./swagger/v1/swagger.json", name: "IIS");
+    foreach (var groupName in groupNames)
+    {
+        options.SwaggerEndpoint($"/swagger/{groupName}/swagger.json", groupName.ToUpperInvariant());
+    }
 });
 
 app.UseHttpsRedirection();

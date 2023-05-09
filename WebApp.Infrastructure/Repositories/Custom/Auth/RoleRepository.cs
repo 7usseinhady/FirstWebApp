@@ -1,8 +1,8 @@
-﻿using WebApp.SharedKernel.Filters.Auth;
-using WebApp.Infrastructure.DBContexts;
+﻿using WebApp.Infrastructure.DBContexts;
 using WebApp.Core.Interfaces.Custom.Repositories.Auth;
 using WebApp.Core.Entities.Auth;
 using System.Runtime.ExceptionServices;
+using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
 
 namespace WebApp.Infrastructure.Repositories.Custom.Auth
 {
@@ -14,7 +14,7 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
             _dbContext = dbContext;
         }
 
-        public IQueryable<Role> BuildRoleQuery(RoleFilter roleFilter)
+        public IQueryable<Role> BuildRoleQuery(RoleFilterRequestDto roleFilter)
         {
             try
             {
@@ -38,9 +38,7 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
                             Name= role.Name,
                             ConcurrencyStamp= role.ConcurrencyStamp,
                             NormalizedName= role.NormalizedName,
-
                             UserCount = userRoleCount.userCount,
-
                             UserInsertId = role.UserInsertId,
                             UserInsertDate= role.UserInsertDate,
                             UserInsert = role.UserInsert,
