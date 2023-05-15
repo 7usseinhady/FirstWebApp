@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-namespace WebApp.Infrastructure.TokenProviders
+namespace WebApp.Core.TokenProviders
 {
     public class EmailConfirmationTokenProviderOptions : DataProtectionTokenProviderOptions
     {

@@ -9,14 +9,15 @@ using WebApp.SharedKernel.Dtos;
 
 namespace WebApp.SharedKernel
 {
-    public static class ServiceCollectionExtension
+    public static class BuilderExtension
     {
-        public static void LoadSharedKernelServices(this IServiceCollection services)
+        public static void BuildSharedKernel(this WebApplicationBuilder builder)
         {
-            #region localization and globalization
-            services.AddLocalization();
 
-            services.AddMvc()
+            #region localization and globalization
+            builder.Services.AddLocalization();
+
+            builder.Services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization(options =>
                 {
@@ -24,31 +25,31 @@ namespace WebApp.SharedKernel
                         factory.Create(typeof(DataAnnotationResource));
                 });
 
-            services.Configure<RequestLocalizationOptions>(options =>
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCulturesInfo = Culture.GetSupportedCulturesInfo();
                 options.DefaultRequestCulture = new RequestCulture(supportedCulturesInfo[0], supportedCulturesInfo[0]);
                 options.SupportedCultures = supportedCulturesInfo;
                 options.SupportedUICultures = supportedCulturesInfo;
-                options.RequestCultureProviders = new List<IRequestCultureProvider>
-        {
-            new QueryStringRequestCultureProvider(),
-            new CookieRequestCultureProvider()
-        };
+                options.RequestCultureProviders = new List<IRequestCultureProvider>()
+                {
+                    new QueryStringRequestCultureProvider(),
+                    new CookieRequestCultureProvider()
+                };
             });
             #endregion
 
             #region for baseApiConnection
-            services.AddHttpContextAccessor();
-            services.AddHttpClient();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddHttpClient();
             #endregion
 
-            services.AddTransient<HolderOfDto>();
+            builder.Services.AddTransient<HolderOfDto>();
 
-            services.AddScoped<ICulture, Culture>();
-            
-            services.AddScoped<IBaseApiConnection, BaseApiConnection>();
-            services.AddScoped<IFileUtils, FileUtils>();
+            builder.Services.AddScoped<ICulture, Culture>();
+
+            builder.Services.AddScoped<IBaseApiConnection, BaseApiConnection>();
+            builder.Services.AddScoped<IFileUtils, FileUtils>();
         }
     }
 }
