@@ -31,13 +31,13 @@ namespace WebApp.Core
             #region Email SetUp
             // MailKit email configration
             var mailKitEmailConfig = builder.Configuration
-                                            .GetSection(Res.MailKitEmailConfiguration)
+                                            .GetSection(Res.mailKitEmailConfiguration)
                                             .Get<MailKitEmailConfiguration>();
             builder.Services.AddSingleton(mailKitEmailConfig!);
 
             // SendGrid email configration
             var sendGridEmailConfig = builder.Configuration
-                                     .GetSection(Res.SendGridEmailConfiguration)
+                                     .GetSection(Res.sendGridEmailConfiguration)
                                      .Get<SendGridKeyConfiguration>();
             builder.Services.AddSingleton(sendGridEmailConfig!);
 
@@ -49,13 +49,13 @@ namespace WebApp.Core
             #region Sms SetUp
             // Twilio Sms configration
             var twilioSmsConfiguration = builder.Configuration
-                                            .GetSection(Res.TwilioSmsConfiguration)
+                                            .GetSection(Res.twilioSmsConfiguration)
                                             .Get<TwilioSmsConfiguration>();
             builder.Services.AddSingleton(twilioSmsConfiguration!);
 
             // Gateway Sms configration
             var gateWaySmsConfiguration = builder.Configuration
-                                            .GetSection(Res.GatewaySmsConfiguration)
+                                            .GetSection(Res.gatewaySmsConfiguration)
                                             .Get<GatewaySmsConfiguration>();
             builder.Services.AddSingleton(gateWaySmsConfiguration!);
             #endregion
@@ -103,9 +103,9 @@ namespace WebApp.Core
 
             #region for Base Api Connection SetUp
             // PayTabs
-            builder.Services.AddHttpClient(Res.PayTabsUri, c =>
+            builder.Services.AddHttpClient(Res.payTabsUri, c =>
             {
-                string PayTabsUri = builder.Configuration.GetValue<string>(Res.PayTabsUri)!;
+                string PayTabsUri = builder.Configuration.GetValue<string>(Res.payTabsUri)!;
                 if (!string.IsNullOrEmpty(PayTabsUri))
                     c.BaseAddress = new Uri(PayTabsUri);
 
@@ -115,9 +115,9 @@ namespace WebApp.Core
             });
 
             // GateWaySms
-            builder.Services.AddHttpClient(Res.GatewaySmsUri, c =>
+            builder.Services.AddHttpClient(Res.gatewaySmsUri, c =>
             {
-                string GateWaySmsUri = builder.Configuration.GetValue<string>(Res.GatewaySmsUri)!;
+                string GateWaySmsUri = builder.Configuration.GetValue<string>(Res.gatewaySmsUri)!;
                 if (!string.IsNullOrEmpty(GateWaySmsUri))
                     c.BaseAddress = new Uri(GateWaySmsUri);
             });

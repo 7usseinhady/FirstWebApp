@@ -1,28 +1,32 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApp.Core.Bases;
 using WebApp.Core.Interfaces;
+using WebApp.SharedKernel.Bases;
 
 namespace WebApp.Infrastructure.Repositories
 {
-    public class BaseEntityRepository<TEntity, TKey> : GenericRepository<TEntity>, IBaseEntityRepository<TEntity, TKey>
+    public abstract class BaseEntityRepository<TEntity, TKey, TFilter> : GenericRepository<TEntity, TFilter>, IBaseEntityRepository<TEntity, TKey, TFilter>
         where TEntity : BaseEntity<TKey>
         where TKey : IEquatable<TKey>
+        where TFilter : BaseFilterRequestDto
     {
-        public BaseEntityRepository(DbContext context) : base(context)
+        protected BaseEntityRepository(DbContext context) : base(context)
         {
         }
 
+        #region Helpers: Other Entity State Methods
         public void Detach(TKey id)
         {
             var oEntity = DbSet().Local.FirstOrDefault(x => x.Id.Equals(id));
             if (oEntity is not null)
-                SetContextState(oEntity, EntityState.Detached);
+                SetEntityState(oEntity, EntityState.Detached);
         }
 
         public void DetachRang(IEnumerable<TKey> lIds)
         {
             var lEntity = DbSet().Local.Where(x => lIds.Contains(x.Id)).ToList();
-            lEntity.ForEach(x => SetContextState(x, EntityState.Detached));
+            lEntity.ForEach(x => SetEntityState(x, EntityState.Detached));
         }
+        #endregion
     }
 }

@@ -1,8 +1,9 @@
 ﻿using WebApp.Core.Interfaces;
 using WebApp.Infrastructure.DBContexts;
 using Microsoft.EntityFrameworkCore.Storage;
-using WebApp.Core.Interfaces.Custom.Repositories.Auth;
 using WebApp.Infrastructure.Repositories.Custom.Auth;
+using WebApp.Core.Entities.Auth;
+using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
 
 namespace WebApp.Infrastructure.Repositories
 {
@@ -10,20 +11,24 @@ namespace WebApp.Infrastructure.Repositories
     {
         private readonly WebAppDBContext _context;
 
-        public IRoleRepository roles { get; private set; }
-        public IUserRepository users { get; private set; }
-        public IUserRoleRepository userRoles { get; private set; }
-
+        #region Auth
+        public IGenericRepository<Role, RoleFilterRequestDto> Roles { get; private set; }
+        public IGenericRepository<User, UserFilterRequestDto> Users { get; private set; }
+        public IGenericRepository<UserRole, UserRoleFilterRequestDto> UserRoles { get; private set; }
+        #endregion
 
 
         public UnitOfWork(WebAppDBContext context)
         {
             _context = context;
 
-            roles = new RoleRepository(_context);
-            users = new UserRepository(_context);
-            userRoles = new UserRoleRepository(_context);
+            #region Auth
+            Roles = new RoleRepository(_context);
+            Users = new UserRepository(_context);
+            UserRoles = new UserRoleRepository(_context);
+            #endregion
         }
+
         public IDbContextTransaction Transaction()
         {
             return _context.Database.BeginTransaction();

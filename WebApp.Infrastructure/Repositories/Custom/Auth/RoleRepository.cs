@@ -1,12 +1,12 @@
 ﻿using WebApp.Infrastructure.DBContexts;
-using WebApp.Core.Interfaces.Custom.Repositories.Auth;
 using WebApp.Core.Entities.Auth;
 using System.Runtime.ExceptionServices;
 using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Infrastructure.Repositories.Custom.Auth
 {
-    public class RoleRepository : GenericRepository<Role>, IRoleRepository
+    public class RoleRepository : GenericRepository<Role, RoleFilterRequestDto>
     {
         private readonly WebAppDBContext _dbContext;
         public RoleRepository(WebAppDBContext dbContext) : base(dbContext)
@@ -14,19 +14,19 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
             _dbContext = dbContext;
         }
 
-        public IQueryable<Role> BuildRoleQuery(RoleFilterRequestDto roleFilter)
+        public async override Task<IQueryable<Role>> BuildBaseQueryAsync()
         {
             try
             {
-                var query = Query();
+                var query = await base.BuildBaseQueryAsync();
 
-                var userRoleGroupQuery = from userRole in _dbContext.UserRoles
+                var userRoleGroupQuery = from userRole in _dbContext.UserRoles.AsNoTracking()
                                          group userRole by userRole.RoleId into userRoleGroup
-                                         select new {
+                                         select new
+                                         {
                                              roleId = userRoleGroup.Key,
                                              userCount = userRoleGroup.Select(x => x.UserId).Count()
                                          };
-
 
                 query = from role in query
                         join userRoleCount in userRoleGroupQuery
@@ -35,29 +35,42 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
                         select new Role()
                         {
                             Id = role.Id,
-                            Name= role.Name,
-                            ConcurrencyStamp= role.ConcurrencyStamp,
-                            NormalizedName= role.NormalizedName,
+                            Name = role.Name,
+                            ConcurrencyStamp = role.ConcurrencyStamp,
+                            NormalizedName = role.NormalizedName,
+                            // --
                             UserCount = userRoleCount.userCount,
+                            // --
                             UserInsertId = role.UserInsertId,
-                            UserInsertDate= role.UserInsertDate,
+                            UserInsertDate = role.UserInsertDate,
                             UserInsert = role.UserInsert,
-                            UserUpdateId= role.UserUpdateId,
-                            UserUpdateDate= role.UserUpdateDate,
+                            UserUpdateId = role.UserUpdateId,
+                            UserUpdateDate = role.UserUpdateDate,
                             UserUpdate = role.UserUpdate
                         };
 
-                // Where
-                if (roleFilter is not null)
-                {
-                    if (!string.IsNullOrEmpty(roleFilter.Id))
-                        query = query.Where(x => x.Id == roleFilter.Id);
-
-                    if (!string.IsNullOrEmpty(roleFilter.Name))
-                        query = query.Where(x => x.Name!.Contains(roleFilter.Name));
-                }
-
                 return query;
+            }
+            catch (AggregateException ex)
+            {
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                return null!;
+            }
+        }
+
+        public override Task<IQueryable<Role>> FilterQueryAsync(IQueryable<Role> query, RoleFilterRequestDto filter)
+        {
+            try
+            {
+                if (filter is not null)
+                {
+                    if (!string.IsNullOrEmpty(filter.Id))
+                        query = query.Where(x => x.Id == filter.Id);
+
+                    if (!string.IsNullOrEmpty(filter.Name))
+                        query = query.Where(x => x.Name!.Contains(filter.Name));
+                }
+                return Task.FromResult(query);
             }
             catch (AggregateException ex)
             {

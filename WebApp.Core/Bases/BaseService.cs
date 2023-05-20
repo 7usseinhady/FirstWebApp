@@ -15,27 +15,23 @@ using WebApp.SharedKernel.Dtos.Response;
 
 namespace WebApp.Core.Bases
 {
-    public class BaseService
+    public abstract class BaseService
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IMapper _mapper;
         protected readonly HolderOfDto _holderOfDto;
-        protected readonly ICulture _culture;
+        protected Indicator _indicator;
         protected readonly ConnectionStringConfiguration? _connectionStringConfiguration;
 
-        protected BaseService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture)
+        protected BaseService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, Indicator indicator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _holderOfDto = holderOfDto;
-            _culture = culture;
+            _indicator = indicator;
         }
-        protected BaseService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture, ConnectionStringConfiguration connectionStringConfiguration)
+        protected BaseService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, Indicator indicator, ConnectionStringConfiguration connectionStringConfiguration) : this(unitOfWork, mapper, holderOfDto, indicator)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _holderOfDto = holderOfDto;
-            _culture = culture;
             _connectionStringConfiguration = connectionStringConfiguration;
         }
         

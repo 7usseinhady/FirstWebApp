@@ -47,10 +47,10 @@ namespace WebApp.Infrastructure
                 option.SignIn.RequireConfirmedEmail = true;
                 option.SignIn.RequireConfirmedPhoneNumber = true;
                 option.User.RequireUniqueEmail = false;
-                option.Tokens.EmailConfirmationTokenProvider = Res.EmailConfirmation;
+                option.Tokens.EmailConfirmationTokenProvider = Res.emailConfirmation;
             }).AddEntityFrameworkStores<WebAppDBContext>()
               .AddDefaultTokenProviders()
-              .AddTokenProvider<EmailConfirmationTokenProvider<User>>(Res.EmailConfirmation);
+              .AddTokenProvider<EmailConfirmationTokenProvider<User>>(Res.emailConfirmation);
             #endregion
 
             #region HangFire

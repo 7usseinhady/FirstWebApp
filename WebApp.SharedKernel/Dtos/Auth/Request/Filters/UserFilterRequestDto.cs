@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebApp.SharedKernel.Dtos.Request.Filters;
+using WebApp.SharedKernel.Bases;
 
 namespace WebApp.SharedKernel.Dtos.Auth.Request.Filters
 {
-    public class UserFilterRequestDto : PagerFilterRequestDto
+    public class UserFilterRequestDto : BaseFilterRequestDto
     {
         public string? Id { get; set; }
         public string? RoleName { get; set; }

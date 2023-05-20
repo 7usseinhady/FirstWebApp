@@ -14,7 +14,7 @@ namespace WebApp.Core.Helpers.Payment.PayTabs
         public PayTabsPaymentService(IBaseApiConnection baseApiConnection)
         {
             _baseApiConnection = baseApiConnection;
-            _baseApiConnection.SetApiUri(Res.PayTabsUri);
+            _baseApiConnection.SetApiUri(Res.payTabsUri);
         }
 
         public async Task<JObject> PayAsync(PaymentInitialRequestDto paymentInitialRequestDto)

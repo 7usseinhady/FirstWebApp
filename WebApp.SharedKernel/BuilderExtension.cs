@@ -45,6 +45,7 @@ namespace WebApp.SharedKernel
             #endregion
 
             builder.Services.AddTransient<HolderOfDto>();
+            builder.Services.AddTransient<Indicator>();
 
             builder.Services.AddScoped<ICulture, Culture>();
 

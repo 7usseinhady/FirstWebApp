@@ -18,8 +18,8 @@ namespace WebApp.API.Middlewares
         {
             try
             {
-                var secretKey = _configuration.GetValue<string>(Res.SecretKey);
-                var requestObject = httpContext.Request.Headers.FirstOrDefault(x => x.Key == Res.SecretKey).Value.FirstOrDefault();
+                var secretKey = _configuration.GetValue<string>(Res.secretKey);
+                var requestObject = httpContext.Request.Headers.FirstOrDefault(x => x.Key == Res.secretKey).Value.FirstOrDefault();
                 if (!string.IsNullOrEmpty(requestObject) && requestObject == secretKey)
                     await _next(httpContext);
                 else

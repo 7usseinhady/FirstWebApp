@@ -1,6 +1,6 @@
 ﻿namespace WebApp.SharedKernel.Dtos.Response
 {
-    public class PagerResponseDto
+    public class PaginatorResponseDto
     {
         private int _maxPaginationWidth;
         private int? _preCurrentPagesNumber;
@@ -22,7 +22,7 @@
         }
 
 
-        public PagerResponseDto(int totalCount, int? pageSize, int? currentPage, int maxPaginationWidth = 5)
+        public PaginatorResponseDto(int totalCount, int? pageSize, int? currentPage, int maxPaginationWidth = 5)
         {
             TotalCount = totalCount;
             MaxPaginationWidth = maxPaginationWidth;

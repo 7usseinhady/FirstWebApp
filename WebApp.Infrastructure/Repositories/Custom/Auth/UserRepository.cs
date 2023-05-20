@@ -1,13 +1,12 @@
 ﻿using WebApp.Infrastructure.DBContexts;
 using Microsoft.EntityFrameworkCore;
-using WebApp.Core.Interfaces.Custom.Repositories.Auth;
 using WebApp.Core.Entities.Auth;
 using System.Runtime.ExceptionServices;
 using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
 
 namespace WebApp.Infrastructure.Repositories.Custom.Auth
 {
-    public class UserRepository : GenericRepository<User>, IUserRepository
+    public class UserRepository : GenericRepository<User, UserFilterRequestDto>
     {
         private readonly WebAppDBContext _dbContext;
 
@@ -16,18 +15,16 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
             _dbContext = dbContext;
         }
 
-        public async Task<IQueryable<User>> BuildUserQueryAsync(UserFilterRequestDto userFilter)
+        public async override Task<IQueryable<User>> FilterQueryAsync(IQueryable<User> query, UserFilterRequestDto filterRequestDto)
         {
             try
             {
-                var query = Query();
-
                 // Where
-                if (userFilter is not null)
+                if (filterRequestDto is not null)
                 {
-                    if (!string.IsNullOrEmpty(userFilter.RoleName))
+                    if (!string.IsNullOrEmpty(filterRequestDto.RoleName))
                     {
-                        var role = await _dbContext.Roles.Where(x => x.Name == userFilter.RoleName).SingleOrDefaultAsync();
+                        var role = await _dbContext.Roles.Where(x => x.Name == filterRequestDto.RoleName).SingleOrDefaultAsync();
                         if (role is not null)
                         {
                             query = from user in DbSet()
@@ -42,40 +39,40 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
                             return null!;
                     }
 
-                    if (!string.IsNullOrEmpty(userFilter.Id))
-                        query = query.Where(x => x.Id == userFilter.Id);
+                    if (!string.IsNullOrEmpty(filterRequestDto.Id))
+                        query = query.Where(x => x.Id == filterRequestDto.Id);
 
-                    if (!string.IsNullOrEmpty(userFilter.FullName))
-                        query = query.Where(x => (x.FirstName + " " + x.LastName).Contains(userFilter.FullName));
+                    if (!string.IsNullOrEmpty(filterRequestDto.FullName))
+                        query = query.Where(x => (x.FirstName + " " + x.LastName).Contains(filterRequestDto.FullName));
 
-                    if (!string.IsNullOrEmpty(userFilter.Username))
-                        query = query.Where(x => x.UserName!.Contains(userFilter.Username));
+                    if (!string.IsNullOrEmpty(filterRequestDto.Username))
+                        query = query.Where(x => x.UserName!.Contains(filterRequestDto.Username));
 
-                    if (!string.IsNullOrEmpty(userFilter.Email))
-                        query = query.Where(x => x.Email!.Contains(userFilter.Email));
+                    if (!string.IsNullOrEmpty(filterRequestDto.Email))
+                        query = query.Where(x => x.Email!.Contains(filterRequestDto.Email));
 
-                    if (!string.IsNullOrEmpty(userFilter.PhoneNumber))
-                        query = query.Where(x => x.LocalPhoneNumber!.Contains(userFilter.PhoneNumber));
+                    if (!string.IsNullOrEmpty(filterRequestDto.PhoneNumber))
+                        query = query.Where(x => x.LocalPhoneNumber!.Contains(filterRequestDto.PhoneNumber));
 
-                    if (!string.IsNullOrEmpty(userFilter.SecondPhoneNumber))
-                        query = query.Where(x => x.SecondLocalPhoneNumber!.Contains(userFilter.SecondPhoneNumber));
+                    if (!string.IsNullOrEmpty(filterRequestDto.SecondPhoneNumber))
+                        query = query.Where(x => x.SecondLocalPhoneNumber!.Contains(filterRequestDto.SecondPhoneNumber));
 
-                    if (!string.IsNullOrEmpty(userFilter.CommonKeyWord))
-                        query = query.Where(x => x.FirstName.Contains(userFilter.CommonKeyWord) || x.LastName.Contains(userFilter.CommonKeyWord));
+                    if (!string.IsNullOrEmpty(filterRequestDto.CommonKeyWord))
+                        query = query.Where(x => x.FirstName.Contains(filterRequestDto.CommonKeyWord) || x.LastName.Contains(filterRequestDto.CommonKeyWord));
 
-                    if (userFilter.IsFemale == 0 || userFilter.IsFemale == 1)
-                        query = query.Where(x => x.IsFemale == Convert.ToBoolean(userFilter.IsFemale));
+                    if (filterRequestDto.IsFemale == 0 || filterRequestDto.IsFemale == 1)
+                        query = query.Where(x => x.IsFemale == Convert.ToBoolean(filterRequestDto.IsFemale));
 
-                    if (userFilter.IsInactive == 0 || userFilter.IsInactive == 1)
-                        query = query.Where(x => x.IsInactive == Convert.ToBoolean(userFilter.IsInactive));
+                    if (filterRequestDto.IsInactive == 0 || filterRequestDto.IsInactive == 1)
+                        query = query.Where(x => x.IsInactive == Convert.ToBoolean(filterRequestDto.IsInactive));
 
-                    if (userFilter.CreationDateFrom.HasValue)
-                        query = query.Where(x => x.UserInsertDate >= userFilter.CreationDateFrom.Value.Date);
+                    if (filterRequestDto.CreationDateFrom.HasValue)
+                        query = query.Where(x => x.UserInsertDate >= filterRequestDto.CreationDateFrom.Value.Date);
 
-                    if (userFilter.CreationDateTo.HasValue)
-                        query = query.Where(x => x.UserInsertDate <= userFilter.CreationDateTo.Value.Date);
-
+                    if (filterRequestDto.CreationDateTo.HasValue)
+                        query = query.Where(x => x.UserInsertDate <= filterRequestDto.CreationDateTo.Value.Date);
                 }
+
                 return query;
             }
             catch (AggregateException ex)
@@ -84,7 +81,5 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
                 return null!;
             }
         }
-
-
     }
 }

@@ -1,47 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using WebApp.Core.Interfaces;
+using WebApp.SharedKernel.Bases;
 
 namespace WebApp.Infrastructure.Repositories
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity>
+    public abstract class GenericRepository<TEntity, TFilter> : IGenericRepository<TEntity, TFilter>
         where TEntity : class
+        where TFilter : BaseFilterRequestDto
     {
         private readonly DbContext _context;
-        public GenericRepository(DbContext context)
+        protected GenericRepository(DbContext context)
         {
             _context = context;
         }
-        private IEntityType GetEntityType()
-        {
-            return _context?.Model?.FindEntityType(typeof(TEntity))!;
-        }
-        public string? GetSchema()
-        {
-            return GetEntityType().GetSchema();
-        }
-        public string? GetTableName()
-        {
-            return GetEntityType().GetTableName();
-        }
-        public string? GetPrimaryKeyColmunName()
-        {
-            return GetEntityType().GetKeys().Select(p => p.GetName()).FirstOrDefault();
-        }
-        public DbSet<TEntity> DbSet()
-        {
-            return _context.Set<TEntity>();
-        }
-        public IQueryable<TEntity> Query()
-        {
-            return DbSet().AsQueryable();
-        }
 
-        public void SetContextState(TEntity entity, EntityState state)
-        {
-            _context.Entry(entity).State = state;
-        }
-
+        #region Commands Methods
         // Sync
         public TEntity Add(TEntity entity)
         {
@@ -87,16 +61,6 @@ namespace WebApp.Infrastructure.Repositories
             DbSet().RemoveRange(entities);
         }
 
-        public void Attach(TEntity entity)
-        {
-            DbSet().Attach(entity);
-        }
-        public void AttachRange(IEnumerable<TEntity> entities)
-        {
-            DbSet().AttachRange(entities);
-        }
-
-
         // ASync
         public async Task<TEntity> AddAsync(TEntity entity)
         {
@@ -108,6 +72,58 @@ namespace WebApp.Infrastructure.Repositories
             await DbSet().AddRangeAsync(entities);
             return entities;
         }
+        #endregion
+
+        #region Query Methods
+        public virtual Task<IQueryable<TEntity>> BuildBaseQueryAsync()
+        {
+            return Task.FromResult(DbSet().AsQueryable().AsNoTracking());
+        }
         
+        public abstract Task<IQueryable<TEntity>> FilterQueryAsync(IQueryable<TEntity> query, TFilter filterRequestDto);
+        #endregion
+
+        #region Helpers Methods
+        private IEntityType? GetEntityType()
+        {
+            return _context?.Model?.FindEntityType(typeof(TEntity));
+        }
+        protected DbSet<TEntity> DbSet()
+        {
+            return _context.Set<TEntity>();
+        }
+
+        #region MetaData Methods
+        public string? GetSchema()
+        {
+            return GetEntityType()?.GetSchema();
+        }
+        public string? GetTableName()
+        {
+            return GetEntityType()?.GetTableName();
+        }
+        public string? GetPrimaryKeyColmunName()
+        {
+            return GetEntityType()?.GetKeys().Select(p => p.GetName()).FirstOrDefault();
+        }
+        #endregion
+
+        #region Entity State Methods
+        public void Attach(TEntity entity)
+        {
+            DbSet().Attach(entity);
+        }
+        public void AttachRange(IEnumerable<TEntity> entities)
+        {
+            DbSet().AttachRange(entities);
+        }
+        public void SetEntityState(TEntity entity, EntityState state)
+        {
+            _context.Entry(entity).State = state;
+        }
+        #endregion
+        #endregion
+
+
     }
 }

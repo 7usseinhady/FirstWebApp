@@ -1,6 +1,6 @@
-﻿namespace WebApp.SharedKernel.Dtos.Request.Filters
+﻿namespace WebApp.SharedKernel.Bases
 {
-    public class PagerFilterRequestDto
+    public abstract class BaseFilterRequestDto
     {
         public int? PageSize { get; set; }
 

@@ -1,6 +1,8 @@
-﻿namespace WebApp.SharedKernel.Dtos.Request.Filters
+﻿using WebApp.SharedKernel.Bases;
+
+namespace WebApp.SharedKernel.Dtos.Request.Filters
 {
-    public class ContactUsFilterRequestDto : PagerFilterRequestDto
+    public class ContactUsFilterRequestDto : BaseFilterRequestDto
     {
         public int? ContactUsId { get; set; }
         public string? PhoneNumber { get; set; }

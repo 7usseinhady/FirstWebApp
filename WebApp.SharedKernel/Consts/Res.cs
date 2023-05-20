@@ -12,16 +12,16 @@ namespace WebApp.SharedKernel.Consts
         public const string message = nameof(message);
         public const string error = nameof(error);
         public const string script = nameof(script);
-        public const string page = nameof(page);
+        public const string paginator = nameof(paginator);
         public const string refreshToken = nameof(refreshToken);
         public const string filePath = nameof(filePath);
-        public const string SecretKey = nameof(SecretKey);
-        public const string SendGridEmailConfiguration = nameof(SendGridEmailConfiguration);
-        public const string MailKitEmailConfiguration = nameof(MailKitEmailConfiguration);
-        public const string EmailConfirmation = nameof(EmailConfirmation);
-        public const string TwilioSmsConfiguration = nameof(TwilioSmsConfiguration);
+        public const string secretKey = nameof(secretKey);
+        public const string sendGridEmailConfiguration = nameof(sendGridEmailConfiguration);
+        public const string mailKitEmailConfiguration = nameof(mailKitEmailConfiguration);
+        public const string emailConfirmation = nameof(emailConfirmation);
+        public const string twilioSmsConfiguration = nameof(twilioSmsConfiguration);
         public const string uid = nameof(uid);
-        public const string PayTabsUri = nameof(PayTabsUri);
+        public const string payTabsUri = nameof(payTabsUri);
         public const string payTabsServerToken = nameof(payTabsServerToken);
         public const string redirectURL = nameof(redirectURL);
 
@@ -30,8 +30,8 @@ namespace WebApp.SharedKernel.Consts
         public const string oPaymentTransactionService = nameof(oPaymentTransactionService);
         public const string lPaymentTransactionServices = nameof(lPaymentTransactionServices);
 
-        public const string GatewaySmsUri = nameof(GatewaySmsUri);
-        public const string GatewaySmsConfiguration = nameof(GatewaySmsConfiguration);
+        public const string gatewaySmsUri = nameof(gatewaySmsUri);
+        public const string gatewaySmsConfiguration = nameof(gatewaySmsConfiguration);
 
         public const string lTerms = nameof(lTerms);
         public const string oTerm = nameof(oTerm);
@@ -50,7 +50,7 @@ namespace WebApp.SharedKernel.Consts
         public const string oUserRegister = nameof(oUserRegister);
         public const string basedEmail = nameof(basedEmail);
 
-        public const string FCMNotification = nameof(FCMNotification);
+        public const string fCMNotification = nameof(fCMNotification);
 
         public const string oAdvertisement = nameof(oAdvertisement);
         public const string lAdvertisements = nameof(lAdvertisements);

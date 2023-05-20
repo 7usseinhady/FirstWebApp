@@ -19,7 +19,7 @@ namespace WebApp.Core.Helpers.Sms.GatewaySms
             };
 
             _baseApiConnection = baseApiConnection;
-            _baseApiConnection.SetApiUri(Res.GatewaySmsUri);
+            _baseApiConnection.SetApiUri(Res.gatewaySmsUri);
         }
         public async Task SendAsync(string mobileNumber, string body)
         {

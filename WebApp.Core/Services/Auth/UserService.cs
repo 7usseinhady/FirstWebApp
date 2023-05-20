@@ -13,6 +13,7 @@ using WebApp.Core.Extensions;
 using WebApp.SharedKernel.Dtos.Auth.Response;
 using WebApp.SharedKernel.Dtos.Response;
 using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
+using WebApp.SharedKernel.Helpers;
 
 namespace WebApp.Core.Services
 {
@@ -20,7 +21,7 @@ namespace WebApp.Core.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly IFileUtils _fileUtils;
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture, UserManager<User> userManager, IFileUtils fileUtils) : base(unitOfWork, mapper, holderOfDto, culture)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, Indicator indicator, UserManager<User> userManager, IFileUtils fileUtils) : base(unitOfWork, mapper, holderOfDto, indicator)
         {
             _userManager = userManager;
             _fileUtils = fileUtils;
@@ -31,15 +32,15 @@ namespace WebApp.Core.Services
             List<bool> lIndicator = new List<bool>();
             try
             {
-                var query = await _unitOfWork.users.BuildUserQueryAsync(userFilter);
+                var query = await _unitOfWork.Users.FilterQueryAsync(await _unitOfWork.Users.BuildBaseQueryAsync(), userFilter);
                 int totalCount = await query.CountAsync();
 
-                var page = new PagerResponseDto(totalCount, userFilter.PageSize, userFilter.CurrentPage, userFilter.MaxPaginationWidth);
-                _holderOfDto.Add(Res.page, page);
+                var paginator = new PaginatorResponseDto(totalCount, userFilter.PageSize, userFilter.CurrentPage, userFilter.MaxPaginationWidth);
+                _holderOfDto.Add(Res.paginator, paginator);
                 lIndicator.Add(true);
 
                 // pagination
-                query = query.AddPage(page.Skip, page.Take);
+                query = query.AddPage(paginator.Skip, paginator.Take);
                 _holderOfDto.Add(Res.lUsers, _mapper.Map<List<UserResponseDto>>(await query.ToListAsync()));
                 lIndicator.Add(true);
             }
@@ -58,7 +59,7 @@ namespace WebApp.Core.Services
             try
             {
                 var userFilter = new UserFilterRequestDto() { Id = userId };
-                var query = await _unitOfWork.users.BuildUserQueryAsync(userFilter);
+                var query = await _unitOfWork.Users.FilterQueryAsync(await _unitOfWork.Users.BuildBaseQueryAsync(), userFilter);
                 var userDto = _mapper.Map<UserResponseDto>(query.SingleOrDefault());
                 _holderOfDto.Add(Res.oUser, userDto);
                 lIndicator.Add(true);
@@ -103,7 +104,7 @@ namespace WebApp.Core.Services
                     if (!string.IsNullOrEmpty(userRequestDto.PhoneNumber) && user.PhoneNumber != userRequestDto.PhoneNumber)
                     {
                         var userByPhone = await _userManager.Users.Where(x => x.PhoneNumber == userRequestDto.PhoneNumber).ToListAsync();
-                        if (userByPhone.Count > 0)
+                        if (userByPhone.Any())
                         {
                             _holderOfDto.Add(Res.state, false);
                             _holderOfDto.Add(Res.message, "phone number is already exist");
@@ -376,7 +377,7 @@ namespace WebApp.Core.Services
             List<bool> lIndicator = new List<bool>();
             try
             {
-                _unitOfWork.users.DeleteById(id);
+                _unitOfWork.Users.DeleteById(id);
                 lIndicator.Add(_unitOfWork.Complete() > 0);
             }
             catch (Exception ex)

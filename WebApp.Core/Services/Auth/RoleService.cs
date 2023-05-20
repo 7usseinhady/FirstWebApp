@@ -11,12 +11,13 @@ using WebApp.Core.Entities.Auth;
 using WebApp.SharedKernel.Dtos;
 using WebApp.SharedKernel.Dtos.Response;
 using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
+using WebApp.SharedKernel.Helpers;
 
 namespace WebApp.Core.Services
 {
     public class RoleService : BaseService, IRoleService
     {
-        public RoleService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, ICulture culture) : base(unitOfWork, mapper, holderOfDto, culture)
+        public RoleService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, Indicator indicator) : base(unitOfWork, mapper, holderOfDto, indicator)
         {
         }
 
@@ -25,15 +26,15 @@ namespace WebApp.Core.Services
             List<bool> lIndicator = new List<bool>();
             try
             {
-                var query = _unitOfWork.roles.BuildRoleQuery(roleFilter);
+                var query = await _unitOfWork.Roles.FilterQueryAsync(await _unitOfWork.Roles.BuildBaseQueryAsync(), roleFilter);
                 int totalCount = await query.CountAsync();
 
-                var page = new PagerResponseDto(totalCount, roleFilter.PageSize, roleFilter.CurrentPage, roleFilter.MaxPaginationWidth);
-                _holderOfDto.Add(Res.page, page);
+                var paginator = new PaginatorResponseDto(totalCount, roleFilter.PageSize, roleFilter.CurrentPage, roleFilter.MaxPaginationWidth);
+                _holderOfDto.Add(Res.paginator, paginator);
                 lIndicator.Add(true);
 
                 // pagination
-                query = query.AddPage(page.Skip, page.Take);
+                query = query.AddPage(paginator.Skip, paginator.Take);
                 _holderOfDto.Add(Res.lRoles, _mapper.Map<List<RoleResponseDto>>(await query.ToListAsync()));
                 lIndicator.Add(true);
             }
@@ -52,7 +53,7 @@ namespace WebApp.Core.Services
             try
             {
                 var roleFilter = new RoleFilterRequestDto() { Id = id };
-                _holderOfDto.Add(Res.oRole, _mapper.Map<RoleResponseDto>(await _unitOfWork.roles.BuildRoleQuery(roleFilter).SingleOrDefaultAsync()));
+                _holderOfDto.Add(Res.oRole, _mapper.Map<RoleResponseDto>(await (await _unitOfWork.Roles.FilterQueryAsync(await _unitOfWork.Roles.BuildBaseQueryAsync(), roleFilter)).SingleOrDefaultAsync()));
                 lIndicator.Add(true);
             }
             catch (Exception ex)
@@ -71,7 +72,7 @@ namespace WebApp.Core.Services
             try
             {
                 var role = new Role() { Id = Guid.NewGuid().ToString(), Name = roleName, NormalizedName = roleName.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() };
-                await _unitOfWork.roles.AddAsync(role);
+                await _unitOfWork.Roles.AddAsync(role);
                 lIndicator.Add(_unitOfWork.Complete() > 0);
             }
             catch (Exception ex)
@@ -89,7 +90,7 @@ namespace WebApp.Core.Services
             List<bool> lIndicator = new List<bool>();
             try
             {
-                _unitOfWork.roles.DeleteById(id);
+                _unitOfWork.Roles.DeleteById(id);
                 lIndicator.Add(_unitOfWork.Complete() > 0);
             }
             catch (Exception ex)
