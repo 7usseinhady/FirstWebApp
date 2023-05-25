@@ -4,8 +4,9 @@ using WebApp.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
-using WebApp.SharedKernel.Resources;
 using WebApp.SharedKernel.Dtos;
+using WebApp.SharedKernel.Localization.Resources;
+using System.Globalization;
 
 namespace WebApp.SharedKernel
 {
@@ -27,10 +28,9 @@ namespace WebApp.SharedKernel
 
             builder.Services.Configure<RequestLocalizationOptions>(options =>
             {
-                var supportedCulturesInfo = Culture.GetSupportedCulturesInfo();
-                options.DefaultRequestCulture = new RequestCulture(supportedCulturesInfo[0], supportedCulturesInfo[0]);
-                options.SupportedCultures = supportedCulturesInfo;
-                options.SupportedUICultures = supportedCulturesInfo;
+                options.DefaultRequestCulture = new RequestCulture(Culture.DefaultCultureInfo, Culture.DefaultCultureInfo);
+                options.SupportedCultures = Culture._supportedCulturesInfo;
+                options.SupportedUICultures = Culture._supportedCulturesInfo;
                 options.RequestCultureProviders = new List<IRequestCultureProvider>()
                 {
                     new QueryStringRequestCultureProvider(),

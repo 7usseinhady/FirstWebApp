@@ -17,7 +17,7 @@ namespace WebApp.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true)
@@ -247,9 +247,9 @@ namespace WebApp.Infrastructure.Migrations
                             LastName = "Admin",
                             LockoutEnabled = false,
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBnUS2FMdEGuJQHPfwgugTg2qfvTu7N3FahBU/jN/UhanGQCHOrtjtazXPJdL7OKqQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO2FDolpNXGCQ15kIBfDTQBuFeGURIeTBDqzBRSkSSEqBVl3394vPvmu/cSBNSgvpQ==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "6ecba28d-f5d7-48ad-8bd3-5019d77c7c89",
+                            SecurityStamp = "dd9aadfc-ceae-4a81-9f26-9eab18997fc5",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

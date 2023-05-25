@@ -78,6 +78,7 @@ namespace WebApp.Core.Services
             try
             {
                 var holder = await GetUserIdAsync(_userManager, token);
+                var x = _holderOfDto;
                 if (!holder.ContainsKey(Res.state) || !(bool)holder[Res.state])
                     return holder;
 

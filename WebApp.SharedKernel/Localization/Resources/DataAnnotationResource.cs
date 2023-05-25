@@ -1,5 +1,4 @@
-﻿
-namespace WebApp.SharedKernel.Resources
+﻿namespace WebApp.SharedKernel.Localization.Resources
 {
     public class DataAnnotationResource
     {

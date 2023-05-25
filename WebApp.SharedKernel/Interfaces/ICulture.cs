@@ -1,5 +1,5 @@
-﻿using WebApp.SharedKernel.Resources;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
+using WebApp.SharedKernel.Localization.Resources;
 
 namespace WebApp.SharedKernel.Interfaces
 {

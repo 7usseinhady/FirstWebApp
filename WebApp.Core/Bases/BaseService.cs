@@ -12,6 +12,7 @@ using WebApp.Core.Helpers;
 using System.Runtime.ExceptionServices;
 using WebApp.SharedKernel.Dtos;
 using WebApp.SharedKernel.Dtos.Response;
+using WebApp.SharedKernel.Localization;
 
 namespace WebApp.Core.Bases
 {
@@ -37,43 +38,51 @@ namespace WebApp.Core.Bases
         
 
 
-        protected static async Task<HolderOfDto> GetUserIdAsync(UserManager<User> userManager, string? refreshToken)
+        protected async Task<HolderOfDto> GetUserIdAsync(UserManager<User> userManager, string? refreshToken)
         {
-            HolderOfDto internalHolder = new HolderOfDto();
-            // Check if Refresh Token is Empty
-            if (string.IsNullOrEmpty(refreshToken))
+            try
             {
-                internalHolder.Add(Res.state, false);
-                internalHolder.Add(Res.message, "Refresh Token is required!");
-                return internalHolder;
-            }
-            // Get User by any Refresh Token Even if it is Inactive 
-            var user = await userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.RefreshToken == refreshToken));
+                // Check if Refresh Token is Empty
+                if (string.IsNullOrEmpty(refreshToken))
+                {
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, "Refresh Token is required!");
+                    return _holderOfDto;
+                }
+                // Get User by any Refresh Token Even if it is Inactive 
+                var user = await userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.RefreshToken == refreshToken));
 
-            if (user == null)
-            {
-                internalHolder.Add(Res.state, false);
-                internalHolder.Add(Res.message, "Invalid token");
-                return internalHolder;
-            }
-            if (user.IsInactive)
-            {
-                internalHolder.Add(Res.state, false);
-                internalHolder.Add(Res.message, "User is Inactive!");
-                return internalHolder;
+                if (user == null)
+                {
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, "Invalid token");
+                    return _holderOfDto;
+                }
+                if (user.IsInactive)
+                {
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, "User is Inactive!");
+                    return _holderOfDto;
 
-            }
-            var currentUserRefreshToken = user.RefreshTokens.Single(t => t.RefreshToken == refreshToken);
-            if (!currentUserRefreshToken.isActive)
-            {
-                internalHolder.Add(Res.state, false);
-                internalHolder.Add(Res.message, "Inactive token");
-                return internalHolder;
-            }
+                }
+                var currentUserRefreshToken = user.RefreshTokens.Single(t => t.RefreshToken == refreshToken);
+                if (!currentUserRefreshToken.isActive)
+                {
+                    _holderOfDto.Add(Res.state, false);
+                    _holderOfDto.Add(Res.message, "Inactive token");
+                    return _holderOfDto;
+                }
 
-            internalHolder.Add(Res.state, true);
-            internalHolder.Add(Res.uid, user.Id);
-            return internalHolder;
+                _holderOfDto.Add(Res.state, true);
+                _holderOfDto.Add(Res.uid, user.Id);
+                return _holderOfDto;
+            }
+            catch (Exception ex)
+            {
+                _holderOfDto.Add(Res.state, false);
+                _holderOfDto.Add(Res.message, ex.Message);
+                return _holderOfDto;
+            }
         }
 
         protected static async Task<string?> GetUserDeviceTokenAsync(UserManager<User> userManager, string userId)
@@ -85,7 +94,7 @@ namespace WebApp.Core.Bases
 
                 var user = await userManager.FindByIdAsync(userId);
 
-                if (user is null)
+                if (user is null || user.IsInactive)
                     return null;
 
                 return user.DeviceTokenId;
@@ -96,35 +105,23 @@ namespace WebApp.Core.Bases
             }
         }
 
-        protected static async Task<string> GetUserLastLangAsync(UserManager<User> userManager, string userId)
+        protected static async Task<ELanguages> GetUserLastLangAsync(UserManager<User> userManager, string userId)
         {
             try
             {
                 if (string.IsNullOrEmpty(userId))
-                    return "ar";
+                    return Culture.Default;
 
                 var user = await userManager.FindByIdAsync(userId);
 
                 if (user is null)
-                    return "ar";
+                    return Culture.Default;
 
-                return user.LastLang ?? "ar";
+                return Culture.GetLanguage(user.LastLang!);
             }
             catch
             {
-                return "ar";
-            }
-        }
-        
-        protected static async Task<int> GetUserLastLangIndexAsync(UserManager<User> userManager, string userId)
-        {
-            try
-            {
-                return Culture.getIndexOfCulture(await GetUserLastLangAsync(userManager, userId));
-            }
-            catch
-            {
-                return 0;
+                return Culture.Default;
             }
         }
 

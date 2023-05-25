@@ -73,7 +73,7 @@ namespace WebApp.Infrastructure.DBContexts
 
             //set user password
             PasswordHasher<User> passwordHash = new PasswordHasher<User>();
-            appUser.PasswordHash = passwordHash.HashPassword(appUser, "Icity@2022");
+            appUser.PasswordHash = passwordHash.HashPassword(appUser, "Admin@1234");
 
             //seed user
             builder.Entity<User>()

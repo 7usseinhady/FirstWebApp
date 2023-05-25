@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -298,7 +299,7 @@ namespace WebApp.Infrastructure.Migrations
                 schema: "auth",
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Code", "ConcurrencyStamp", "DeviceTokenId", "Email", "EmailConfirmed", "FirstName", "IsBasedEmail", "IsFemale", "IsInactive", "LastLang", "LastName", "LocalPhoneNumber", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "Path", "PhoneNumber", "PhoneNumberConfirmed", "SecondLocalPhoneNumber", "SecondPhoneNumber", "SecurityStamp", "TwoFactorEnabled", "UserInsertDate", "UserInsertId", "UserName", "UserUpdateDate", "UserUpdateId" },
-                values: new object[] { "618fdfd2-f08b-413d-876a-04fec17f9e3f", 0, null, "618fdfd2-f08b-413d-876a-04fec17f9e3f", null, null, true, "Admin", false, false, false, null, "Admin", null, false, null, null, "admin", "AQAAAAIAAYagAAAAEBnUS2FMdEGuJQHPfwgugTg2qfvTu7N3FahBU/jN/UhanGQCHOrtjtazXPJdL7OKqQ==", null, null, true, null, null, "6ecba28d-f5d7-48ad-8bd3-5019d77c7c89", false, null, null, "admin", null, null });
+                values: new object[] { "618fdfd2-f08b-413d-876a-04fec17f9e3f", 0, null, "618fdfd2-f08b-413d-876a-04fec17f9e3f", null, null, true, "Admin", false, false, false, null, "Admin", null, false, null, null, "admin", "AQAAAAIAAYagAAAAEO2FDolpNXGCQ15kIBfDTQBuFeGURIeTBDqzBRSkSSEqBVl3394vPvmu/cSBNSgvpQ==", null, null, true, null, null, "dd9aadfc-ceae-4a81-9f26-9eab18997fc5", false, null, null, "admin", null, null });
 
             migrationBuilder.InsertData(
                 schema: "auth",
