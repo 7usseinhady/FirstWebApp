@@ -41,12 +41,12 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
                             // --
                             UserCount = userRoleCount.userCount,
                             // --
-                            UserInsertId = role.UserInsertId,
-                            UserInsertDate = role.UserInsertDate,
-                            UserInsert = role.UserInsert,
-                            UserUpdateId = role.UserUpdateId,
-                            UserUpdateDate = role.UserUpdateDate,
-                            UserUpdate = role.UserUpdate
+                            InsertedById = role.InsertedById,
+                            InsertedOn = role.InsertedOn,
+                            InsertedBy = role.InsertedBy,
+                            ModifiedById = role.ModifiedById,
+                            ModifiedOn = role.ModifiedOn,
+                            ModifiedBy = role.ModifiedBy
                         };
 
                 return query;

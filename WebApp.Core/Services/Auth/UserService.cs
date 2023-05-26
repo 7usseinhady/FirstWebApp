@@ -136,8 +136,8 @@ namespace WebApp.Core.Services
                     user.LastName = userRequestDto.LastName;
                     user.IsFemale = userRequestDto.IsFemale;
                     user.IsInactive = userRequestDto.IsInactive;
-                    user.UserUpdateId = userRequestDto.Id;
-                    user.UserUpdateDate = DateTime.UtcNow;
+                    user.ModifiedById = userRequestDto.Id;
+                    user.ModifiedOn = DateTime.UtcNow;
 
                     var result = await _userManager.UpdateAsync(user);
                     lIndicator.Add(result.Succeeded);
@@ -280,8 +280,8 @@ namespace WebApp.Core.Services
                             if (user is not null)
                             {
                                 user.Path = holder[Res.filePath] as string;
-                                user.UserUpdateId = fileDto.Id;
-                                user.UserUpdateDate = DateTime.UtcNow;
+                                user.ModifiedById = fileDto.Id;
+                                user.ModifiedOn = DateTime.UtcNow;
                                 var result = await _userManager.UpdateAsync(user);
                                 lIndicator.Add(result.Succeeded);
                             }

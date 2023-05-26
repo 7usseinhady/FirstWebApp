@@ -112,7 +112,7 @@ namespace WebApp.Core.Services.Auth
 
             // Create User With Hashing Password
             var user = _mapper.Map<User>(adminRegisterRequestDto);
-            user.UserInsertDate = DateTime.Now;
+            user.InsertedOn = DateTime.Now;
             var resultUser = await _userManager.CreateAsync(user, adminRegisterRequestDto.Password);
             if (!resultUser.Succeeded)
             {

@@ -120,20 +120,20 @@ namespace WebApp.Infrastructure.DBContexts
             DateTime dateUtcNow = DateTime.UtcNow;
             
             var lEntityEntries = ChangeTracker.Entries().Where(e =>
-                (e.Entity is IUserInsert || e.Entity is IUserUpdate) &&
+                (e.Entity is IUserInsertion || e.Entity is IUserModification) &&
                 (e.State == EntityState.Added || e.State == EntityState.Modified));
 
             foreach (var entityEntry in lEntityEntries)
             {
-                if (entityEntry.State == EntityState.Added && entityEntry.Entity is IUserInsert)
+                if (entityEntry.State == EntityState.Added && entityEntry.Entity is IUserInsertion)
                 {
-                    ((IUserInsert)entityEntry.Entity).UserInsertId = userId;
-                    ((IUserInsert)entityEntry.Entity).UserInsertDate = dateUtcNow;
+                    ((IUserInsertion)entityEntry.Entity).InsertedById = userId;
+                    ((IUserInsertion)entityEntry.Entity).InsertedOn = dateUtcNow;
                 }
-                else if (entityEntry.State == EntityState.Modified && entityEntry.Entity is IUserUpdate)
+                else if (entityEntry.State == EntityState.Modified && entityEntry.Entity is IUserModification)
                 {
-                    ((IUserUpdate)entityEntry.Entity).UserUpdateId = userId;
-                    ((IUserUpdate)entityEntry.Entity).UserUpdateDate = dateUtcNow;
+                    ((IUserModification)entityEntry.Entity).ModifiedById = userId;
+                    ((IUserModification)entityEntry.Entity).ModifiedOn = dateUtcNow;
                 }
             }
         }

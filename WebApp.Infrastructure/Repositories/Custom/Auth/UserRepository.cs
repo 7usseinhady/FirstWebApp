@@ -67,10 +67,10 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
                         query = query.Where(x => x.IsInactive == Convert.ToBoolean(filterRequestDto.IsInactive));
 
                     if (filterRequestDto.CreationDateFrom.HasValue)
-                        query = query.Where(x => x.UserInsertDate >= filterRequestDto.CreationDateFrom.Value.Date);
+                        query = query.Where(x => x.InsertedOn >= filterRequestDto.CreationDateFrom.Value.Date);
 
                     if (filterRequestDto.CreationDateTo.HasValue)
-                        query = query.Where(x => x.UserInsertDate <= filterRequestDto.CreationDateTo.Value.Date);
+                        query = query.Where(x => x.InsertedOn <= filterRequestDto.CreationDateTo.Value.Date);
                 }
 
                 return query;

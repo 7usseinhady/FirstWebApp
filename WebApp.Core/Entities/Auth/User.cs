@@ -6,7 +6,7 @@ using WebApp.Core.Interfaces;
 
 namespace WebApp.Core.Entities.Auth
 {
-    public partial class User : IdentityUser, IUserInsert, IUserUpdate ,IInactive
+    public partial class User : IdentityUser, IUserInsertion, IUserModification ,IInactive
     {
         public User()
         {
@@ -55,17 +55,17 @@ namespace WebApp.Core.Entities.Auth
         public string? LastLang { get; set; }
         public bool IsInactive { get; set; }
 
-        public string? UserInsertId { get; set; }
+        public string? InsertedById { get; set; }
 
-        [ForeignKey(nameof(UserInsertId))]
-        public virtual User? UserInsert { get; set; }
-        public DateTime? UserInsertDate { get; set; }
+        [ForeignKey(nameof(InsertedById))]
+        public virtual User? InsertedBy { get; set; }
+        public DateTime? InsertedOn { get; set; }
 
-        public string? UserUpdateId { get; set; }
+        public string? ModifiedById { get; set; }
 
-        [ForeignKey(nameof(UserUpdateId))]
-        public virtual User? UserUpdate { get; set; }
-        public DateTime? UserUpdateDate { get; set; }
+        [ForeignKey(nameof(ModifiedById))]
+        public virtual User? ModifiedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
 
         public ICollection<UserRefreshToken> RefreshTokens { get; set; }
         public ICollection<UserValidationToken> ValidationTokens { get; set; }
