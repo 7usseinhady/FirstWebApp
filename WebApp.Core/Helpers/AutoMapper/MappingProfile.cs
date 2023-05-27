@@ -16,7 +16,7 @@ namespace WebApp.Core.Helpers.AutoMapper
             #region Auth
             CreateMap<UserRegisterRequestDto, User>();
 
-            CreateMap<UserRequestDto, User>();
+            CreateMap<UserEditRequestDto, User>();
             CreateMap<User, UserResponseDto>()
                 .ForMember(d => d.DisplayPath, o => o.MapFrom(s => _sharedMapper.BuildProfileImagePath(s.Path)));
 

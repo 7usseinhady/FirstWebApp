@@ -1,8 +1,7 @@
 ﻿namespace WebApp.SharedKernel.Dtos.Auth.Request
 {
-    public class UserLangRequestDto
+    public class UserLangRequestDto : UserIdRequestDto
     {
-        public string UserId { get; set; } = default!;
         public string LastLang { get; set; } = default!;
     }
 }

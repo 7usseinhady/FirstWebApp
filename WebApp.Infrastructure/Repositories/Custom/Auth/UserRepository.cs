@@ -52,10 +52,10 @@ namespace WebApp.Infrastructure.Repositories.Custom.Auth
                         query = query.Where(x => x.Email!.Contains(filterRequestDto.Email));
 
                     if (!string.IsNullOrEmpty(filterRequestDto.PhoneNumber))
-                        query = query.Where(x => x.LocalPhoneNumber!.Contains(filterRequestDto.PhoneNumber));
+                        query = query.Where(x => x.PhoneNumber!.Contains(filterRequestDto.PhoneNumber));
 
                     if (!string.IsNullOrEmpty(filterRequestDto.SecondPhoneNumber))
-                        query = query.Where(x => x.SecondLocalPhoneNumber!.Contains(filterRequestDto.SecondPhoneNumber));
+                        query = query.Where(x => x.PhoneNumber2!.Contains(filterRequestDto.SecondPhoneNumber));
 
                     if (!string.IsNullOrEmpty(filterRequestDto.CommonKeyWord))
                         query = query.Where(x => x.FirstName.Contains(filterRequestDto.CommonKeyWord) || x.LastName.Contains(filterRequestDto.CommonKeyWord));

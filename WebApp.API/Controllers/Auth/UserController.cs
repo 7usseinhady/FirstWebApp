@@ -47,7 +47,7 @@ namespace WebApp.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(UserRequestDto userRequestDto)
+        public async Task<IActionResult> Put(UserEditRequestDto userRequestDto)
         {
             if (!ModelState.IsValid)
                 return NotValidModelState();
@@ -87,7 +87,7 @@ namespace WebApp.API.Controllers
         }
 
         [HttpPut("UpdateByRF")]
-        public async Task<IActionResult> UpdateByRF(UserRequestDto userRequestDto)
+        public async Task<IActionResult> UpdateByRF(UserEditRequestDto userRequestDto)
         {
             if (!ModelState.IsValid)
                 return NotValidModelState();

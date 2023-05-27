@@ -94,7 +94,7 @@ namespace WebApp.Core.Services
             }
         }
 
-        public async Task<HolderOfDto> UpdateAsync(UserRequestDto userRequestDto)
+        public async Task<HolderOfDto> UpdateAsync(UserEditRequestDto userRequestDto)
         {
             List<bool> lIndicator = new List<bool>();
             try
@@ -111,8 +111,7 @@ namespace WebApp.Core.Services
                             _holderOfDto.Add(Res.message, "phone number is already exist");
                             return _holderOfDto;
                         }
-                        user.Code = userRequestDto.Code;
-                        user.LocalPhoneNumber = userRequestDto.LocalPhoneNumber;
+                        user.NationalPhoneNumber = userRequestDto.NationalPhoneNumber;
                         user.PhoneNumber = userRequestDto.PhoneNumber;
                         user.PhoneNumberConfirmed = false;
                     }
@@ -130,8 +129,8 @@ namespace WebApp.Core.Services
                         user.EmailConfirmed = false;
                     }
 
-                    user.SecondLocalPhoneNumber = userRequestDto.SecondLocalPhoneNumber;
-                    user.SecondPhoneNumber = userRequestDto.SecondPhoneNumber;
+                    user.NationalPhoneNumber2 = userRequestDto.NationalPhoneNumber2;
+                    user.PhoneNumber2 = userRequestDto.PhoneNumber2;
                     user.FirstName = userRequestDto.FirstName;
                     user.LastName = userRequestDto.LastName;
                     user.IsFemale = userRequestDto.IsFemale;
@@ -158,7 +157,7 @@ namespace WebApp.Core.Services
             return _holderOfDto;
         }
 
-        public async Task<HolderOfDto> UpdateByRefreshTokenAsync(UserRequestDto userRequestDto)
+        public async Task<HolderOfDto> UpdateByRefreshTokenAsync(UserEditRequestDto userRequestDto)
         {
             try
             {

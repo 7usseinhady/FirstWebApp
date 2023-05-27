@@ -739,7 +739,7 @@ namespace WebApp.Core.Services.Auth
             User user = null!;
             if (ObjectUtils.IsSALocalPhoneNumber(personalKey))
             {
-                user = (await _userManager.Users.SingleOrDefaultAsync(x => x.LocalPhoneNumber == personalKey))!;
+                user = (await _userManager.Users.SingleOrDefaultAsync(x => x.NationalPhoneNumber == personalKey))!;
             }
             else if (ObjectUtils.IsValidEmail(personalKey))
             {

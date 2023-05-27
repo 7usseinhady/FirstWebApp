@@ -6,7 +6,7 @@ using WebApp.Core.Interfaces;
 
 namespace WebApp.Core.Entities.Auth
 {
-    public partial class User : IdentityUser, IUserInsertion, IUserModification ,IInactive
+    public partial class User : IdentityUser, IUserInsertion, IUserModification, IInactive
     {
         public User()
         {
@@ -29,21 +29,18 @@ namespace WebApp.Core.Entities.Auth
             }
         }
 
-        [MaxLength(4)]
-        public string? Code { get; set; }
+        [MaxLength(15)]
+        public string? NationalPhoneNumber { get; set; }
 
-        [MaxLength(10)]
-        public string? LocalPhoneNumber { get; set; }
-
-        [MaxLength(13)]
+        [MaxLength(20)]
         public override string? PhoneNumber { get; set; }
 
 
-        [MaxLength(10)]
-        public string? SecondLocalPhoneNumber { get; set; }
+        [MaxLength(15)]
+        public string? NationalPhoneNumber2 { get; set; }
 
-        [MaxLength(13)]
-        public string? SecondPhoneNumber { get; set; }
+        [MaxLength(20)]
+        public string? PhoneNumber2 { get; set; }
         public bool? IsFemale { get; set; }
         public string? Path { get; set; }
         public bool IsBasedEmail { get; set; }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.SharedKernel.Dtos.Auth.Response
 {
-    public class UserResponseDto : UserRequestDto, IFilePathDto
+    public class UserResponseDto : UserEditRequestDto, IFilePathDto
     {
         [Display(Name = "UserName"), Required(ErrorMessage = "Required")]
         public string UserName { get; set; } = default!;

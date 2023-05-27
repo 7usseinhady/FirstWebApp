@@ -9,8 +9,8 @@ namespace WebApp.Core.Interfaces.Custom.Services.Auth
         Task<HolderOfDto> GetAllAsync(UserFilterRequestDto userFilter);
         Task<HolderOfDto> GetByIdAsync(string userId);
         Task<HolderOfDto> GetByRefreshTokenAsync(string token);
-        Task<HolderOfDto> UpdateAsync(UserRequestDto userRequestDto);
-        Task<HolderOfDto> UpdateByRefreshTokenAsync(UserRequestDto userRequestDto);
+        Task<HolderOfDto> UpdateAsync(UserEditRequestDto userRequestDto);
+        Task<HolderOfDto> UpdateByRefreshTokenAsync(UserEditRequestDto userRequestDto);
         Task<HolderOfDto> UpdateUserDeviceIdAsync(UserDeviceIdRequestDto userDeviceIdRequestDto);
         Task<HolderOfDto> UpdateUserLangAsync(UserLangRequestDto userLangRequestDto);
         Task<HolderOfDto> DeactiveUserAsync(string userId);

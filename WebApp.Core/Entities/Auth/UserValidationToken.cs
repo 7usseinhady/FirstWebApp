@@ -10,9 +10,6 @@ namespace WebApp.Core.Entities.Auth
     [Owned]
     public class UserValidationToken : BaseEntity<long>
     {
-        [Key]
-        public override long Id { get; set; }
-
         [Required, MaxLength(6)] 
         public string ValidationCode { get; set; } = default!;
 
@@ -24,13 +21,18 @@ namespace WebApp.Core.Entities.Auth
         [MaxLength(200)]
         public string? IpAdress { get; set; }
 
+        [MaxLength(200)]
+        public string? MacAdress { get; set; }
+
         [MaxLength(400)]
         public string? Agent { get; set; }
+
         public DateTime ExpiresOn { get; set; }
-        public bool isExpired => DateTime.UtcNow >= ExpiresOn;
         public DateTime? RevokedOn { get; set; }
-        public bool isRevoked => RevokedOn is not null;
         public bool isUsed { get; set; }
+
+        public bool isExpired => DateTime.UtcNow >= ExpiresOn;
+        public bool isRevoked => RevokedOn is not null;
         public bool isActive => !isExpired && !isRevoked && !isUsed;
 
     }
