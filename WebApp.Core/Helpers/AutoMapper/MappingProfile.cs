@@ -14,9 +14,18 @@ namespace WebApp.Core.Helpers.AutoMapper
             _sharedMapper = sharedMapper;
 
             #region Auth
-            CreateMap<UserRegisterRequestDto, User>();
+            CreateMap<UserRegisterRequestDto, User>()
+                .ForMember(d => d.NationalPhoneNumber, o => o.MapFrom(s => _sharedMapper.ToNationalPhoneNumber(s.PhoneNumber, null)))
+                .ForMember(d => d.PhoneNumber, o => o.MapFrom(s => _sharedMapper.ToInternationalPhoneNumber(s.PhoneNumber, null)))
+                .ForMember(d => d.NationalPhoneNumber2, o => o.MapFrom(s => _sharedMapper.ToNationalPhoneNumber(s.PhoneNumber2, null)))
+                .ForMember(d => d.PhoneNumber2, o => o.MapFrom(s => _sharedMapper.ToInternationalPhoneNumber(s.PhoneNumber2, null)));
 
-            CreateMap<UserEditRequestDto, User>();
+            CreateMap<UserEditRequestDto, User>()
+                .ForMember(d => d.NationalPhoneNumber, o => o.MapFrom(s => _sharedMapper.ToNationalPhoneNumber(s.PhoneNumber, null)))
+                .ForMember(d => d.PhoneNumber, o => o.MapFrom(s => _sharedMapper.ToInternationalPhoneNumber(s.PhoneNumber, null)))
+                .ForMember(d => d.NationalPhoneNumber2, o => o.MapFrom(s => _sharedMapper.ToNationalPhoneNumber(s.PhoneNumber2, null)))
+                .ForMember(d => d.PhoneNumber2, o => o.MapFrom(s => _sharedMapper.ToInternationalPhoneNumber(s.PhoneNumber2, null)));
+
             CreateMap<User, UserResponseDto>()
                 .ForMember(d => d.DisplayPath, o => o.MapFrom(s => _sharedMapper.BuildProfileImagePath(s.Path)));
 

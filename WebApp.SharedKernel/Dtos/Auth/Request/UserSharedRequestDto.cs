@@ -16,12 +16,8 @@ namespace WebApp.SharedKernel.Dtos.Auth.Request
         public string? Email { get; set; } = default!;
         public bool? IsFemale { get; set; }
 
-        public string? NationalPhoneNumber { get; set; }
-
         [MaxLength(13)]
         public string? PhoneNumber { get; set; }
-
-        public string? NationalPhoneNumber2 { get; set; }
 
         [MaxLength(13)]
         public string? PhoneNumber2 { get; set; }

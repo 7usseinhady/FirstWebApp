@@ -12,6 +12,8 @@ namespace WebApp.SharedKernel.Dtos.Auth.Response
         [Display(Name = "FullName")]
         public string? FullName { get; set; }
 
+        public string? NationalPhoneNumber { get; set; }
+        public string? NationalPhoneNumber2 { get; set; }
         public string? Path { get; set; }
         public string? DisplayPath { get; set; }
 

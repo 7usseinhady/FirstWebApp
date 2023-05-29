@@ -14,6 +14,8 @@ using WebApp.SharedKernel.Dtos.Auth.Response;
 using WebApp.SharedKernel.Dtos.Response;
 using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
 using WebApp.SharedKernel.Helpers;
+using PhoneNumbers;
+using WebApp.Core.Helpers.AutoMapper;
 
 namespace WebApp.Core.Services
 {
@@ -21,10 +23,12 @@ namespace WebApp.Core.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly IFileUtils _fileUtils;
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, Indicator indicator, UserManager<User> userManager, IFileUtils fileUtils) : base(unitOfWork, mapper, holderOfDto, indicator)
+        private readonly SharedMapper _sharedMapper;
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, HolderOfDto holderOfDto, Indicator indicator, UserManager<User> userManager, IFileUtils fileUtils, SharedMapper sharedMapper) : base(unitOfWork, mapper, holderOfDto, indicator)
         {
             _userManager = userManager;
             _fileUtils = fileUtils;
+            _sharedMapper = sharedMapper;
         }
 
         public async Task<HolderOfDto> GetAllAsync(UserFilterRequestDto userFilter)
@@ -111,8 +115,8 @@ namespace WebApp.Core.Services
                             _holderOfDto.Add(Res.message, "phone number is already exist");
                             return _holderOfDto;
                         }
-                        user.NationalPhoneNumber = userRequestDto.NationalPhoneNumber;
-                        user.PhoneNumber = userRequestDto.PhoneNumber;
+                        user.NationalPhoneNumber = _sharedMapper.ToNationalPhoneNumber(userRequestDto.PhoneNumber);
+                        user.PhoneNumber = _sharedMapper.ToInternationalPhoneNumber(userRequestDto.PhoneNumber);
                         user.PhoneNumberConfirmed = false;
                     }
 
@@ -129,8 +133,8 @@ namespace WebApp.Core.Services
                         user.EmailConfirmed = false;
                     }
 
-                    user.NationalPhoneNumber2 = userRequestDto.NationalPhoneNumber2;
-                    user.PhoneNumber2 = userRequestDto.PhoneNumber2;
+                    user.NationalPhoneNumber2 = _sharedMapper.ToNationalPhoneNumber(userRequestDto.PhoneNumber2);
+                    user.PhoneNumber2 = _sharedMapper.ToInternationalPhoneNumber(userRequestDto.PhoneNumber2);
                     user.FirstName = userRequestDto.FirstName;
                     user.LastName = userRequestDto.LastName;
                     user.IsFemale = userRequestDto.IsFemale;

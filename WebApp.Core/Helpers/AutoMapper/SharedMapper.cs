@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting.Server;
+using PhoneNumbers;
 using System.Runtime.ExceptionServices;
+using WebApp.SharedKernel.Enums;
 using WebApp.SharedKernel.Helpers;
 
 namespace WebApp.Core.Helpers.AutoMapper
@@ -7,10 +9,11 @@ namespace WebApp.Core.Helpers.AutoMapper
     public partial class SharedMapper
     {
         private readonly IServer _server;
-
+        private readonly PhoneNumberUtil _phoneNumberUtil;
         public SharedMapper(IServer server)
         {
             _server = server;
+            _phoneNumberUtil = PhoneNumberUtil.GetInstance();
         }
 
         public string BuildFilePath(string path)
@@ -55,6 +58,48 @@ namespace WebApp.Core.Helpers.AutoMapper
                 ExceptionDispatchInfo.Capture(ex).Throw();
             }
             return string.Empty;
+        }
+
+        public string ToInternationalPhoneNumber(string? phoneNumber, Country? country = null)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(phoneNumber))
+                    return string.Empty;
+
+                string? region = country is null ? null : country.ToString();
+                PhoneNumber parsedPhoneNumber = _phoneNumberUtil.Parse(phoneNumber, region);
+
+                if (!_phoneNumberUtil.IsValidNumber(parsedPhoneNumber))
+                    throw new InvalidOperationException("Invalid phone number");
+
+                return _phoneNumberUtil.Format(parsedPhoneNumber, PhoneNumberFormat.INTERNATIONAL);
+            }
+            catch
+            {
+                throw new InvalidOperationException("Invalid phone number");
+            }
+        }
+
+        public string ToNationalPhoneNumber(string? phoneNumber, Country? country = null)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(phoneNumber))
+                    return string.Empty;
+
+                string? region = country is null ? null : country.ToString();
+                PhoneNumber parsedPhoneNumber = _phoneNumberUtil.Parse(phoneNumber, region);
+
+                if (!_phoneNumberUtil.IsValidNumber(parsedPhoneNumber))
+                    throw new InvalidOperationException("Invalid phone number");
+
+                return _phoneNumberUtil.Format(parsedPhoneNumber, PhoneNumberFormat.NATIONAL);
+            }
+            catch
+            {
+                throw new InvalidOperationException("Invalid phone number");
+            }
         }
 
     }
@@ -137,5 +182,6 @@ namespace WebApp.Core.Helpers.AutoMapper
                 return 0;
             }
         }
+
     }
 }
