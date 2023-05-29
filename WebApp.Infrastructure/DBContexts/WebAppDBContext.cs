@@ -135,6 +135,13 @@ namespace WebApp.Infrastructure.DBContexts
                     ((IUserModification)entityEntry.Entity).ModifiedById = userId;
                     ((IUserModification)entityEntry.Entity).ModifiedOn = dateUtcNow;
                 }
+                else if (entityEntry.State == EntityState.Deleted && entityEntry.Entity is ISoftDeletion)
+                {
+                    ((ISoftDeletion)entityEntry.Entity).IsSoftDeleted = true;
+                    ((ISoftDeletion)entityEntry.Entity).DeletedById = userId;
+                    ((ISoftDeletion)entityEntry.Entity).DeletedOn = dateUtcNow;
+                    entityEntry.State = EntityState.Modified;
+                }
             }
         }
     }
