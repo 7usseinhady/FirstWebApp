@@ -57,8 +57,6 @@ namespace WebApp.API.Controllers
                 return NotValidModelState();
 
             _holderOfDto = await _authService.EmailConfirmationAsync(emailConfirmationRequestDto, HttpContext);
-            CheckStateAndSetRefreshToken(HttpContext, _holderOfDto);
-
             return State(_holderOfDto);
 
         }
@@ -79,8 +77,6 @@ namespace WebApp.API.Controllers
                 return NotValidModelState();
 
             _holderOfDto = await _authService.PhoneConfirmationAsync(emailConfirmationRequestDto, HttpContext);
-            CheckStateAndSetRefreshToken(HttpContext, _holderOfDto);
-
             return State(_holderOfDto);
 
 
@@ -93,8 +89,6 @@ namespace WebApp.API.Controllers
                 return NotValidModelState();
 
             _holderOfDto = await _authService.LoginAsync(userLoginRequestDto, HttpContext);
-            CheckStateAndSetRefreshToken(HttpContext, _holderOfDto);
-
             return State(_holderOfDto);
         }
         
@@ -104,12 +98,9 @@ namespace WebApp.API.Controllers
         {
             if (!ModelState.IsValid)
                 return NotValidModelState();
+
             var refreshToken = tokenRequestDto.Token ??  Request.Cookies[Res.refreshToken];
-
             _holderOfDto = await _authService.AutoLoginAsync(refreshToken!, HttpContext);
-
-            CheckStateAndSetRefreshToken(HttpContext, _holderOfDto);
-
             return State(_holderOfDto);
         }
 
@@ -123,9 +114,6 @@ namespace WebApp.API.Controllers
             var refreshToken = tokenRequestDto.Token ?? Request.Cookies[Res.refreshToken];
             refreshToken = refreshToken ?? "";
             _holderOfDto = await _authService.RefreshTokensAsync(refreshToken, HttpContext);
-
-            CheckStateAndSetRefreshToken(HttpContext, _holderOfDto);
-
             return State(_holderOfDto);
         }
 
@@ -199,30 +187,6 @@ namespace WebApp.API.Controllers
 
             return State(await _authService.GetRoleUsersAsync(roleName));
         }
-
-        private static void CheckStateAndSetRefreshToken(HttpContext httpContext, HolderOfDto holder)
-        {
-            UserAuthResponseDto userAuthResponseDto = null!;
-            object? isConfirmed;
-            object? oUserAuthResponseDto;
-            if ((bool)holder[Res.state] && holder.TryGetValue(Res.isConfirmed, out isConfirmed) && (bool)isConfirmed && holder.TryGetValue(Res.isConfirmed, out oUserAuthResponseDto))
-            {
-                userAuthResponseDto = (UserAuthResponseDto)oUserAuthResponseDto;
-            }
-            if (userAuthResponseDto is not null && !String.IsNullOrEmpty(userAuthResponseDto.RefreshToken))
-            {
-                var cookieOptions = new CookieOptions
-                {
-                    Expires = userAuthResponseDto.RefreshTokenExpiration.ToUniversalTime(),
-                    HttpOnly = true,
-                    Secure = true
-                };
-                RequestUtils.SetCookie(httpContext, Res.refreshToken, userAuthResponseDto.RefreshToken, cookieOptions);
-            }
-            else
-                RequestUtils.DeleteCookie(httpContext, Res.refreshToken);
-        }
-
 
     }
 }

@@ -6,6 +6,11 @@ using WebApp.Core.Consts;
 using Microsoft.AspNetCore.Http;
 using WebApp.SharedKernel.Extensions;
 using WebApp.Core.Interfaces;
+using System.Linq;
+using System.Reflection.Emit;
+using WebApp.Infrastructure.Extensions;
+using System.Linq.Expressions;
+using WebApp.SharedKernel.Interfaces;
 
 namespace WebApp.Infrastructure.DBContexts
 {
@@ -100,6 +105,38 @@ namespace WebApp.Infrastructure.DBContexts
 
             #endregion
 
+            #region Default Value & Global Query Filter
+            builder.EntitiesOfType<IInactive>(x =>
+            {
+                // default value
+                x.Property<bool>(nameof(IInactive.IsInactive)).HasDefaultValue(false);
+
+                // query filters
+                var param = Expression.Parameter(x.Metadata.ClrType, "p");
+                var property = Expression.Property(param, nameof(IInactive.IsInactive));
+                var value = Expression.Constant(false);
+                var body = Expression.Equal(property, value);
+                var criteria = Expression.Lambda(body, param);
+
+                x.HasQueryFilter(criteria);
+            });
+
+            builder.EntitiesOfType<ISoftDeletion>(x =>
+            {
+                // default value
+                x.Property<bool>(nameof(ISoftDeletion.IsSoftDeleted)).HasDefaultValue(false);
+
+                // query filters
+                var param = Expression.Parameter(x.Metadata.ClrType, "p");
+                var property = Expression.Property(param, nameof(ISoftDeletion.IsSoftDeleted));
+                var value = Expression.Constant(false);
+                var body = Expression.Equal(property, value);
+                var criteria = Expression.Lambda(body, param);
+
+                x.HasQueryFilter(criteria);
+            });
+            #endregion
+
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -118,10 +155,10 @@ namespace WebApp.Infrastructure.DBContexts
         {
             string userId = _accessor?.HttpContext?.User?.GetUserId()!;
             DateTime dateUtcNow = DateTime.UtcNow;
-            
+
             var lEntityEntries = ChangeTracker.Entries().Where(e =>
-                (e.Entity is IUserInsertion || e.Entity is IUserModification) &&
-                (e.State == EntityState.Added || e.State == EntityState.Modified));
+                (e.Entity is IUserInsertion || e.Entity is IUserModification || e.Entity is ISoftDeletion) &&
+                (e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted));
 
             foreach (var entityEntry in lEntityEntries)
             {
