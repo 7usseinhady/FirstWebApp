@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using WebApp.SharedKernel.Dtos;
 using WebApp.SharedKernel.Localization.Resources;
 using System.Globalization;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.SharedKernel
 {

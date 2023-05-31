@@ -4,6 +4,7 @@ using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.SharedKernel.Dtos;
 using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
 using WebApp.API.Consts;
+using WebApp.SharedKernel.Dtos.Auth.Request;
 
 namespace WebApp.API.Controllers
 {
@@ -37,12 +38,12 @@ namespace WebApp.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] string roleName)
+        public async Task<IActionResult> PostAsync([FromBody] RoleRequestDto roleRequestDto)
         {
             if (!ModelState.IsValid)
                 return NotValidModelState();
 
-            return State(await _roleService.SaveAsync(roleName));
+            return State(await _roleService.SaveAsync(roleRequestDto));
         }
 
         [HttpDelete("{id}")]

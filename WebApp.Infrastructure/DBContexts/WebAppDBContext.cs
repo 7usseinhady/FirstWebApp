@@ -108,9 +108,6 @@ namespace WebApp.Infrastructure.DBContexts
             #region Default Value & Global Query Filter
             builder.EntitiesOfType<IInactive>(x =>
             {
-                // default value
-                x.Property<bool>(nameof(IInactive.IsInactive)).HasDefaultValue(false);
-
                 // query filters
                 var param = Expression.Parameter(x.Metadata.ClrType, "p");
                 var property = Expression.Property(param, nameof(IInactive.IsInactive));
@@ -123,9 +120,6 @@ namespace WebApp.Infrastructure.DBContexts
 
             builder.EntitiesOfType<ISoftDeletion>(x =>
             {
-                // default value
-                x.Property<bool>(nameof(ISoftDeletion.IsSoftDeleted)).HasDefaultValue(false);
-
                 // query filters
                 var param = Expression.Parameter(x.Metadata.ClrType, "p");
                 var property = Expression.Property(param, nameof(ISoftDeletion.IsSoftDeleted));
@@ -153,7 +147,7 @@ namespace WebApp.Infrastructure.DBContexts
 
         private void PreSaveChanges()
         {
-            string userId = _accessor?.HttpContext?.User?.GetUserId()!;
+            string userId = _accessor?.HttpContext?.GetUserId()!;
             DateTime dateUtcNow = DateTime.UtcNow;
 
             var lEntityEntries = ChangeTracker.Entries().Where(e =>

@@ -2,7 +2,6 @@
 using WebApp.Core.Bases;
 using WebApp.Core.Interfaces;
 using WebApp.SharedKernel.Consts;
-using WebApp.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Core.Interfaces.Custom.Services.Auth;
 using WebApp.Core.Extensions;
@@ -12,6 +11,8 @@ using WebApp.SharedKernel.Dtos;
 using WebApp.SharedKernel.Dtos.Response;
 using WebApp.SharedKernel.Dtos.Auth.Request.Filters;
 using WebApp.SharedKernel.Helpers;
+using WebApp.SharedKernel.Dtos.Auth.Request;
+using StackExchange.Redis;
 
 namespace WebApp.Core.Services
 {
@@ -66,23 +67,47 @@ namespace WebApp.Core.Services
             
             return _holderOfDto;
         }
-        public async Task<HolderOfDto> SaveAsync(string roleName)
+        public async Task<HolderOfDto> SaveAsync(RoleRequestDto roleRequestDto)
         {
             List<bool> lIndicator = new List<bool>();
             try
             {
-                var role = new Role() { Id = Guid.NewGuid().ToString(), Name = roleName, NormalizedName = roleName.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() };
+                var role = _mapper.Map<Entities.Auth.Role>(roleRequestDto);
+                role.Id = Guid.NewGuid().ToString();
+                role.ConcurrencyStamp = Guid.NewGuid().ToString();
+                
                 await _unitOfWork.Roles.AddAsync(role);
                 lIndicator.Add(_unitOfWork.Complete() > 0);
             }
             catch (Exception ex)
             {
                 _holderOfDto.Add(Res.message, ex.Message);
-                
                 lIndicator.Add(false);
             }
             _holderOfDto.Add(Res.state, lIndicator.All(x => x));
             
+            return _holderOfDto;
+        }
+        public async Task<HolderOfDto> UpdateAsync(RoleRequestDto roleRequestDto)
+        {
+            List<bool> lIndicator = new List<bool>();
+            try
+            {
+                Entities.Auth.Role role = (await _unitOfWork.Roles.BuildBaseQueryAsync()).fi
+                var role = _mapper.Map<Entities.Auth.Role>(roleRequestDto);
+                role.Id = Guid.NewGuid().ToString();
+                role.ConcurrencyStamp = Guid.NewGuid().ToString();
+
+                await _unitOfWork.Roles.AddAsync(role);
+                lIndicator.Add(_unitOfWork.Complete() > 0);
+            }
+            catch (Exception ex)
+            {
+                _holderOfDto.Add(Res.message, ex.Message);
+                lIndicator.Add(false);
+            }
+            _holderOfDto.Add(Res.state, lIndicator.All(x => x));
+
             return _holderOfDto;
         }
         public HolderOfDto Delete(string id)

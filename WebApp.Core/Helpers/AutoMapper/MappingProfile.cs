@@ -29,6 +29,8 @@ namespace WebApp.Core.Helpers.AutoMapper
             CreateMap<User, UserResponseDto>()
                 .ForMember(d => d.DisplayPath, o => o.MapFrom(s => _sharedMapper.BuildProfileImagePath(s.Path)));
 
+            CreateMap<RoleRequestDto, Role>()
+                .ForMember(d => d.NormalizedName, o => o.MapFrom(s => s.Name.ToUpper()));
             CreateMap<Role, RoleResponseDto>();
             #endregion
         }

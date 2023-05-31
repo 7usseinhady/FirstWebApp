@@ -899,8 +899,8 @@ namespace WebApp.Core.Services.Auth
             // Add Some User Claims
             var claims = new[]
             {
-                new Claim("uid", user.Id),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? " "),
+                new Claim(Res.uid, user.Id),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
                 new Claim(JwtRegisteredClaimNames.Sub, user?.UserName!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             }
