@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebApp.Core\WebApp.Core.csproj" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\Domain\WebApp.Core\WebApp.Core.csproj" />
   </ItemGroup>
 
 </Project>
